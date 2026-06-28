@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Romanza — Romances para devorar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#FAF7F2;color:#1E0D12;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    input,textarea,select{font-family:inherit;outline:none}
+    button{font-family:inherit;cursor:pointer;border:none;background:none;padding:0}
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:#F0E8E2}
+    ::-webkit-scrollbar-thumb{background:#9B2335;border-radius:4px}
+
+    @keyframes float{0%,100%{transform:rotate(-1.5deg) translateY(0)}50%{transform:rotate(-1.5deg) translateY(-14px)}}
+    @keyframes pulseRed{0%,100%{box-shadow:0 0 0 0 rgba(155,35,53,.45)}70%{box-shadow:0 0 0 8px rgba(155,35,53,0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .float{animation:float 4.5s ease-in-out infinite}
+    .pulse{animation:pulseRed 2s ease-in-out infinite}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(232,220,224,0.7)}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+    .nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nav-logo img{width:38px;height:38px;border-radius:10px}
+    .nav-logo-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#1E0D12;letter-spacing:-.3px;line-height:1.1}
+    .nav-logo-sub{font-size:9px;color:#9C8090;letter-spacing:.8px;text-transform:uppercase}
+    .nav-links{display:flex;align-items:center;gap:28px;flex:1;justify-content:center}
+    .nav-links a{font-size:14px;font-weight:500;color:#5C4050;transition:color .2s}
+    .nav-links a:hover{color:#9B2335}
+    .btn-primary{background:#9B2335;color:white;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background .2s;flex-shrink:0}
+    .btn-primary:hover{background:#7B1A28}
+
+    /* Hero */
+    #inicio{min-height:92vh;padding:140px 32px 80px;display:flex;align-items:center;background:linear-gradient(135deg,#FAF7F2 0%,#F3E8E2 45%,#FAF7F2 100%)}
+    .hero-inner{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;gap:60px}
+    .hero-content{flex:1;max-width:580px}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:#FDE8EC;color:#9B2335;padding:6px 16px;border-radius:100px;font-size:13px;font-weight:500;margin-bottom:32px;border:1px solid rgba(155,35,53,.15)}
+    .hero-badge-dot{width:7px;height:7px;background:#9B2335;border-radius:50%;display:inline-block;flex-shrink:0}
+    h1.hero-title{font-family:'Playfair Display',serif;font-size:62px;font-weight:700;line-height:1.08;color:#1E0D12;letter-spacing:-1.5px;margin-bottom:24px}
+    h1.hero-title em{color:#9B2335;font-style:italic}
+    .hero-sub{font-size:18px;line-height:1.65;color:#5C4050;margin-bottom:40px;max-width:500px}
+    .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:52px}
+    .hero-cta-main{background:#9B2335;color:white;padding:14px 30px;border-radius:100px;font-size:15px;font-weight:600;transition:background .2s}
+    .hero-cta-main:hover{background:#7B1A28}
+    .hero-cta-sec{background:white;color:#1E0D12;padding:14px 30px;border-radius:100px;font-size:15px;font-weight:500;border:1.5px solid #E8DCE0;transition:all .2s}
+    .hero-cta-sec:hover{border-color:#9B2335;color:#9B2335}
+    .hero-social{display:flex;align-items:center;gap:18px}
+    .hero-avatars{display:flex}
+    .avatar{width:34px;height:34px;border-radius:50%;border:2.5px solid #FAF7F2;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white}
+    .avatar+.avatar{margin-left:-10px}
+    .hero-stars{color:#E8736A;font-size:15px;letter-spacing:2px;line-height:1}
+    .hero-rating-label{font-size:13px;color:#7C5060;margin-top:3px}
+    .phone-wrap{flex-shrink:0;position:relative}
+    .phone-glow{position:absolute;inset:-50px;background:radial-gradient(ellipse,rgba(155,35,53,.12) 0%,transparent 65%);border-radius:50%;pointer-events:none}
+    .phone{width:248px;height:500px;background:linear-gradient(175deg,#1C0C16 0%,#2A1020 100%);border-radius:44px;position:relative;overflow:hidden;box-shadow:0 50px 120px rgba(155,35,53,.25),0 20px 40px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.07),inset 0 0 0 1.5px rgba(255,255,255,.03)}
+    .phone-notch{position:absolute;top:16px;left:50%;transform:translateX(-50%);width:92px;height:10px;background:#0A0508;border-radius:5px;z-index:2}
+    .phone-body{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;padding:52px 22px 28px}
+    .phone-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;width:100%}
+    .phone-logo{width:80px;height:80px;border-radius:20px;box-shadow:0 12px 32px rgba(0,0,0,.5)}
+    .phone-app-name{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:white;line-height:1;letter-spacing:-.5px;text-align:center}
+    .phone-app-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:8px;line-height:1.5;text-align:center}
+    .phone-btn-start{width:100%;background:#E8736A;border-radius:100px;padding:13px;text-align:center;font-size:14px;font-weight:500;color:white}
+    .phone-btn-login{width:100%;border:1.5px solid rgba(255,255,255,.2);border-radius:100px;padding:12px;text-align:center;font-size:14px;color:rgba(255,255,255,.75)}
+    .phone-footer{font-size:9.5px;color:rgba(255,255,255,.22);text-align:center;line-height:1.4}
+
+    /* Stats bar */
+    .stats-bar{background:white;border-top:1px solid #F0E8EA;border-bottom:1px solid #F0E8EA}
+    .stats-inner{max-width:1200px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:repeat(4,1fr)}
+    .stat{padding:28px 24px;text-align:center;border-right:1px solid #F0E8EA}
+    .stat:last-child{border-right:none}
+    .stat-num{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#9B2335}
+    .stat-label{font-size:13px;color:#7C5060;margin-top:4px;font-weight:500}
+
+    /* Sections */
+    .section-tag{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#9B2335;margin-bottom:10px}
+    .section-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:700;color:#1E0D12;letter-spacing:-.8px}
+    .section-sub{font-size:16px;color:#7C5060;margin-top:14px;max-width:440px;margin-left:auto;margin-right:auto;line-height:1.55}
+
+    /* Catalog */
+    #catalogo{padding:80px 32px;max-width:1200px;margin:0 auto}
+    .catalog-header{text-align:center;margin-bottom:48px}
+    .genre-tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:40px}
+    .genre-tab{padding:8px 18px;border-radius:100px;border:1.5px solid #E8DCE0;background:white;color:#5C4050;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;transition:all .2s}
+    .genre-tab.active{background:#9B2335;color:white;border-color:#9B2335}
+    .books-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    .book-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 16px rgba(30,13,18,.06);cursor:pointer;transition:transform .25s,box-shadow .25s}
+    .book-card:hover{transform:translateY(-5px);box-shadow:0 12px 36px rgba(155,35,53,.14)}
+    .book-cover{height:250px;position:relative;overflow:hidden}
+    .book-cover-letter{position:absolute;top:-15px;right:-8px;font-family:'Playfair Display',serif;font-size:130px;font-weight:700;opacity:.1;line-height:1;pointer-events:none;user-select:none}
+    .book-badge{position:absolute;top:12px;left:12px;padding:4px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;z-index:1}
+    .book-badge-new{background:#E8736A;color:white}
+    .book-badge-adult{background:rgba(0,0,0,.55);color:rgba(255,255,255,.9)}
+    .book-cover-info{position:absolute;bottom:0;left:0;right:0;padding:20px 14px 14px;background:linear-gradient(transparent,rgba(0,0,0,.72))}
+    .book-cover-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:white;line-height:1.3}
+    .book-cover-author{font-size:11px;color:rgba(255,255,255,.6);margin-top:3px}
+    .book-meta{padding:14px 16px 18px}
+    .genre-badge{padding:3px 10px;border-radius:100px;font-size:11px;font-weight:500}
+    .book-rating{display:flex;align-items:center;gap:7px;margin-top:10px}
+    .stars{color:#E8736A;letter-spacing:.5px}
+    .rating-num{font-size:14px;font-weight:700;color:#1E0D12}
+    .rating-count{font-size:12px;color:#B09098}
+    .btn-ver{width:100%;margin-top:12px;padding:10px;background:#FAF7F2;border-radius:100px;font-size:13px;font-weight:500;color:#9B2335;border:1.5px solid #ECDCE0;cursor:pointer;transition:all .2s}
+    .btn-ver:hover{background:#9B2335;color:white;border-color:#9B2335}
+    .show-more-wrap{text-align:center;margin-top:40px}
+    .btn-show-more{background:white;color:#9B2335;padding:13px 32px;border-radius:100px;font-size:14px;font-weight:600;border:2px solid #E8DCE0;cursor:pointer;transition:all .2s}
+    .btn-show-more:hover{border-color:#9B2335;background:#FAF7F2}
+
+    /* Reviews */
+    #reviews{background:white;padding:80px 32px}
+    .reviews-inner{max-width:1200px;margin:0 auto}
+    .reviews-header{text-align:center;margin-bottom:56px}
+    .reviews-layout{display:grid;grid-template-columns:280px 1fr;gap:64px;align-items:start}
+    .rating-summary{text-align:center;padding:32px;background:#FAF7F2;border-radius:24px;border:1px solid #F0E8EA;margin-bottom:24px}
+    .rating-big{font-family:'Playfair Display',serif;font-size:64px;font-weight:700;color:#1E0D12;line-height:1}
+    .rating-stars-big{color:#E8736A;font-size:22px;letter-spacing:3px;margin-top:4px}
+    .rating-total{font-size:13px;color:#9C8090;margin-top:8px}
+    .rating-bars{display:flex;flex-direction:column;gap:9px}
+    .rating-bar-row{display:flex;align-items:center;gap:10px}
+    .rating-bar-label{font-size:12px;color:#7C5060;font-weight:500;width:26px;flex-shrink:0}
+    .rating-bar-track{flex:1;height:8px;background:#F0E8EA;border-radius:4px;overflow:hidden}
+    .rating-bar-fill{height:100%;background:#9B2335;border-radius:4px}
+    .rating-bar-pct{font-size:12px;color:#9C8090;width:32px;text-align:right;flex-shrink:0}
+    .btn-write-review{width:100%;margin-top:24px;padding:12px;background:#9B2335;color:white;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+    .btn-write-review:hover{background:#7B1A28}
+    .reviews-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .review-card{background:#FAF7F2;border-radius:20px;padding:24px;border:1px solid #EDE4E8}
+    .review-user-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .review-avatar{width:40px;height:40px;border-radius:50%;background:#9B2335;color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:16px;font-weight:700;flex-shrink:0}
+    .review-username{font-size:14px;font-weight:600;color:#1E0D12}
+    .review-stars{color:#E8736A;font-size:13px;letter-spacing:1px;margin-top:2px}
+    .review-book-title{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#9B2335;margin-bottom:8px}
+    .review-text{font-size:14px;line-height:1.6;color:#5C4050;font-style:italic}
+    .review-footer{display:flex;align-items:center;justify-content:space-between;margin-top:14px}
+    .review-date,.review-likes{font-size:12px;color:#B09098}
+
+    /* Community */
+    #comunidade{padding:80px 32px;background:#FAF7F2}
+    .community-inner{max-width:900px;margin:0 auto}
+    .community-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px}
+    .btn-new-topic{background:white;color:#9B2335;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;border:2px solid #E8DCE0;cursor:pointer;white-space:nowrap;transition:all .2s;margin-bottom:4px}
+    .btn-new-topic:hover{border-color:#9B2335}
+    .threads-list{display:flex;flex-direction:column;gap:12px}
+    .thread{background:white;border-radius:16px;padding:20px 24px;border:1px solid #EDE4E8;display:flex;align-items:center;gap:20px;cursor:pointer;transition:box-shadow .2s,border-color .2s}
+    .thread:hover{box-shadow:0 4px 20px rgba(155,35,53,.08);border-color:#D8C0C8}
+    .thread-cat{flex-shrink:0;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600}
+    .thread-body{flex:1;min-width:0}
+    .thread-title{font-size:15px;font-weight:500;color:#1E0D12;line-height:1.3}
+    .thread-meta{display:flex;align-items:center;gap:16px;margin-top:5px}
+    .thread-user,.thread-time{font-size:12px;color:#9C8090}
+    .thread-stats{flex-shrink:0;display:flex;gap:20px;align-items:center}
+    .thread-stat{text-align:center}
+    .thread-stat-num{font-size:15px;font-weight:700;color:#1E0D12}
+    .thread-stat-label{font-size:10px;color:#9C8090;text-transform:uppercase;letter-spacing:.5px}
+    .community-cta{margin-top:32px;text-align:center;padding:36px 32px;background:white;border-radius:20px;border:1.5px dashed #D8C0C8}
+    .community-cta-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:#1E0D12;margin-bottom:8px}
+    .community-cta-sub{font-size:14px;color:#7C5060;margin-bottom:22px;max-width:380px;margin-left:auto;margin-right:auto}
+    .community-cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .btn-register{background:#9B2335;color:white;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+    .btn-register:hover{background:#7B1A28}
+    .btn-more-info{background:white;color:#5C4050;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:500;border:1.5px solid #E8DCE0;cursor:pointer;transition:all .2s}
+    .btn-more-info:hover{border-color:#9B2335}
+
+    /* Requests */
+    #pedidos{background:white;padding:80px 32px}
+    .requests-inner{max-width:1100px;margin:0 auto}
+    .requests-header{text-align:center;margin-bottom:56px}
+    .requests-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+    .form-section-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:#1E0D12;margin-bottom:24px}
+    .form-fields{display:flex;flex-direction:column;gap:16px}
+    .form-label{display:block;font-size:13px;font-weight:600;color:#5C4050;margin-bottom:6px}
+    .form-input{width:100%;padding:12px 16px;border:1.5px solid #E8DCE0;border-radius:12px;font-size:14px;color:#1E0D12;background:#FAF7F2}
+    .form-input:focus{border-color:#9B2335}
+    .form-select{width:100%;padding:12px 16px;border:1.5px solid #E8DCE0;border-radius:12px;font-size:14px;color:#1E0D12;background:#FAF7F2}
+    .form-textarea{width:100%;padding:12px 16px;border:1.5px solid #E8DCE0;border-radius:12px;font-size:14px;color:#1E0D12;background:#FAF7F2;resize:vertical;line-height:1.5}
+    .form-textarea:focus{border-color:#9B2335}
+    .btn-submit{background:#9B2335;color:white;padding:13px 28px;border-radius:100px;font-size:14px;font-weight:600;width:100%;cursor:pointer;transition:background .2s;border:none}
+    .btn-submit:hover{background:#7B1A28}
+    .success-box{background:#F0FDF4;border:1px solid #86EFAC;border-radius:16px;padding:28px;text-align:center}
+    .success-icon{font-size:36px;margin-bottom:10px}
+    .success-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:600;color:#166534;margin-bottom:6px}
+    .success-sub{font-size:14px;color:#15803D;line-height:1.5}
+    .votes-sub{font-size:14px;color:#7C5060;margin-bottom:24px}
+    .vote-items{display:flex;flex-direction:column;gap:14px}
+    .vote-item{background:#FAF7F2;border-radius:16px;padding:16px 20px;border:1px solid #EDE4E8}
+    .vote-item-top{display:flex;align-items:flex-start;gap:14px}
+    .vote-item-info{flex:1;min-width:0}
+    .vote-item-title{font-size:15px;font-weight:600;color:#1E0D12;line-height:1.2}
+    .vote-item-author{font-size:12px;color:#9C8090;margin-top:3px}
+    .vote-item-bar{margin-top:12px}
+    .vote-item-bar-header{display:flex;justify-content:space-between;margin-bottom:5px}
+    .vote-item-votes{font-size:11px;color:#9C8090}
+    .vote-item-pct{font-size:11px;font-weight:600;color:#9B2335}
+    .vote-track{height:6px;background:#EDE4E8;border-radius:3px;overflow:hidden}
+    .vote-fill{height:100%;background:linear-gradient(90deg,#9B2335,#E8736A);border-radius:3px;transition:width .5s ease}
+    .btn-vote{flex-shrink:0;padding:8px 16px;border-radius:100px;border:1.5px solid #9B2335;background:transparent;color:#9B2335;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+    .btn-vote.voted{background:#9B2335;color:white}
+    .btn-vote:disabled{cursor:default}
+
+    /* App download */
+    #app{background:linear-gradient(135deg,#1A0810 0%,#300A1A 50%,#1A0810 100%);padding:96px 32px}
+    .app-inner{max-width:800px;margin:0 auto;text-align:center}
+    .app-logo{width:88px;height:88px;border-radius:22px;box-shadow:0 16px 48px rgba(0,0,0,.45);margin-bottom:28px}
+    .app-title{font-family:'Playfair Display',serif;font-size:50px;font-weight:700;color:white;line-height:1.1;letter-spacing:-1px;margin-bottom:18px}
+    .app-sub{font-size:17px;color:rgba(255,255,255,.5);margin-bottom:44px;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.6}
+    .app-features{display:flex;justify-content:center;gap:32px;margin-bottom:48px;flex-wrap:wrap}
+    .app-feature{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.7);font-size:14px}
+    .app-feature-check{color:#E8736A;font-size:16px}
+    .btn-gplay{display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);color:white;padding:16px 28px;border-radius:16px;transition:all .2s}
+    .btn-gplay:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.35)}
+    .btn-gplay-sub{font-size:10px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:1.2px;line-height:1}
+    .btn-gplay-name{font-size:20px;font-weight:600;letter-spacing:-.3px;margin-top:2px}
+    .app-note{margin-top:18px;font-size:13px;color:rgba(255,255,255,.28)}
+
+    /* FAQ */
+    #faq{padding:80px 32px;background:#FAF7F2}
+    .faq-inner{max-width:740px;margin:0 auto}
+    .faq-header{text-align:center;margin-bottom:48px}
+    .faq-list{display:flex;flex-direction:column;gap:8px}
+    .faq-item{background:white;border-radius:16px;overflow:hidden;border:1px solid #EDE4E8}
+    .faq-q{width:100%;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;text-align:left;cursor:pointer;background:transparent;border:none}
+    .faq-q-text{font-size:15px;font-weight:600;color:#1E0D12;line-height:1.4;flex:1}
+    .faq-icon{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#FAF7F2;color:#9B2335;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:300;line-height:1}
+    .faq-answer{display:none;padding:0 24px 20px}
+    .faq-answer.open{display:block}
+    .faq-divider{height:1px;background:#F0E8EA;margin-bottom:16px}
+    .faq-answer p{font-size:14px;line-height:1.65;color:#5C4050}
+
+    /* Footer */
+    footer{background:#180A10;color:white;padding:56px 32px 32px}
+    .footer-inner{max-width:1200px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:48px}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .footer-brand img{width:36px;height:36px;border-radius:9px}
+    .footer-brand-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white}
+    .footer-desc{font-size:14px;color:rgba(255,255,255,.4);line-height:1.65;max-width:260px;margin-bottom:20px}
+    .newsletter-row{display:flex;gap:8px}
+    .newsletter-input{flex:1;padding:10px 14px;border-radius:100px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:white;font-size:13px}
+    .newsletter-input::placeholder{color:rgba(255,255,255,.35)}
+    .btn-newsletter{padding:10px 16px;border-radius:100px;background:#9B2335;color:white;font-size:12px;font-weight:600;flex-shrink:0;cursor:pointer;border:none;transition:background .2s}
+    .btn-newsletter:hover{background:#7B1A28}
+    .btn-newsletter.done{background:#E8736A;cursor:default}
+    .footer-col-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .footer-links{display:flex;flex-direction:column;gap:10px}
+    .footer-links a{font-size:14px;color:rgba(255,255,255,.55);transition:color .2s}
+    .footer-links a:hover{color:white}
+    .btn-gplay-footer{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white;padding:12px 18px;border-radius:12px;width:100%;transition:all .2s}
+    .btn-gplay-footer:hover{background:rgba(255,255,255,.1)}
+    .footer-gplay-sub{font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase}
+    .footer-gplay-name{font-size:15px;font-weight:600;margin-top:2px}
+    .footer-gplay-note{font-size:12px;color:rgba(255,255,255,.28);margin-top:14px;line-height:1.5}
+    .footer-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:24px}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .footer-copy,.footer-tagline{font-size:13px;color:rgba(255,255,255,.28)}
+    .footer-tagline{font-style:italic}
+
+    /* Modal */
+    #modal-overlay{position:fixed;inset:0;z-index:200;background:rgba(10,5,8,.78);display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .2s}
+    #modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:white;border-radius:28px;max-width:660px;width:100%;max-height:88vh;overflow-y:auto;position:relative;box-shadow:0 40px 100px rgba(0,0,0,.4)}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:50%;background:#F5EEE8;color:#7C5060;font-size:20px;display:flex;align-items:center;justify-content:center;z-index:10;line-height:1;cursor:pointer;transition:background .2s;border:none}
+    .modal-close:hover{background:#EDE4E8}
+    .modal-top{display:flex;min-height:300px}
+    .modal-cover{width:188px;flex-shrink:0;border-radius:28px 0 0 0;position:relative;overflow:hidden}
+    .modal-cover-letter{position:absolute;top:-15px;right:-10px;font-family:'Playfair Display',serif;font-size:120px;font-weight:700;opacity:.1;line-height:1;pointer-events:none;user-select:none}
+    .modal-cover-info{position:absolute;bottom:0;left:0;right:0;padding:16px 16px 18px;background:linear-gradient(transparent,rgba(0,0,0,.68))}
+    .modal-cover-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:600;color:white;line-height:1.3}
+    .modal-cover-author{font-size:11px;color:rgba(255,255,255,.55);margin-top:3px}
+    .modal-info{flex:1;padding:32px 28px 24px;min-width:0}
+    .modal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1E0D12;margin-top:12px;line-height:1.2}
+    .modal-author{font-size:14px;color:#7C5060;margin-top:4px}
+    .modal-rating{display:flex;align-items:center;gap:8px;margin-top:14px}
+    .modal-rating .stars{font-size:15px;letter-spacing:1px}
+    .modal-rating .rating-num{font-size:17px}
+    .modal-desc{font-size:14px;line-height:1.65;color:#5C4050;margin-top:16px}
+    .modal-pages{font-size:13px;color:#B09098;margin-top:10px;display:flex;align-items:center;gap:6px}
+    .modal-actions{display:flex;gap:10px;margin-top:24px}
+    .btn-read-app{flex:1;background:#9B2335;color:white;padding:12px 16px;border-radius:100px;font-size:14px;font-weight:600;text-align:center;display:block;transition:background .2s;border:none;cursor:pointer}
+    .btn-read-app:hover{background:#7B1A28}
+    .btn-wishlist{padding:12px 18px;border:1.5px solid #E8DCE0;border-radius:100px;font-size:16px;color:#9C8090;cursor:pointer;transition:all .2s;background:transparent}
+    .btn-wishlist:hover{border-color:#9B2335;color:#9B2335}
+    .modal-reviews{padding:20px 28px 28px;border-top:1px solid #F5EEE8}
+    .modal-reviews-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:#1E0D12;margin-bottom:18px}
+    .modal-review-list{display:flex;flex-direction:column;gap:14px}
+    .modal-review{padding-bottom:14px;border-bottom:1px solid #F5EEE8}
+    .modal-review:last-child{border-bottom:none}
+    .modal-review-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .modal-review-avatar{width:30px;height:30px;border-radius:50%;background:#9B2335;color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:13px;font-weight:700;flex-shrink:0}
+    .modal-review-user{font-size:13px;font-weight:600;color:#1E0D12;flex:1}
+    .modal-review-stars{color:#E8736A;font-size:12px;letter-spacing:.5px}
+    .modal-review-date{font-size:12px;color:#B09098}
+    .modal-review-text{font-size:13px;line-height:1.6;color:#5C4050;font-style:italic}
+    .btn-all-reviews{width:100%;padding:11px;border:1.5px solid #E8DCE0;border-radius:100px;font-size:13px;font-weight:500;color:#9B2335;margin-top:16px;background:transparent;cursor:pointer;transition:all .2s}
+    .btn-all-reviews:hover{background:#FAF7F2}
+
+    /* Responsive */
+    @media(max-width:900px){
+      .nav-links{display:none}
+      h1.hero-title{font-size:42px}
+      .hero-inner{flex-direction:column}
+      .phone-wrap{display:none}
+      .books-grid{grid-template-columns:repeat(2,1fr)}
+      .reviews-layout{grid-template-columns:1fr}
+      .requests-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .stats-inner{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:600px){
+      .books-grid{grid-template-columns:1fr 1fr}
+      .reviews-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr}
+      .hero-ctas{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <a href="#inicio" class="nav-logo">
+      <img src="logo.png" alt="Romanza">
+      <div>
+        <div class="nav-logo-name">Romanza</div>
+        <div class="nav-logo-sub">Romances para devorar</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="#catalogo">Catálogo</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#comunidade">Comunidade</a>
+      <a href="#pedidos">Pedidos</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a href="#app" class="btn-primary">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
+      Baixar App
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="inicio">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot pulse"></span>
+        Em breve na Google Play Store
+      </div>
+      <h1 class="hero-title">
+        Romances para <em>devorar</em> — onde quer que estejas.
+      </h1>
+      <p class="hero-sub">Catálogo exclusivo de romances em português. Lê offline, comenta, descobre novos títulos. Subscrição mensal ou anual.</p>
+      <div class="hero-ctas">
+        <a href="#catalogo" class="hero-cta-main">Explorar Catálogo</a>
+        <a href="#app" class="hero-cta-sec">Baixar App →</a>
+      </div>
+      <div class="hero-social">
+        <div class="hero-avatars">
+          <div class="avatar" style="background:#C8A0B0">M</div>
+          <div class="avatar" style="background:#B08898">S</div>
+          <div class="avatar" style="background:#9B2335">A</div>
+          <div class="avatar" style="background:#D4A8B0">C</div>
+          <div class="avatar" style="background:#ECC8D0;color:#9B2335;font-size:12px">+</div>
+        </div>
+        <div>
+          <div class="hero-stars">★★★★★</div>
+          <div class="hero-rating-label">+1.200 leitoras apaixonadas</div>
+        </div>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="phone-glow"></div>
+      <div class="phone float">
+        <div class="phone-notch"></div>
+        <div class="phone-body">
+          <div class="phone-content">
+            <img src="logo.png" alt="Romanza" class="phone-logo">
+            <div>
+              <div class="phone-app-name">Romanza</div>
+              <div class="phone-app-sub">Romances para devorar —<br>onde quer que estejas.</div>
+            </div>
+            <div style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:12px">
+              <div class="phone-btn-start">Começar agora</div>
+              <div class="phone-btn-login">Já tenho conta</div>
+            </div>
+          </div>
+          <div class="phone-footer">Subscrição mensal ou anual · Bloqueado a 1 dispositivo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Livros disponíveis</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">7</div>
+      <div class="stat-label">Géneros literários</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4.7<span style="font-size:16px;font-weight:400;color:#C0A0A8">/5</span></div>
+      <div class="stat-label">Avaliação média</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" style="font-size:20px;line-height:1.2">Google Play<br><span style="font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;color:#E8736A">Em breve</span></div>
+      <div class="stat-label">Subscrição disponível</div>
+    </div>
+  </div>
+</div>
+
+<!-- CATALOG -->
+<section id="catalogo">
+  <div class="catalog-header">
+    <div class="section-tag">CATÁLOGO</div>
+    <h2 class="section-title">Os nossos romances</h2>
+    <p class="section-sub">Do dark romance ao romantasy, sempre o teu próximo romance favorito.</p>
+  </div>
+  <div class="genre-tabs" id="genre-tabs"></div>
+  <div class="books-grid" id="books-grid"></div>
+  <div class="show-more-wrap" id="show-more-wrap" style="display:none">
+    <button class="btn-show-more" id="btn-show-more">Ver todos os livros</button>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-inner">
+    <div class="reviews-header">
+      <div class="section-tag">REVIEWS</div>
+      <h2 class="section-title">O que dizem as leitoras</h2>
+    </div>
+    <div class="reviews-layout">
+      <div>
+        <div class="rating-summary">
+          <div class="rating-big">4.7</div>
+          <div class="rating-stars-big">★★★★★</div>
+          <div class="rating-total">1.245 classificações</div>
+        </div>
+        <div class="rating-bars">
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">5★</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:68%"></div></div>
+            <div class="rating-bar-pct">68%</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">4★</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:20%"></div></div>
+            <div class="rating-bar-pct">20%</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">3★</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:8%"></div></div>
+            <div class="rating-bar-pct">8%</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">2★</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:3%"></div></div>
+            <div class="rating-bar-pct">3%</div>
+          </div>
+          <div class="rating-bar-row">
+            <div class="rating-bar-label">1★</div>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:1%"></div></div>
+            <div class="rating-bar-pct">1%</div>
+          </div>
+        </div>
+        <button class="btn-write-review">Escrever review</button>
+      </div>
+      <div class="reviews-grid" id="reviews-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMUNITY -->
+<section id="comunidade">
+  <div class="community-inner">
+    <div class="community-header">
+      <div>
+        <div class="section-tag">COMUNIDADE</div>
+        <h2 class="section-title">Debates &amp; conversas</h2>
+      </div>
+      <button class="btn-new-topic">+ Novo tópico</button>
+    </div>
+    <div class="threads-list" id="threads-list"></div>
+    <div class="community-cta">
+      <div class="community-cta-title">Junta-te à conversa</div>
+      <p class="community-cta-sub">Partilha leituras, descobre novas histórias e faz amizades com outras leitoras.</p>
+      <div class="community-cta-btns">
+        <button class="btn-register">Criar conta gratuita</button>
+        <a href="#app" class="btn-more-info">Saber mais</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REQUESTS -->
+<section id="pedidos">
+  <div class="requests-inner">
+    <div class="requests-header">
+      <div class="section-tag">PEDIDOS</div>
+      <h2 class="section-title">Sugere um livro</h2>
+      <p class="section-sub">A tua opinião conta. Pede os livros que queres ler e vota nos próximos lançamentos.</p>
+    </div>
+    <div class="requests-grid">
+      <div>
+        <h3 class="form-section-title">Novo pedido</h3>
+        <div id="request-success" class="success-box" style="display:none">
+          <div class="success-icon">✓</div>
+          <div class="success-title">Pedido enviado!</div>
+          <div class="success-sub">A nossa equipa irá analisar a tua sugestão. Obrigada pelo contributo!</div>
+        </div>
+        <div id="request-form" class="form-fields">
+          <div>
+            <label class="form-label">Título do livro *</label>
+            <input type="text" id="req-title" class="form-input" placeholder="Ex: A Sombra do Rei">
+          </div>
+          <div>
+            <label class="form-label">Autor/a</label>
+            <input type="text" id="req-author" class="form-input" placeholder="Ex: Sofia Almeida">
+          </div>
+          <div>
+            <label class="form-label">Género</label>
+            <select id="req-genre" class="form-select">
+              <option value="contemporaneo">Romance Contemporâneo</option>
+              <option value="dark">Dark Romance</option>
+              <option value="fantasy">Romantasy</option>
+              <option value="historico">Romance Histórico</option>
+              <option value="suspense">Suspense Romântico</option>
+              <option value="newadult">New Adult</option>
+              <option value="erotico">Erótico +18</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Porquê este livro?</label>
+            <textarea id="req-motivo" class="form-textarea" rows="4" placeholder="Conta-nos porque merece estar na Romanza..."></textarea>
+          </div>
+          <button class="btn-submit" id="btn-submit-request">Enviar pedido</button>
+        </div>
+      </div>
+      <div>
+        <h3 class="form-section-title">Próximos lançamentos</h3>
+        <p class="votes-sub">Vota no livro que queres ver a seguir na app!</p>
+        <div class="vote-items" id="vote-items"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP DOWNLOAD -->
+<section id="app">
+  <div class="app-inner">
+    <img src="logo.png" alt="Romanza" class="app-logo">
+    <h2 class="app-title">Lê onde quer<br>que estejas.</h2>
+    <p class="app-sub">Romances para devorar, disponíveis offline, a qualquer hora, em qualquer lugar.</p>
+    <div class="app-features">
+      <div class="app-feature"><span class="app-feature-check">✓</span> Leitura offline</div>
+      <div class="app-feature"><span class="app-feature-check">✓</span> Subscrição mensal ou anual</div>
+      <div class="app-feature"><span class="app-feature-check">✓</span> Novos livros regularmente</div>
+      <div class="app-feature"><span class="app-feature-check">✓</span> Comunidade exclusiva</div>
+    </div>
+    <a href="#" class="btn-gplay">
+      <svg width="26" height="26" viewBox="0 0 48 48" fill="none"><path d="M7 4.5L28.8 24 7 43.5V4.5z" fill="#E8736A"/><path d="M7 4.5L28.8 24 40 17.5l-9-5.1L7 4.5z" fill="rgba(255,255,255,.85)"/><path d="M7 43.5L28.8 24 40 30.5l-9 5.1L7 43.5z" fill="rgba(255,255,255,.55)"/><path d="M40 17.5L28.8 24 40 30.5l5-6.5-5-6.5z" fill="rgba(255,255,255,.95)"/></svg>
+      <div>
+        <div class="btn-gplay-sub">Em breve em</div>
+        <div class="btn-gplay-name">Google Play</div>
+      </div>
+    </a>
+    <div class="app-note">Disponível para Android · iOS em desenvolvimento</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Perguntas frequentes</h2>
+    </div>
+    <div class="faq-list" id="faq-list"></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="logo.png" alt="Romanza">
+          <span class="footer-brand-name">Romanza</span>
+        </div>
+        <p class="footer-desc">Romances para devorar — onde quer que estejas. Biblioteca exclusiva em português.</p>
+        <div class="newsletter-row">
+          <input type="email" id="newsletter-email" class="newsletter-input" placeholder="O teu e-mail...">
+          <button class="btn-newsletter" id="btn-newsletter">Subscrever</button>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Explorar</div>
+        <div class="footer-links">
+          <a href="#catalogo">Catálogo</a>
+          <a href="#reviews">Reviews</a>
+          <a href="#comunidade">Comunidade</a>
+          <a href="#pedidos">Pedidos</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Informação</div>
+        <div class="footer-links">
+          <a href="#faq">FAQ</a>
+          <a href="#">Sobre nós</a>
+          <a href="#">Privacidade</a>
+          <a href="#">Termos</a>
+          <a href="#">Contacto</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Download</div>
+        <a href="#app" class="btn-gplay-footer">
+          <svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M7 4.5L28.8 24 7 43.5V4.5z" fill="#E8736A"/><path d="M7 4.5L28.8 24 40 17.5l-9-5.1L7 4.5z" fill="rgba(255,255,255,.8)"/><path d="M7 43.5L28.8 24 40 30.5l-9 5.1L7 43.5z" fill="rgba(255,255,255,.5)"/><path d="M40 17.5L28.8 24 40 30.5l5-6.5-5-6.5z" fill="rgba(255,255,255,.95)"/></svg>
+          <div>
+            <div class="footer-gplay-sub">Em breve em</div>
+            <div class="footer-gplay-name">Google Play</div>
+          </div>
+        </a>
+        <div class="footer-gplay-note">Subscreve a newsletter para saber quando está disponível.</div>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Romanza. Todos os direitos reservados.</div>
+      <div class="footer-tagline">Romances para devorar — onde quer que estejas.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- BOOK MODAL -->
+<div id="modal-overlay">
+  <div class="modal" id="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" id="modal-close">×</button>
+    <div class="modal-top">
+      <div class="modal-cover" id="modal-cover">
+        <div class="modal-cover-letter" id="modal-cover-letter"></div>
+        <div class="modal-cover-info">
+          <div class="modal-cover-title" id="modal-cover-title"></div>
+          <div class="modal-cover-author" id="modal-cover-author"></div>
+        </div>
+      </div>
+      <div class="modal-info">
+        <span class="genre-badge" id="modal-genre-badge"></span>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-author" id="modal-author"></div>
+        <div class="modal-rating">
+          <span class="stars" id="modal-stars"></span>
+          <span class="rating-num" id="modal-rating-num"></span>
+          <span class="rating-count" id="modal-rating-count"></span>
+        </div>
+        <p class="modal-desc" id="modal-desc"></p>
+        <div class="modal-pages" id="modal-pages">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+          <span id="modal-pages-num"></span> páginas
+        </div>
+        <div class="modal-actions">
+          <button class="btn-read-app" id="btn-read-app">Ler na App</button>
+          <button class="btn-wishlist">♡</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-reviews">
+      <h3 class="modal-reviews-title">Reviews recentes</h3>
+      <div class="modal-review-list" id="modal-review-list"></div>
+      <button class="btn-all-reviews">Ver todas as reviews →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const BOOKS = [
+  { id:1, titulo:'O Duque Proibido', autor:'Sofia Almeida', genero:'historico', rating:4.8, numReviews:312, descricao:'Londres, 1842. Uma herdeira sem dote e um duque com um segredo impossível de partilhar. O que começa como uma aposta torna-se uma paixão avassaladora que desafia a sociedade vitoriana.', pags:384 },
+  { id:2, titulo:'Entre Sombras', autor:'Mara Voss', genero:'dark', rating:4.6, numReviews:241, descricao:'Quando a luz se apaga, as verdades emergem. Uma história de obsessão, redenção e amor que nunca pede permissão. Para os que preferem os seus heróis com arestas.', pags:412 },
+  { id:3, titulo:'A Herdeira do Dragão', autor:'Lena Marques', genero:'fantasy', rating:4.9, numReviews:528, descricao:'Num reino onde os dragões são lenda, ela é a única que sabe que são reais. E o guardião dos dragões é o homem que ela nunca devia ter amado.', pags:456, novo:true },
+  { id:4, titulo:'Promessas Rotas', autor:'Catarina Sousa', genero:'contemporaneo', rating:4.4, numReviews:189, descricao:'Uma segunda oportunidade que nenhum deles pediu. Podem dois corações partidos fazer um inteiro?', pags:298 },
+  { id:5, titulo:'O Detetive Frio', autor:'Ana Ferreira', genero:'suspense', rating:4.7, numReviews:276, descricao:'Ela viu algo que não devia. Ele é o único que a pode proteger. Mas quem a protege dele?', pags:352 },
+  { id:6, titulo:'Primeiro Verão', autor:'Rita Costa', genero:'newadult', rating:4.3, numReviews:145, descricao:'Dezoito anos, uma universidade nova e um colega de quarto que ninguém esperava. O verão que muda tudo.', pags:276 },
+  { id:7, titulo:'Chamas do Norte', autor:'Beatriz Lima', genero:'historico', rating:4.5, numReviews:203, descricao:'Escócia, 1746. Uma guerreira jacobita e o soldado inglês que ela salvou. Dois mundos em guerra, um coração em chamas.', pags:418 },
+  { id:8, titulo:'A Bruxa do Palácio', autor:'Inês Rodrigues', genero:'fantasy', rating:4.8, numReviews:431, descricao:'Ela veio para destruí-lo. Ele veio para a usar. Nenhum deles esperava que o destino tivesse outros planos.', pags:488, novo:true },
+  { id:9, titulo:'Jogos Proibidos', autor:'Vera Santos', genero:'erotico', rating:4.6, numReviews:334, descricao:'Regras simples: sem sentimentos, sem perguntas, sem futuro. Mas as regras existem para ser quebradas.', pags:312, adulto:true },
+  { id:10, titulo:'Amor em Manhattan', autor:'Diana Pires', genero:'contemporaneo', rating:4.2, numReviews:167, descricao:'Nova York nunca dorme e ela também não, desde que ele apareceu na sua vida com aquele sorriso que prometia problemas.', pags:287 },
+  { id:11, titulo:'Noite Sem Fim', autor:'Paula Matos', genero:'dark', rating:4.7, numReviews:289, descricao:'Ele é o pesadelo que ela escolheu ter. Uma história de amor que raspa a linha entre o vício e a devoção.', pags:376 },
+  { id:12, titulo:'A Capitã dos Mares', autor:'Helena Cruz', genero:'historico', rating:4.4, numReviews:198, descricao:'Piratas, tempestades e um amor que atravessa oceanos. Uma aventura histórica que aquece o coração.', pags:408 },
+];
+
+const GENEROS = [
+  { id:'todos', label:'Todos' },
+  { id:'contemporaneo', label:'Contemporâneo', bg:'#FDE8EC', color:'#9B2335' },
+  { id:'dark', label:'Dark Romance', bg:'#2D1520', color:'#E8C0C8' },
+  { id:'fantasy', label:'Romantasy', bg:'#EDE0F8', color:'#6B3A8A' },
+  { id:'historico', label:'Histórico', bg:'#FDF3DC', color:'#8B6914' },
+  { id:'suspense', label:'Suspense', bg:'#DCF0F4', color:'#1A5A6A' },
+  { id:'newadult', label:'New Adult', bg:'#FDEAE4', color:'#C05040' },
+  { id:'erotico', label:'Erótico +18', bg:'#F8DCE4', color:'#7A1A30' },
+];
+
+const COVER_STYLES = {
+  historico:    { bg:'linear-gradient(155deg,#7A5810 0%,#C09040 55%,#503508 100%)', color:'#FDF8EC' },
+  dark:         { bg:'linear-gradient(155deg,#180810 0%,#3D1030 55%,#0A0508 100%)', color:'#F0C8D8' },
+  fantasy:      { bg:'linear-gradient(155deg,#200D50 0%,#5B2888 55%,#100530 100%)', color:'#EDD8F8' },
+  contemporaneo:{ bg:'linear-gradient(155deg,#8B2335 0%,#B83A50 55%,#5A1225 100%)', color:'#FDEAF0' },
+  suspense:     { bg:'linear-gradient(155deg,#0A1A28 0%,#1A3A55 55%,#060E18 100%)', color:'#C0DCF0' },
+  newadult:     { bg:'linear-gradient(155deg,#B84828 0%,#E07050 55%,#883018 100%)', color:'#FDF0EC' },
+  erotico:      { bg:'linear-gradient(155deg,#450818 0%,#780F2D 55%,#280408 100%)', color:'#F8C8D8' },
+};
+
+const REVIEWS = [
+  { id:1, user:'Maria J.', initial:'M', rating:5, livro:'A Herdeira do Dragão', texto:'Li em dois dias! Não consegui parar. A história de amor é apaixonante e o worldbuilding é incrível. Já à espera do segundo livro!', data:'22 Jun 2026', likes:34 },
+  { id:2, user:'Sofia R.', initial:'S', rating:5, livro:'O Duque Proibido', texto:'Este livro fez-me apaixonar pelo romance histórico. A escrita é linda e os personagens são complexos e cheios de camadas. Absolutamente recomendado!', data:'20 Jun 2026', likes:28 },
+  { id:3, user:'Catarina P.', initial:'C', rating:4, livro:'Entre Sombras', texto:'Intenso, apaixonante e perturbador no melhor sentido. Não é para todos mas para os amantes do dark romance é perfeito.', data:'18 Jun 2026', likes:19 },
+  { id:4, user:'Ana F.', initial:'A', rating:5, livro:'A Bruxa do Palácio', texto:'Uma combinação perfeita de fantasia e romance! A brutalidade do amor destes dois personagens é absolutamente viciante.', data:'15 Jun 2026', likes:41 },
+];
+
+const THREADS = [
+  { id:1, titulo:'Favoritos de Junho — partilha os teus!', replies:47, likes:132, user:'LeituraViciante', tempo:'2h atrás', categoria:'Geral', catColor:'#FDE8EC', catTextColor:'#9B2335' },
+  { id:2, titulo:'Dark Romance vs. Romance Contemporâneo — qual preferem?', replies:89, likes:245, user:'Bookworm_PT', tempo:'5h atrás', categoria:'Debate', catColor:'#2D1520', catTextColor:'#E8C0C8' },
+  { id:3, titulo:'[SPOILERS] A Herdeira do Dragão — o final deu-me a vida!', replies:63, likes:189, user:'DragonLover', tempo:'1d atrás', categoria:'Spoilers', catColor:'#EDE0F8', catTextColor:'#6B3A8A' },
+  { id:4, titulo:'Sugestões para quando acabamos um livro bom 😭', replies:34, likes:98, user:'SofiaR', tempo:'2d atrás', categoria:'Recomendações', catColor:'#DCF0F4', catTextColor:'#1A5A6A' },
+];
+
+const UPCOMING = [
+  { id:1, titulo:'O Cavaleiro Sombrio', autor:'Vera Santos', genero:'dark', baseVotes:234 },
+  { id:2, titulo:'Segredos de Veneza', autor:'Helena Cruz', genero:'historico', baseVotes:187 },
+  { id:3, titulo:'A Feiticeira e o Lobo', autor:'Lena Marques', genero:'fantasy', baseVotes:298 },
+  { id:4, titulo:'Verão Eterno', autor:'Rita Costa', genero:'contemporaneo', baseVotes:156 },
+  { id:5, titulo:'Confissões', autor:'Mara Voss', genero:'erotico', baseVotes:143 },
+];
+
+const FAQS = [
+  { q:'A Romanza é gratuita?', r:'A app Romanza funciona por subscrição — podes escolher o plano mensal ou anual. Existe um período de teste gratuito para novos utilizadores.' },
+  { q:'Posso ler offline?', r:'Sim! Os livros que descarregares ficam disponíveis sem ligação à internet, onde quer que estejas.' },
+  { q:'Quantos livros estão disponíveis?', r:'Estamos sempre a crescer! Temos dezenas de títulos disponíveis e adicionamos novos livros regularmente com base nos pedidos da comunidade.' },
+  { q:'Os livros são em português?', r:'Sim, todos os livros da Romanza estão em português europeu. A nossa coleção inclui autoras portuguesas e traduções cuidadas de alta qualidade.' },
+  { q:'Posso usar a app em vários dispositivos?', r:'A subscrição está associada a 1 dispositivo. Para mudares de dispositivo, podes fazê-lo nas definições da conta, a qualquer momento.' },
+  { q:'Como posso sugerir um livro?', r:'Usa o formulário de pedidos na secção "Pedidos" do site ou diretamente na app! A nossa equipa lê todos os pedidos e a comunidade pode votar nos seus favoritos.' },
+  { q:'Existe app para iOS?', r:'De momento a app está disponível para Android (Google Play Store). A versão iOS está em desenvolvimento — subscreve a newsletter para seres das primeiras a saber!' },
+];
+
+// State
+let activeGenre = 'todos';
+let showAllBooks = false;
+let userVoted = null;
+let votes = { 1:234, 2:187, 3:298, 4:156, 5:143 };
+let openFaq = null;
+
+function generoInfo(id) {
+  return GENEROS.find(g => g.id === id) || { label: id, bg:'#FDE8EC', color:'#9B2335' };
+}
+
+function stars(rating, filled = true) {
+  const s = Math.round(rating);
+  return '★'.repeat(s) + '☆'.repeat(5 - s);
+}
+
+// ── GENRE TABS ──
+function renderGenreTabs() {
+  const container = document.getElementById('genre-tabs');
+  container.innerHTML = GENEROS.map(g => `
+    <button class="genre-tab ${g.id === activeGenre ? 'active' : ''}" data-genre="${g.id}">${g.label}</button>
+  `).join('');
+  container.querySelectorAll('.genre-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeGenre = btn.dataset.genre;
+      showAllBooks = false;
+      renderGenreTabs();
+      renderBooks();
+    });
+  });
+}
+
+// ── BOOKS ──
+function renderBooks() {
+  const filtered = activeGenre === 'todos' ? BOOKS : BOOKS.filter(b => b.genero === activeGenre);
+  const display = showAllBooks ? filtered : filtered.slice(0, 8);
+  const cs_map = COVER_STYLES;
+
+  const grid = document.getElementById('books-grid');
+  grid.innerHTML = display.map(book => {
+    const cs = cs_map[book.genero] || cs_map.contemporaneo;
+    const gi = generoInfo(book.genero);
+    const badge = book.novo
+      ? `<div class="book-badge book-badge-new">NOVO</div>`
+      : book.adulto
+        ? `<div class="book-badge book-badge-adult">+18</div>`
+        : '';
+    return `
+      <div class="book-card" data-id="${book.id}">
+        <div class="book-cover" style="background:${cs.bg}">
+          <div class="book-cover-letter" style="color:${cs.color}">${book.titulo.charAt(0)}</div>
+          ${badge}
+          <div class="book-cover-info">
+            <div class="book-cover-title">${book.titulo}</div>
+            <div class="book-cover-author">${book.autor}</div>
+          </div>
+        </div>
+        <div class="book-meta">
+          <span class="genre-badge" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
+          <div class="book-rating">
+            <span class="stars" style="font-size:13px">${stars(book.rating)}</span>
+            <span class="rating-num">${book.rating.toFixed(1)}</span>
+            <span class="rating-count">(${book.numReviews})</span>
+          </div>
+          <button class="btn-ver" data-id="${book.id}">Ver livro</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  grid.querySelectorAll('[data-id]').forEach(el => {
+    el.addEventListener('click', () => openBook(+el.dataset.id));
+  });
+
+  const wrap = document.getElementById('show-more-wrap');
+  const btn = document.getElementById('btn-show-more');
+  if (!showAllBooks && filtered.length > 8) {
+    wrap.style.display = 'block';
+    btn.textContent = `Ver todos os livros (${filtered.length})`;
+    btn.onclick = () => { showAllBooks = true; renderBooks(); };
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+// ── REVIEWS ──
+function renderReviews() {
+  const grid = document.getElementById('reviews-grid');
+  grid.innerHTML = REVIEWS.map(r => `
+    <div class="review-card">
+      <div class="review-user-row">
+        <div class="review-avatar">${r.initial}</div>
+        <div>
+          <div class="review-username">${r.user}</div>
+          <div class="review-stars">${stars(r.rating)}</div>
+        </div>
+      </div>
+      <div class="review-book-title">${r.livro}</div>
+      <p class="review-text">"${r.texto}"</p>
+      <div class="review-footer">
+        <span class="review-date">${r.data}</span>
+        <span class="review-likes">♡ ${r.likes}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── THREADS ──
+function renderThreads() {
+  const list = document.getElementById('threads-list');
+  list.innerHTML = THREADS.map(t => `
+    <div class="thread">
+      <span class="thread-cat" style="background:${t.catColor};color:${t.catTextColor}">${t.categoria}</span>
+      <div class="thread-body">
+        <div class="thread-title">${t.titulo}</div>
+        <div class="thread-meta">
+          <span class="thread-user">por ${t.user}</span>
+          <span class="thread-time">· ${t.tempo}</span>
+        </div>
+      </div>
+      <div class="thread-stats">
+        <div class="thread-stat">
+          <div class="thread-stat-num">${t.replies}</div>
+          <div class="thread-stat-label">respostas</div>
+        </div>
+        <div class="thread-stat">
+          <div class="thread-stat-num">${t.likes}</div>
+          <div class="thread-stat-label">gostos</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── VOTES ──
+function renderVotes() {
+  const totalV = UPCOMING.reduce((s, item) => s + (votes[item.id] || item.baseVotes), 0);
+  const sorted = [...UPCOMING].sort((a, b) => (votes[b.id] || b.baseVotes) - (votes[a.id] || a.baseVotes));
+
+  const container = document.getElementById('vote-items');
+  container.innerHTML = sorted.map(item => {
+    const v = votes[item.id] || item.baseVotes;
+    const gi = generoInfo(item.genero);
+    const pct = Math.round((v / totalV) * 100);
+    const isVoted = userVoted === item.id;
+    return `
+      <div class="vote-item">
+        <div class="vote-item-top">
+          <div class="vote-item-info">
+            <div class="vote-item-title">${item.titulo}</div>
+            <div class="vote-item-author">${item.autor}</div>
+            <span class="genre-badge" style="display:inline-block;margin-top:6px;background:${gi.bg};color:${gi.color};font-size:10px">${gi.label}</span>
+          </div>
+          <button class="btn-vote ${isVoted ? 'voted' : ''}" data-vote-id="${item.id}" ${userVoted && !isVoted ? 'disabled' : ''}>
+            ${isVoted ? '✓ Votado' : 'Votar'}
+          </button>
+        </div>
+        <div class="vote-item-bar">
+          <div class="vote-item-bar-header">
+            <span class="vote-item-votes">${v} votos</span>
+            <span class="vote-item-pct">${pct}%</span>
+          </div>
+          <div class="vote-track">
+            <div class="vote-fill" style="width:${pct}%"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.btn-vote').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = +btn.dataset.voteId;
+      if (userVoted) return;
+      votes[id] = (votes[id] || 0) + 1;
+      userVoted = id;
+      renderVotes();
+    });
+  });
+}
+
+// ── FAQ ──
+function renderFaq() {
+  const list = document.getElementById('faq-list');
+  list.innerHTML = FAQS.map((item, i) => `
+    <div class="faq-item">
+      <button class="faq-q" data-faq="${i}">
+        <span class="faq-q-text">${item.q}</span>
+        <span class="faq-icon">${openFaq === i ? '−' : '+'}</span>
+      </button>
+      <div class="faq-answer ${openFaq === i ? 'open' : ''}">
+        <div class="faq-divider"></div>
+        <p>${item.r}</p>
+      </div>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const i = +btn.dataset.faq;
+      openFaq = openFaq === i ? null : i;
+      renderFaq();
+    });
+  });
+}
+
+// ── MODAL ──
+function openBook(id) {
+  const book = BOOKS.find(b => b.id === id);
+  if (!book) return;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.contemporaneo;
+  const gi = generoInfo(book.genero);
+
+  document.getElementById('modal-cover').style.background = cs.bg;
+  document.getElementById('modal-cover-letter').textContent = book.titulo.charAt(0);
+  document.getElementById('modal-cover-letter').style.color = cs.color;
+  document.getElementById('modal-cover-title').textContent = book.titulo;
+  document.getElementById('modal-cover-author').textContent = book.autor;
+
+  const badge = document.getElementById('modal-genre-badge');
+  badge.textContent = gi.label;
+  badge.style.background = gi.bg;
+  badge.style.color = gi.color;
+
+  document.getElementById('modal-title').textContent = book.titulo;
+  document.getElementById('modal-author').textContent = 'por ' + book.autor;
+  document.getElementById('modal-stars').textContent = stars(book.rating);
+  document.getElementById('modal-rating-num').textContent = book.rating.toFixed(1);
+  document.getElementById('modal-rating-count').textContent = `(${book.numReviews} reviews)`;
+  document.getElementById('modal-desc').textContent = book.descricao;
+  document.getElementById('modal-pages-num').textContent = book.pags;
+
+  const reviewList = document.getElementById('modal-review-list');
+  reviewList.innerHTML = REVIEWS.slice(0, 2).map(r => `
+    <div class="modal-review">
+      <div class="modal-review-header">
+        <div class="modal-review-avatar">${r.initial}</div>
+        <div class="modal-review-user">${r.user}<br><span class="modal-review-stars">${stars(r.rating)}</span></div>
+        <div class="modal-review-date">${r.data}</div>
+      </div>
+      <p class="modal-review-text">"${r.texto}"</p>
+    </div>
+  `).join('');
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-overlay').addEventListener('click', closeModal);
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('btn-read-app').addEventListener('click', () => {
+  closeModal();
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+});
+
+// ── REQUEST FORM ──
+document.getElementById('btn-submit-request').addEventListener('click', () => {
+  const title = document.getElementById('req-title').value.trim();
+  if (!title) {
+    document.getElementById('req-title').focus();
+    document.getElementById('req-title').style.borderColor = '#9B2335';
+    return;
+  }
+  document.getElementById('request-form').style.display = 'none';
+  document.getElementById('request-success').style.display = 'block';
+});
+
+// ── NEWSLETTER ──
+document.getElementById('btn-newsletter').addEventListener('click', () => {
+  const email = document.getElementById('newsletter-email').value.trim();
+  if (!email) return;
+  const btn = document.getElementById('btn-newsletter');
+  btn.textContent = '✓ Subscrito';
+  btn.classList.add('done');
+  btn.disabled = true;
+});
+
+// ── INIT ──
+renderGenreTabs();
+renderBooks();
+renderReviews();
+renderThreads();
+renderVotes();
+renderFaq();
+</script>
+</body>
+</html>
