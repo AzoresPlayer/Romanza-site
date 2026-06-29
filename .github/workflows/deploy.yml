@@ -1,0 +1,22 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: 194.36.184.102
+          port: 65002
+          username: u428207087
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: "index.html,logo.png,covers/"
+          target: "public_html/"
+          strip_components: 0
