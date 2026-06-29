@@ -11,13 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy via SCP
-        uses: appleboy/scp-action@v0.1.7
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          host: 194.36.184.102
-          port: 65002
-          username: u428207087
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: "index.html,logo.png,covers/"
-          target: "public_html/"
-          strip_components: 0
+          server: 194.36.184.102
+          port: 21
+          username: u428207087.romanza.site
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /public_html/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            project/**
+            .github/**
