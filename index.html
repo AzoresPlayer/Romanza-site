@@ -704,10 +704,10 @@ const THREADS = [
 ];
 
 const UPCOMING = [
-  { id:1, titulo:'O Cavaleiro Sombrio', autor:'Vera Santos', genero:'dark', baseVotes:234 },
+  { id:1, titulo:'O Cavaleiro Sombrio', autor:'Vera Santos', genero:'fantasy', baseVotes:234 },
   { id:2, titulo:'Segredos de Veneza', autor:'Helena Cruz', genero:'historico', baseVotes:187 },
   { id:3, titulo:'A Feiticeira e o Lobo', autor:'Lena Marques', genero:'fantasy', baseVotes:298 },
-  { id:4, titulo:'Verão Eterno', autor:'Rita Costa', genero:'contemporaneo', baseVotes:156 },
+  { id:4, titulo:'Segredo Eterno', autor:'Rita Costa', genero:'suspense', baseVotes:156 },
   { id:5, titulo:'Confissões', autor:'Mara Voss', genero:'erotico', baseVotes:143 },
 ];
 
@@ -935,7 +935,7 @@ function renderFaq() {
 function openBook(id) {
   const book = BOOKS.find(b => b.id === id);
   if (!book) return;
-  const cs = COVER_STYLES[book.genero] || COVER_STYLES.contemporaneo;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
   const gi = generoInfo(book.genero);
 
   const modalCover = document.getElementById('modal-cover');
