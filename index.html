@@ -170,7 +170,7 @@
     #pedidos{background:white;padding:80px 32px}
     .requests-inner{max-width:1100px;margin:0 auto}
     .requests-header{text-align:center;margin-bottom:56px}
-    .requests-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+    .requests-grid{display:grid;grid-template-columns:1fr;gap:56px;align-items:start}
     .form-section-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:#1E0D12;margin-bottom:24px}
     .form-fields{display:flex;flex-direction:column;gap:16px}
     .form-label{display:block;font-size:13px;font-weight:600;color:#5C4050;margin-bottom:6px}
@@ -306,7 +306,7 @@
       .phone-wrap{display:none}
       .books-grid{grid-template-columns:repeat(2,1fr)}
       .reviews-layout{grid-template-columns:1fr}
-      .requests-grid{grid-template-columns:1fr}
+      .requests-grid{grid-template-columns:1fr} /* single col already */
       .footer-grid{grid-template-columns:1fr 1fr}
       .stats-inner{grid-template-columns:repeat(2,1fr)}
     }
@@ -334,7 +334,7 @@
       <a href="#catalogo">Catálogo</a>
       <a href="#reviews">Reviews</a>
       <a href="#comunidade">Comunidade</a>
-      <a href="#pedidos">Pedidos</a>
+      <a href="#pedidos">Votação</a>
       <a href="#faq">FAQ</a>
     </div>
     <a href="#app" class="btn-primary">
@@ -503,56 +503,15 @@
   </div>
 </section>
 
-<!-- REQUESTS -->
+<!-- VOTAÇÃO -->
 <section id="pedidos">
   <div class="requests-inner">
     <div class="requests-header">
-      <div class="section-tag">PEDIDOS</div>
-      <h2 class="section-title">Sugere um livro</h2>
-      <p class="section-sub">A tua opinião conta. Pede os livros que queres ler e vota nos próximos lançamentos.</p>
+      <div class="section-tag">VOTAÇÃO</div>
+      <h2 class="section-title">Próximos lançamentos</h2>
+      <p class="section-sub">Vota no livro que queres ver a seguir na app. A comunidade decide!</p>
     </div>
-    <div class="requests-grid">
-      <div>
-        <h3 class="form-section-title">Novo pedido</h3>
-        <div id="request-success" class="success-box" style="display:none">
-          <div class="success-icon">✓</div>
-          <div class="success-title">Pedido enviado!</div>
-          <div class="success-sub">A nossa equipa irá analisar a tua sugestão. Obrigada pelo contributo!</div>
-        </div>
-        <div id="request-form" class="form-fields">
-          <div>
-            <label class="form-label">Título do livro *</label>
-            <input type="text" id="req-title" class="form-input" placeholder="Ex: A Sombra do Rei">
-          </div>
-          <div>
-            <label class="form-label">Autor/a</label>
-            <input type="text" id="req-author" class="form-input" placeholder="Ex: Sofia Almeida">
-          </div>
-          <div>
-            <label class="form-label">Género</label>
-            <select id="req-genre" class="form-select">
-              <option value="contemporaneo">Romance Contemporâneo</option>
-              <option value="dark">Dark Romance</option>
-              <option value="fantasy">Romantasy</option>
-              <option value="historico">Romance Histórico</option>
-              <option value="suspense">Suspense Romântico</option>
-              <option value="newadult">New Adult</option>
-              <option value="erotico">Erótico +18</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Porquê este livro?</label>
-            <textarea id="req-motivo" class="form-textarea" rows="4" placeholder="Conta-nos porque merece estar na Romanza..."></textarea>
-          </div>
-          <button class="btn-submit" id="btn-submit-request">Enviar pedido</button>
-        </div>
-      </div>
-      <div>
-        <h3 class="form-section-title">Próximos lançamentos</h3>
-        <p class="votes-sub">Vota no livro que queres ver a seguir na app!</p>
-        <div class="vote-items" id="vote-items"></div>
-      </div>
-    </div>
+    <div class="vote-items" id="vote-items" style="max-width:640px;margin:0 auto"></div>
   </div>
 </section>
 
@@ -611,7 +570,7 @@
           <a href="#catalogo">Catálogo</a>
           <a href="#reviews">Reviews</a>
           <a href="#comunidade">Comunidade</a>
-          <a href="#pedidos">Pedidos</a>
+          <a href="#pedidos">Votação</a>
         </div>
       </div>
       <div>
@@ -749,7 +708,7 @@ const FAQS = [
   { q:'Quantos livros estão disponíveis?', r:'Estamos sempre a crescer! Temos dezenas de títulos disponíveis e adicionamos novos livros regularmente com base nos pedidos da comunidade.' },
   { q:'Os livros são em português?', r:'Sim, todos os livros da Romanza estão em português europeu. A nossa coleção inclui autoras portuguesas e traduções cuidadas de alta qualidade.' },
   { q:'Posso usar a app em vários dispositivos?', r:'A subscrição está associada a 1 dispositivo. Para mudares de dispositivo, podes fazê-lo nas definições da conta, a qualquer momento.' },
-  { q:'Como posso sugerir um livro?', r:'Usa o formulário de pedidos na secção "Pedidos" do site ou diretamente na app! A nossa equipa lê todos os pedidos e a comunidade pode votar nos seus favoritos.' },
+  { q:'Como posso votar num livro?', r:'Na secção "Votação" do site ou directamente na app! Vota no próximo lançamento que queres ver disponível — a comunidade decide o que sai a seguir.' },
   { q:'Existe app para iOS?', r:'De momento a app está disponível para Android (Google Play Store). A versão iOS está em desenvolvimento — subscreve a newsletter para seres das primeiras a saber!' },
 ];
 
@@ -1011,18 +970,6 @@ document.getElementById('modal-close').addEventListener('click', closeModal);
 document.getElementById('btn-read-app').addEventListener('click', () => {
   closeModal();
   document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-});
-
-// ── REQUEST FORM ──
-document.getElementById('btn-submit-request').addEventListener('click', () => {
-  const title = document.getElementById('req-title').value.trim();
-  if (!title) {
-    document.getElementById('req-title').focus();
-    document.getElementById('req-title').style.borderColor = '#9B2335';
-    return;
-  }
-  document.getElementById('request-form').style.display = 'none';
-  document.getElementById('request-success').style.display = 'block';
 });
 
 // ── NEWSLETTER ──
