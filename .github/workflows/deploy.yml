@@ -14,11 +14,12 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: 194.36.184.102
+          server: royalblue-spoonbill-538881.hostingersite.com
           port: 21
           username: u428207087.romanza.site
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
+          security: ftpes
           exclude: |
             **/.git*
             **/.git*/**
