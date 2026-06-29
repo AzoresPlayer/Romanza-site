@@ -14,12 +14,11 @@ jobs:
       - name: Deploy via SFTP
         uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          server: royalblue-spoonbill-538881.hostingersite.com
-          port: 22
+          server: 194.36.184.102
+          port: 65002
           username: u428207087
           password: ${{ secrets.FTP_PASSWORD }}
           local_path: ./*
           remote_path: /home/u428207087/public_html
           sftp_only: true
           delete_remote_files: false
-          args: '-o ConnectTimeout=30'
