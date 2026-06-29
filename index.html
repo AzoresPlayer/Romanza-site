@@ -316,6 +316,33 @@
       .footer-grid{grid-template-columns:1fr}
       .hero-ctas{flex-direction:column}
     }
+
+    /* Toast */
+    #toast-container{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:10px}
+    .toast{padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,.22);animation:fadeUp .3s ease;line-height:1.45}
+    .toast-success{background:#1E0D12;color:white;border-left:4px solid #4CAF50}
+    .toast-info{background:#1E0D12;color:white;border-left:4px solid #9B2335}
+    .toast-error{background:#1E0D12;color:white;border-left:4px solid #E8736A}
+
+    /* Popup overlay */
+    .popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9998;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeUp .2s ease}
+    .popup{background:white;border-radius:24px;padding:40px 36px;max-width:440px;width:100%;position:relative;text-align:center;max-height:90vh;overflow-y:auto}
+    .popup-close{position:absolute;top:16px;right:20px;font-size:24px;color:#9C8090;cursor:pointer;background:none;border:none;line-height:1;padding:4px}
+    .popup-close:hover{color:#1E0D12}
+    .popup-icon{font-size:48px;margin-bottom:16px}
+    .popup-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:#1E0D12;margin-bottom:12px}
+    .popup-sub{font-size:15px;color:#5C4050;line-height:1.6;margin-bottom:24px}
+    .popup-form{display:flex;flex-direction:column;gap:12px;text-align:left}
+    .popup-input{padding:12px 16px;border:1.5px solid #E8DCE0;border-radius:12px;font-size:14px;width:100%;background:white;color:#1E0D12}
+    .popup-input:focus{border-color:#9B2335;outline:none}
+    .popup-textarea{resize:vertical;min-height:100px;font-family:inherit}
+    .popup-btn{background:#9B2335;color:white;padding:13px;border-radius:100px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:background .2s;margin-top:4px}
+    .popup-btn:hover{background:#7B1A28}
+    .popup-note{font-size:12px;color:#9C8090;margin-top:12px}
+    .star-picker{display:flex;gap:6px;font-size:32px;justify-content:center;cursor:pointer;margin:8px 0}
+    .star-pick{color:#D0B8C0;transition:color .1s;user-select:none}
+    .star-pick:hover,.star-pick.active{color:#E8736A}
+    .btn-newsletter.done{background:#4CAF50 !important;pointer-events:none}
   </style>
 </head>
 <body>
@@ -1035,6 +1062,174 @@ renderReviews();
 renderThreads();
 renderVotes();
 renderFaq();
+
+// ── TOAST ──
+function showToast(msg, type = 'info') {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    document.body.appendChild(container);
+  }
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  container.appendChild(el);
+  setTimeout(() => el.remove(), 3800);
+}
+
+// ── POPUP ──
+function showPopup(html, onClose) {
+  const overlay = document.createElement('div');
+  overlay.className = 'popup-overlay';
+  overlay.innerHTML = `<div class="popup" onclick="event.stopPropagation()">${html}</div>`;
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+  overlay.addEventListener('click', () => { overlay.remove(); document.body.style.overflow = ''; if (onClose) onClose(); });
+  overlay.querySelector('.popup-close').addEventListener('click', () => { overlay.remove(); document.body.style.overflow = ''; });
+  return overlay;
+}
+
+// ── CRIAR CONTA ──
+document.querySelectorAll('.btn-register').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const overlay = showPopup(`
+      <button class="popup-close">×</button>
+      <div class="popup-icon">📚</div>
+      <h3 class="popup-title">Criar Conta Gratuita</h3>
+      <p class="popup-sub">A app Romanza está em desenvolvimento! Regista o teu e-mail para seres das primeiras a ter acesso quando lançarmos.</p>
+      <div class="popup-form">
+        <input type="text" class="popup-input" placeholder="O teu nome" id="reg-name">
+        <input type="email" class="popup-input" placeholder="O teu e-mail" id="reg-email">
+        <button class="popup-btn" id="popup-register-btn">Quero ser notificada!</button>
+      </div>
+      <div class="popup-note">Sem spam. Só te avisamos quando a app lançar. ✉️</div>
+    `);
+    document.getElementById('popup-register-btn').addEventListener('click', () => {
+      const name = document.getElementById('reg-name').value.trim();
+      const email = document.getElementById('reg-email').value.trim();
+      if (!name || !email) { showToast('Preenche o nome e o e-mail.', 'error'); return; }
+      overlay.remove(); document.body.style.overflow = '';
+      showToast(`✓ ${name}, foste adicionada à lista! Avisamos quando lançarmos.`, 'success');
+    });
+  });
+});
+
+// ── ESCREVER REVIEW ──
+document.querySelector('.btn-write-review').addEventListener('click', () => {
+  let selectedStars = 5;
+  const overlay = showPopup(`
+    <button class="popup-close">×</button>
+    <h3 class="popup-title">Escrever Review</h3>
+    <div class="popup-form">
+      <input type="text" class="popup-input" placeholder="O teu nome" id="rev-name">
+      <select class="popup-input" id="rev-book">
+        ${BOOKS.map(b => `<option value="${b.titulo}">${b.titulo}</option>`).join('')}
+      </select>
+      <div class="star-picker" id="star-picker">
+        ${[1,2,3,4,5].map(n => `<span class="star-pick active" data-star="${n}">★</span>`).join('')}
+      </div>
+      <textarea class="popup-input popup-textarea" placeholder="Partilha a tua opinião sobre o livro..." id="rev-text" rows="4"></textarea>
+      <button class="popup-btn" id="popup-review-btn">Publicar review</button>
+    </div>
+  `);
+  const picker = document.getElementById('star-picker');
+  function updateStars(n) {
+    picker.querySelectorAll('.star-pick').forEach((s, i) => {
+      s.style.color = i < n ? '#E8736A' : '#D0B8C0';
+    });
+  }
+  updateStars(5);
+  picker.querySelectorAll('.star-pick').forEach(s => {
+    s.addEventListener('mouseover', () => updateStars(+s.dataset.star));
+    s.addEventListener('mouseout', () => updateStars(selectedStars));
+    s.addEventListener('click', () => { selectedStars = +s.dataset.star; updateStars(selectedStars); });
+  });
+  document.getElementById('popup-review-btn').addEventListener('click', () => {
+    const name = document.getElementById('rev-name').value.trim();
+    const book = document.getElementById('rev-book').value;
+    const text = document.getElementById('rev-text').value.trim();
+    if (!name || !text) { showToast('Preenche o nome e a review.', 'error'); return; }
+    const now = new Date();
+    REVIEWS.unshift({ id: Date.now(), user: name, initial: name.charAt(0).toUpperCase(), rating: selectedStars, livro: book, texto: text, data: now.toLocaleDateString('pt-PT', { day:'numeric', month:'short', year:'numeric' }), likes: 0 });
+    renderReviews();
+    overlay.remove(); document.body.style.overflow = '';
+    showToast('✓ Review publicada! Obrigada pela tua opinião.', 'success');
+    setTimeout(() => document.getElementById('reviews').scrollIntoView({ behavior:'smooth' }), 300);
+  });
+});
+
+// ── NOVO TÓPICO ──
+document.querySelector('.btn-new-topic').addEventListener('click', () => {
+  const overlay = showPopup(`
+    <button class="popup-close">×</button>
+    <div class="popup-icon">💬</div>
+    <h3 class="popup-title">Novo Tópico</h3>
+    <p class="popup-sub">Os tópicos e debates são criados na app Romanza. Regista-te para participares quando lançarmos!</p>
+    <div class="popup-form">
+      <input type="text" class="popup-input" placeholder="O teu nome" id="topic-name">
+      <input type="email" class="popup-input" placeholder="O teu e-mail" id="topic-email">
+      <button class="popup-btn" id="popup-topic-btn">Notifica-me!</button>
+    </div>
+    <div class="popup-note">Sem spam. Só te avisamos quando a comunidade abrir. ✉️</div>
+  `);
+  document.getElementById('popup-topic-btn').addEventListener('click', () => {
+    const name = document.getElementById('topic-name').value.trim();
+    const email = document.getElementById('topic-email').value.trim();
+    if (!name || !email) { showToast('Preenche o nome e o e-mail.', 'error'); return; }
+    overlay.remove(); document.body.style.overflow = '';
+    showToast(`✓ ${name}, anotado! Avisamos quando a comunidade abrir.`, 'success');
+  });
+});
+
+// ── WISHLIST ──
+const wishlist = new Set();
+document.querySelector('.btn-wishlist').addEventListener('click', function() {
+  const titulo = document.getElementById('modal-title').textContent;
+  if (wishlist.has(titulo)) {
+    wishlist.delete(titulo);
+    this.textContent = '♡';
+    this.style.cssText = '';
+    showToast('Removido da lista de desejos.', 'info');
+  } else {
+    wishlist.add(titulo);
+    this.textContent = '♥';
+    this.style.cssText = 'color:#9B2335;transform:scale(1.2)';
+    showToast(`✓ "${titulo}" adicionado à lista de desejos!`, 'success');
+  }
+});
+
+// Reset wishlist btn when modal opens
+const _origOpenBook = openBook;
+window.openBook = function(id) {
+  _origOpenBook(id);
+  const titulo = BOOKS.find(b => b.id === id)?.titulo;
+  const btn = document.querySelector('.btn-wishlist');
+  if (wishlist.has(titulo)) { btn.textContent = '♥'; btn.style.cssText = 'color:#9B2335'; }
+  else { btn.textContent = '♡'; btn.style.cssText = ''; }
+};
+
+// ── VER TODAS AS REVIEWS ──
+document.querySelector('.btn-all-reviews').addEventListener('click', () => {
+  closeModal();
+  setTimeout(() => document.getElementById('reviews').scrollIntoView({ behavior:'smooth' }), 200);
+});
+
+// ── GOOGLE PLAY BUTTONS ──
+document.querySelectorAll('.btn-gplay').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    showToast('🚀 Em breve na Google Play! Subscreve a newsletter para seres das primeiras a saber.', 'info');
+  });
+});
+
+// ── FOOTER LINKS SEM DESTINO ──
+document.querySelectorAll('footer a[href="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    showToast('Página em construção — brevemente disponível!', 'info');
+  });
+});
 </script>
 </body>
 </html>
