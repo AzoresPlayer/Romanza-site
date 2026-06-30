@@ -320,6 +320,34 @@
       .hero-ctas{flex-direction:column}
     }
 
+    /* Cookie Banner */
+    #cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9997;background:#1E0D12;color:white;padding:20px 32px;box-shadow:0 -4px 32px rgba(0,0,0,.35);animation:fadeUp .35s ease}
+    .cookie-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+    .cookie-text{flex:1;min-width:260px}
+    .cookie-text strong{font-size:15px;font-weight:700;display:block;margin-bottom:4px}
+    .cookie-text p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.55}
+    .cookie-text a{color:#E8736A;text-decoration:underline}
+    .cookie-btns{display:flex;gap:10px;flex-wrap:wrap;flex-shrink:0}
+    .btn-cookie-reject{padding:10px 18px;border-radius:100px;border:1.5px solid rgba(255,255,255,.25);background:transparent;color:rgba(255,255,255,.75);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+    .btn-cookie-reject:hover{border-color:rgba(255,255,255,.6);color:white}
+    .btn-cookie-settings{padding:10px 18px;border-radius:100px;border:1.5px solid rgba(155,35,53,.6);background:transparent;color:#E8736A;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+    .btn-cookie-settings:hover{background:rgba(155,35,53,.15)}
+    .btn-cookie-accept{padding:10px 20px;border-radius:100px;background:#9B2335;color:white;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:background .2s}
+    .btn-cookie-accept:hover{background:#7B1A28}
+    .cookie-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #F0E8EA}
+    .cookie-toggle-row:last-child{border-bottom:none}
+    .cookie-toggle-label{font-size:14px;font-weight:600;color:#1E0D12}
+    .cookie-toggle-desc{font-size:12px;color:#9C8090;margin-top:2px}
+    .cookie-toggle{position:relative;width:40px;height:22px;flex-shrink:0}
+    .cookie-toggle input{opacity:0;width:0;height:0}
+    .cookie-toggle-slider{position:absolute;inset:0;background:#E0D4D8;border-radius:22px;cursor:pointer;transition:.25s}
+    .cookie-toggle-slider:before{content:'';position:absolute;width:16px;height:16px;left:3px;top:3px;background:white;border-radius:50%;transition:.25s}
+    .cookie-toggle input:checked+.cookie-toggle-slider{background:#9B2335}
+    .cookie-toggle input:checked+.cookie-toggle-slider:before{transform:translateX(18px)}
+    .cookie-toggle input:disabled+.cookie-toggle-slider{opacity:.55;cursor:not-allowed}
+    #cookie-fab{position:fixed;bottom:20px;left:20px;z-index:9996;width:42px;height:42px;border-radius:50%;background:#1E0D12;border:2px solid rgba(155,35,53,.5);color:white;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:background .2s}
+    #cookie-fab:hover{background:#9B2335}
+
     /* Toast */
     #toast-container{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:10px}
     .toast{padding:14px 20px;border-radius:12px;font-size:14px;font-weight:500;max-width:360px;box-shadow:0 8px 32px rgba(0,0,0,.22);animation:fadeUp .3s ease;line-height:1.45}
@@ -612,6 +640,7 @@
           <a href="#">Sobre nós</a>
           <a href="#">Privacidade</a>
           <a href="termos.html">Termos</a>
+          <a href="cookies.html">Cookies</a>
           <a href="#" id="link-contacto">Contacto</a>
         </div>
       </div>
@@ -1250,6 +1279,100 @@ document.getElementById('link-contacto').addEventListener('click', e => {
     <p style="font-size:13px;color:#9C8090;margin-top:16px">Respondemos em até 48 horas.</p>
   `);
 });
+
+// ── COOKIES ──
+const CONSENT_KEY = 'romanza-cookie-consent';
+
+function getConsent() {
+  try { return JSON.parse(localStorage.getItem(CONSENT_KEY)); } catch { return null; }
+}
+
+function saveConsent(prefs) {
+  localStorage.setItem(CONSENT_KEY, JSON.stringify({ ...prefs, ts: Date.now() }));
+  document.getElementById('cookie-banner')?.remove();
+  showCookieFab();
+}
+
+function showCookieFab() {
+  if (document.getElementById('cookie-fab')) return;
+  const fab = document.createElement('button');
+  fab.id = 'cookie-fab';
+  fab.title = 'Definições de Cookies';
+  fab.innerHTML = '🍪';
+  fab.addEventListener('click', openCookieSettings);
+  document.body.appendChild(fab);
+}
+
+function openCookieSettings() {
+  const c = getConsent() || {};
+  showPopup(`
+    <button class="popup-close">×</button>
+    <div class="popup-icon">🍪</div>
+    <h3 class="popup-title">Definições de Cookies</h3>
+    <p class="popup-sub" style="margin-bottom:20px">Gere as tuas preferências de cookies. Podes alterar as tuas escolhas a qualquer momento.</p>
+    <div style="text-align:left">
+      <div class="cookie-toggle-row">
+        <div><div class="cookie-toggle-label">Cookies Essenciais</div><div class="cookie-toggle-desc">Necessários para o funcionamento do site. Não podem ser desativados.</div></div>
+        <label class="cookie-toggle"><input type="checkbox" checked disabled><span class="cookie-toggle-slider"></span></label>
+      </div>
+      <div class="cookie-toggle-row">
+        <div><div class="cookie-toggle-label">Desempenho & Estatísticas</div><div class="cookie-toggle-desc">Ajudam-nos a perceber como os visitantes utilizam o site.</div></div>
+        <label class="cookie-toggle"><input type="checkbox" id="ck-perf" ${c.performance ? 'checked' : ''}><span class="cookie-toggle-slider"></span></label>
+      </div>
+      <div class="cookie-toggle-row">
+        <div><div class="cookie-toggle-label">Publicidade (Google AdSense)</div><div class="cookie-toggle-desc">Permitem apresentar anúncios personalizados. Geridos pelo Google.</div></div>
+        <label class="cookie-toggle"><input type="checkbox" id="ck-ads" ${c.advertising ? 'checked' : ''}><span class="cookie-toggle-slider"></span></label>
+      </div>
+    </div>
+    <button class="popup-btn" id="btn-save-cookie-prefs" style="margin-top:20px">Guardar preferências</button>
+    <p class="popup-note"><a href="cookies.html" style="color:#9B2335">Política de Cookies</a></p>
+  `);
+  document.getElementById('btn-save-cookie-prefs').addEventListener('click', () => {
+    saveConsent({
+      essential: true,
+      performance: document.getElementById('ck-perf').checked,
+      advertising: document.getElementById('ck-ads').checked,
+    });
+    document.querySelector('.popup-overlay')?.remove();
+    document.body.style.overflow = '';
+    showToast('Preferências de cookies guardadas.', 'success');
+  });
+}
+
+function initCookieBanner() {
+  const consent = getConsent();
+  if (consent) { showCookieFab(); return; }
+
+  const banner = document.createElement('div');
+  banner.id = 'cookie-banner';
+  banner.innerHTML = `
+    <div class="cookie-inner">
+      <div class="cookie-text">
+        <strong>Este website utiliza cookies</strong>
+        <p>Utilizamos cookies próprios e de terceiros, incluindo o Google AdSense, para melhorar a experiência e apresentar publicidade relevante. <a href="cookies.html">Política de Cookies</a></p>
+      </div>
+      <div class="cookie-btns">
+        <button class="btn-cookie-reject" id="btn-ck-reject">Rejeitar não essenciais</button>
+        <button class="btn-cookie-settings" id="btn-ck-settings">Personalizar</button>
+        <button class="btn-cookie-accept" id="btn-ck-accept">Aceitar todos</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  document.getElementById('btn-ck-accept').addEventListener('click', () => {
+    saveConsent({ essential: true, performance: true, advertising: true });
+  });
+  document.getElementById('btn-ck-reject').addEventListener('click', () => {
+    saveConsent({ essential: true, performance: false, advertising: false });
+  });
+  document.getElementById('btn-ck-settings').addEventListener('click', () => {
+    banner.remove();
+    openCookieSettings();
+  });
+}
+
+initCookieBanner();
 </script>
 </body>
 </html>
