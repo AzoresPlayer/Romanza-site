@@ -159,6 +159,20 @@
     .thread-stat{text-align:center}
     .thread-stat-num{font-size:15px;font-weight:700;color:#1E0D12}
     .thread-stat-label{font-size:10px;color:#9C8090;text-transform:uppercase;letter-spacing:.5px}
+    .thread-like-btn{display:flex;align-items:center;gap:5px;background:none;border:none;font-size:13px;color:#9C8090;cursor:pointer;padding:4px 10px;border-radius:100px;transition:all .15s;flex-shrink:0;line-height:1}
+    .thread-like-btn:hover,.thread-like-btn.liked{color:#9B2335;background:#FDE8EC}
+    .thread-detail-cat{display:inline-block;font-size:10px;font-weight:700;padding:3px 10px;border-radius:100px;margin-bottom:10px}
+    .thread-detail-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#1E0D12;margin-bottom:6px;line-height:1.25}
+    .thread-detail-meta{font-size:12px;color:#9C8090;margin-bottom:18px}
+    .thread-replies{margin-bottom:18px;display:flex;flex-direction:column;gap:10px;max-height:220px;overflow-y:auto}
+    .thread-reply{background:#FAF7F2;border-radius:12px;padding:12px 14px}
+    .thread-reply-user{font-size:12px;font-weight:700;color:#1E0D12;margin-bottom:4px}
+    .thread-reply-text{font-size:14px;color:#5C4050;line-height:1.55}
+    .thread-reply-time{font-size:11px;color:#B09098;margin-top:4px}
+    .thread-divider{height:1px;background:#F0E8EA;margin:14px 0}
+    .community-user-bar{display:flex;align-items:center;gap:8px;background:#FDE8EC;border-radius:100px;padding:7px 14px;font-size:13px;margin-bottom:10px;color:#5C4050}
+    .community-user-name{font-weight:700;color:#1E0D12;flex:1}
+    .btn-change-name{font-size:12px;color:#9B2335;background:none;border:none;cursor:pointer;font-weight:600;padding:0}
     .community-cta{margin-top:32px;text-align:center;padding:36px 32px;background:white;border-radius:20px;border:1.5px dashed #D8C0C8}
     .community-cta-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:#1E0D12;margin-bottom:8px}
     .community-cta-sub{font-size:14px;color:#7C5060;margin-bottom:22px;max-width:380px;margin-left:auto;margin-right:auto}
@@ -910,31 +924,156 @@ function renderReviews() {
   `).join('');
 }
 
+// ── COMMUNITY HELPERS ──
+const COMM_USER_KEY = 'romanza-comm-user';
+const COMM_THREADS_KEY = 'romanza-comm-threads';
+const COMM_LIKES_KEY = 'romanza-comm-likes';
+const COMM_REPLIES_KEY = 'romanza-comm-replies';
+
+function getCommUser() { return localStorage.getItem(COMM_USER_KEY) || ''; }
+function setCommUser(n) { localStorage.setItem(COMM_USER_KEY, n); }
+function getCommThreads() { try { return JSON.parse(localStorage.getItem(COMM_THREADS_KEY)) || []; } catch { return []; } }
+function saveCommThreads(t) { localStorage.setItem(COMM_THREADS_KEY, JSON.stringify(t)); }
+function getCommLikes() { try { return JSON.parse(localStorage.getItem(COMM_LIKES_KEY)) || []; } catch { return []; } }
+function saveCommLikes(a) { localStorage.setItem(COMM_LIKES_KEY, JSON.stringify(a)); }
+function getCommReplies(tid) { try { const a = JSON.parse(localStorage.getItem(COMM_REPLIES_KEY)) || {}; return a[tid] || []; } catch { return []; } }
+function addCommReply(tid, user, text) {
+  try {
+    const a = JSON.parse(localStorage.getItem(COMM_REPLIES_KEY)) || {};
+    if (!a[tid]) a[tid] = [];
+    a[tid].push({ user, text, ts: Date.now() });
+    localStorage.setItem(COMM_REPLIES_KEY, JSON.stringify(a));
+  } catch {}
+}
+function timeAgo(ts) {
+  const m = Math.floor((Date.now() - ts) / 60000);
+  if (m < 1) return 'agora mesmo';
+  if (m < 60) return `${m}m atrás`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h atrás`;
+  return `${Math.floor(h / 24)}d atrás`;
+}
+
+const CAT_COLORS = {
+  'Geral': { bg:'#FDE8EC', color:'#9B2335' },
+  'Debate': { bg:'#2D1520', color:'#E8C0C8' },
+  'Spoilers': { bg:'#EDE0F8', color:'#6B3A8A' },
+  'Recomendações': { bg:'#DCF0F4', color:'#1A5A6A' },
+};
+
 // ── THREADS ──
 function renderThreads() {
   const list = document.getElementById('threads-list');
-  list.innerHTML = THREADS.map(t => `
-    <div class="thread">
-      <span class="thread-cat" style="background:${t.catColor};color:${t.catTextColor}">${t.categoria}</span>
-      <div class="thread-body">
-        <div class="thread-title">${t.titulo}</div>
-        <div class="thread-meta">
-          <span class="thread-user">por ${t.user}</span>
-          <span class="thread-time">· ${t.tempo}</span>
+  const userThreads = getCommThreads();
+  const likedIds = getCommLikes();
+  const allThreads = [...userThreads, ...THREADS];
+
+  list.innerHTML = allThreads.map(t => {
+    const liked = likedIds.includes(String(t.id));
+    const likeCount = (t.likes || 0) + (liked ? 1 : 0);
+    const extraReplies = getCommReplies(t.id).length;
+    const repliesCount = (t.replies || 0) + extraReplies;
+    return `
+      <div class="thread" data-thread-id="${t.id}">
+        <span class="thread-cat" style="background:${t.catColor};color:${t.catTextColor}">${t.categoria}</span>
+        <div class="thread-body">
+          <div class="thread-title">${t.titulo}</div>
+          <div class="thread-meta">
+            <span class="thread-user">por ${t.user}</span>
+            <span class="thread-time">· ${t.tempo || timeAgo(t.ts)}</span>
+          </div>
+        </div>
+        <div class="thread-stats">
+          <div class="thread-stat">
+            <div class="thread-stat-num">${repliesCount}</div>
+            <div class="thread-stat-label">respostas</div>
+          </div>
+          <button class="thread-like-btn ${liked ? 'liked' : ''}" data-like-id="${t.id}">
+            ${liked ? '❤️' : '🤍'} ${likeCount}
+          </button>
         </div>
       </div>
-      <div class="thread-stats">
-        <div class="thread-stat">
-          <div class="thread-stat-num">${t.replies}</div>
-          <div class="thread-stat-label">respostas</div>
-        </div>
-        <div class="thread-stat">
-          <div class="thread-stat-num">${t.likes}</div>
-          <div class="thread-stat-label">gostos</div>
-        </div>
-      </div>
+    `;
+  }).join('');
+
+  list.querySelectorAll('.thread').forEach(el => {
+    el.addEventListener('click', e => {
+      if (e.target.closest('.thread-like-btn')) return;
+      openThread(el.dataset.threadId);
+    });
+  });
+
+  list.querySelectorAll('.thread-like-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = String(btn.dataset.likeId);
+      const liked = getCommLikes();
+      const idx = liked.indexOf(id);
+      if (idx >= 0) liked.splice(idx, 1); else liked.push(id);
+      saveCommLikes(liked);
+      renderThreads();
+    });
+  });
+}
+
+function openThread(id) {
+  const userThreads = getCommThreads();
+  const t = [...userThreads, ...THREADS].find(th => String(th.id) === String(id));
+  if (!t) return;
+  const user = getCommUser();
+  const newReplies = getCommReplies(id);
+  const allReplies = newReplies;
+
+  const repliesHtml = allReplies.length
+    ? `<div class="thread-replies">${allReplies.map(r => `
+        <div class="thread-reply">
+          <div class="thread-reply-user">${r.user}</div>
+          <div class="thread-reply-text">${r.text}</div>
+          <div class="thread-reply-time">${timeAgo(r.ts)}</div>
+        </div>`).join('')}</div>`
+    : `<p style="font-size:14px;color:#9C8090;margin-bottom:16px">Ainda sem respostas. Sê a primeira! 💬</p>`;
+
+  const userBarHtml = user
+    ? `<div class="community-user-bar" id="reply-user-bar">
+        <span>A responder como</span>
+        <span class="community-user-name">${user}</span>
+        <button class="btn-change-name" id="btn-change-reply-name">Alterar</button>
+      </div>`
+    : '';
+
+  const overlay = showPopup(`
+    <button class="popup-close">×</button>
+    <div style="text-align:left">
+      <span class="thread-detail-cat" style="background:${t.catColor};color:${t.catTextColor}">${t.categoria}</span>
+      <div class="thread-detail-title">${t.titulo}</div>
+      <div class="thread-detail-meta">por ${t.user} · ${t.tempo || timeAgo(t.ts)}</div>
+      ${repliesHtml}
+      <div class="thread-divider"></div>
+      ${userBarHtml}
+      <input type="text" class="popup-input" placeholder="O teu nome" id="reply-name" value="${user}" ${user ? 'style="display:none"' : ''}>
+      <textarea class="popup-input" placeholder="Escreve a tua resposta..." id="reply-text" style="min-height:80px;resize:vertical"></textarea>
+      <button class="popup-btn" id="btn-send-reply">Publicar resposta</button>
     </div>
-  `).join('');
+  `);
+
+  overlay.querySelector('#btn-change-reply-name')?.addEventListener('click', () => {
+    overlay.querySelector('#reply-name').style.display = '';
+    overlay.querySelector('#reply-user-bar').style.display = 'none';
+  });
+
+  overlay.querySelector('#btn-send-reply').addEventListener('click', () => {
+    const nameEl = overlay.querySelector('#reply-name');
+    const name = nameEl.style.display === 'none' ? user : nameEl.value.trim();
+    const text = overlay.querySelector('#reply-text').value.trim();
+    if (!name) { showToast('Escreve o teu nome.', 'error'); return; }
+    if (!text) { showToast('Escreve a tua resposta.', 'error'); return; }
+    setCommUser(name);
+    addCommReply(id, name, text);
+    overlay.remove();
+    document.body.style.overflow = '';
+    showToast('✓ Resposta publicada!', 'success');
+    renderThreads();
+  });
 }
 
 // ── VOTES ──
@@ -1197,24 +1336,50 @@ document.querySelector('.btn-write-review').addEventListener('click', () => {
 
 // ── NOVO TÓPICO ──
 document.querySelector('.btn-new-topic').addEventListener('click', () => {
+  const user = getCommUser();
   const overlay = showPopup(`
     <button class="popup-close">×</button>
     <div class="popup-icon">💬</div>
     <h3 class="popup-title">Novo Tópico</h3>
-    <p class="popup-sub">Os tópicos e debates são criados na app Romanza. Regista-te para participares quando lançarmos!</p>
+    ${user ? `<div class="community-user-bar" id="topic-user-bar">
+      <span>A publicar como</span>
+      <span class="community-user-name">${user}</span>
+      <button class="btn-change-name" id="btn-change-topic-name">Alterar</button>
+    </div>` : ''}
     <div class="popup-form">
-      <input type="text" class="popup-input" placeholder="O teu nome" id="topic-name">
-      <input type="email" class="popup-input" placeholder="O teu e-mail" id="topic-email">
-      <button class="popup-btn" id="popup-topic-btn">Notifica-me!</button>
+      <input type="text" class="popup-input" placeholder="O teu nome" id="topic-name" value="${user}" ${user ? 'style="display:none"' : ''}>
+      <input type="text" class="popup-input" placeholder="Título do tópico" id="topic-title">
+      <select class="popup-input" id="topic-cat" style="cursor:pointer;color:#5C4050">
+        <option value="Geral">Geral</option>
+        <option value="Debate">Debate</option>
+        <option value="Recomendações">Recomendações</option>
+        <option value="Spoilers">Spoilers</option>
+      </select>
+      <button class="popup-btn" id="popup-topic-btn">Publicar tópico</button>
     </div>
-    <div class="popup-note">Sem spam. Só te avisamos quando a comunidade abrir. ✉️</div>
   `);
-  document.getElementById('popup-topic-btn').addEventListener('click', () => {
-    const name = document.getElementById('topic-name').value.trim();
-    const email = document.getElementById('topic-email').value.trim();
-    if (!name || !email) { showToast('Preenche o nome e o e-mail.', 'error'); return; }
-    overlay.remove(); document.body.style.overflow = '';
-    showToast(`✓ ${name}, anotado! Avisamos quando a comunidade abrir.`, 'success');
+
+  overlay.querySelector('#btn-change-topic-name')?.addEventListener('click', () => {
+    overlay.querySelector('#topic-name').style.display = '';
+    overlay.querySelector('#topic-user-bar').style.display = 'none';
+  });
+
+  overlay.querySelector('#popup-topic-btn').addEventListener('click', () => {
+    const nameEl = overlay.querySelector('#topic-name');
+    const name = nameEl.style.display === 'none' ? user : nameEl.value.trim();
+    const title = overlay.querySelector('#topic-title').value.trim();
+    if (!name) { showToast('Escreve o teu nome.', 'error'); return; }
+    if (!title) { showToast('Escreve o título do tópico.', 'error'); return; }
+    const cat = overlay.querySelector('#topic-cat').value;
+    const cc = CAT_COLORS[cat] || CAT_COLORS['Geral'];
+    setCommUser(name);
+    const threads = getCommThreads();
+    threads.unshift({ id: Date.now(), titulo: title, user: name, ts: Date.now(), tempo: null, categoria: cat, catColor: cc.bg, catTextColor: cc.color, replies: 0, likes: 0 });
+    saveCommThreads(threads);
+    overlay.remove();
+    document.body.style.overflow = '';
+    showToast('✓ Tópico publicado!', 'success');
+    renderThreads();
   });
 });
 
