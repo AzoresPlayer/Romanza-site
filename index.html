@@ -189,6 +189,7 @@
     .vote-items{display:flex;flex-direction:column;gap:14px}
     .vote-item{background:#FAF7F2;border-radius:16px;padding:16px 20px;border:1px solid #EDE4E8}
     .vote-item-top{display:flex;align-items:flex-start;gap:14px}
+    .vote-item-cover{width:48px;height:64px;border-radius:8px;object-fit:cover;flex-shrink:0;box-shadow:0 4px 10px rgba(0,0,0,.18)}
     .vote-item-info{flex:1;min-width:0}
     .vote-item-title{font-size:15px;font-weight:600;color:#1E0D12;line-height:1.2}
     .vote-item-author{font-size:12px;color:#9C8090;margin-top:3px}
@@ -748,11 +749,8 @@ const THREADS = [
 ];
 
 const UPCOMING = [
-  { id:1, titulo:'O Cavaleiro Sombrio', autor:'Vera Santos', genero:'fantasy', baseVotes:234 },
-  { id:2, titulo:'Segredos de Veneza', autor:'Helena Cruz', genero:'historico', baseVotes:187 },
-  { id:3, titulo:'A Feiticeira e o Lobo', autor:'Lena Marques', genero:'fantasy', baseVotes:298 },
-  { id:4, titulo:'Segredo Eterno', autor:'Rita Costa', genero:'suspense', baseVotes:156 },
-  { id:5, titulo:'Confissões', autor:'Mara Voss', genero:'erotico', baseVotes:143 },
+  { id:1, titulo:'Além do Código — O Despertar', autor:'B.A. Dutra', genero:'scifi', baseVotes:0, cover:'covers/alem-do-codigo-o-despertar.jpg' },
+  { id:2, titulo:'Beijos à Meia-Noite', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/beijos-a-meia-noite.jpg' },
 ];
 
 const FAQS = [
@@ -769,7 +767,7 @@ const FAQS = [
 let activeGenre = 'todos';
 let showAllBooks = false;
 let userVoted = null;
-let votes = { 1:234, 2:187, 3:298, 4:156, 5:143 };
+let votes = { 1:0, 2:0 };
 let openFaq = null;
 
 function generoInfo(id) {
@@ -913,11 +911,12 @@ function renderVotes() {
   container.innerHTML = sorted.map(item => {
     const v = votes[item.id] || item.baseVotes;
     const gi = generoInfo(item.genero);
-    const pct = Math.round((v / totalV) * 100);
+    const pct = totalV > 0 ? Math.round((v / totalV) * 100) : 0;
     const isVoted = userVoted === item.id;
     return `
       <div class="vote-item">
         <div class="vote-item-top">
+          <img src="${item.cover}" alt="${item.titulo}" class="vote-item-cover">
           <div class="vote-item-info">
             <div class="vote-item-title">${item.titulo}</div>
             <div class="vote-item-author">${item.autor}</div>
