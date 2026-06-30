@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre Nós — Romanza</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1642941696229305"
+     crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#FAF7F2;color:#1E0D12;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:#F0E8E2}
+    ::-webkit-scrollbar-thumb{background:#9B2335;border-radius:4px}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(232,220,224,0.7)}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+    .nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nav-logo img{width:38px;height:38px;border-radius:10px}
+    .nav-logo-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#1E0D12;letter-spacing:-.3px;line-height:1.1}
+    .nav-logo-sub{font-size:9px;color:#9C8090;letter-spacing:.8px;text-transform:uppercase}
+    .btn-primary{background:#9B2335;color:white;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background .2s;flex-shrink:0}
+    .btn-primary:hover{background:#7B1A28}
+
+    /* Hero */
+    .sobre-hero{padding:140px 32px 72px;background:linear-gradient(135deg,#FAF7F2 0%,#F3E8E2 50%,#FAF7F2 100%);text-align:center}
+    .sobre-eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9B2335;margin-bottom:16px}
+    .sobre-title{font-family:'Playfair Display',serif;font-size:52px;font-weight:700;color:#1E0D12;line-height:1.1;margin-bottom:24px}
+    .sobre-lead{font-size:18px;line-height:1.75;color:#5C4050;max-width:640px;margin:0 auto 40px}
+    .sobre-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#9B2335}
+    .sobre-back:hover{color:#7B1A28}
+
+    /* Content */
+    .sobre-wrap{max-width:800px;margin:0 auto;padding:72px 32px 100px}
+
+    /* Mission */
+    .missao-block{background:white;border-radius:24px;padding:48px;margin-bottom:56px;border:1px solid #EDE4E8;text-align:center}
+    .missao-icon{font-size:48px;margin-bottom:16px}
+    .missao-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:#1E0D12;margin-bottom:16px}
+    .missao-text{font-size:16px;line-height:1.8;color:#5C4050}
+
+    /* Features */
+    .features-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:#1E0D12;margin-bottom:8px;text-align:center}
+    .features-sub{font-size:16px;color:#7C5060;text-align:center;margin-bottom:32px}
+    .features-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:56px}
+    .feature-card{background:white;border-radius:18px;padding:24px;border:1px solid #EDE4E8;display:flex;align-items:flex-start;gap:16px;transition:box-shadow .2s}
+    .feature-card:hover{box-shadow:0 8px 28px rgba(155,35,53,.1)}
+    .feature-emoji{font-size:28px;flex-shrink:0;line-height:1}
+    .feature-label{font-size:15px;font-weight:600;color:#1E0D12;margin-bottom:4px}
+    .feature-desc{font-size:13px;color:#9C8090;line-height:1.55}
+
+    /* Section */
+    .sobre-section{margin-bottom:56px}
+    .sobre-section-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:#1E0D12;margin-bottom:14px}
+    .sobre-section p{font-size:15px;line-height:1.8;color:#5C4050;margin-bottom:12px}
+    .sobre-section p:last-child{margin-bottom:0}
+
+    /* App block */
+    .app-block{background:linear-gradient(135deg,#1E0D12 0%,#3A1520 100%);border-radius:24px;padding:40px 48px;margin-bottom:56px;display:flex;align-items:center;gap:40px}
+    .app-block-text{flex:1}
+    .app-block-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:white;margin-bottom:10px}
+    .app-block-desc{font-size:15px;line-height:1.7;color:rgba(255,255,255,.65);margin-bottom:20px}
+    .btn-gplay-sobre{display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:white;padding:12px 20px;border-radius:12px;transition:background .2s}
+    .btn-gplay-sobre:hover{background:rgba(255,255,255,.14)}
+    .gplay-sub{font-size:9px;color:rgba(255,255,255,.45);letter-spacing:1px;text-transform:uppercase}
+    .gplay-name{font-size:16px;font-weight:600;margin-top:2px}
+    .app-block-badge{font-size:64px;flex-shrink:0}
+
+    /* Commitment */
+    .commit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    .commit-item{display:flex;align-items:flex-start;gap:12px;background:white;border-radius:14px;padding:16px;border:1px solid #EDE4E8}
+    .commit-check{width:24px;height:24px;border-radius:50%;background:#FDE8EC;color:#9B2335;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .commit-text{font-size:14px;color:#5C4050;line-height:1.5}
+
+    /* Vision */
+    .vision-block{background:linear-gradient(135deg,#9B2335 0%,#7B1A28 100%);border-radius:24px;padding:48px;text-align:center;margin-bottom:56px}
+    .vision-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:white;margin-bottom:14px}
+    .vision-text{font-size:16px;line-height:1.8;color:rgba(255,255,255,.8);max-width:560px;margin:0 auto 20px}
+    .vision-tagline{font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:rgba(255,255,255,.65)}
+
+    /* Footer */
+    footer{background:#180A10;color:white;padding:56px 32px 32px}
+    .footer-inner{max-width:1200px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:48px}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .footer-brand img{width:36px;height:36px;border-radius:9px}
+    .footer-brand-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white}
+    .footer-desc{font-size:14px;color:rgba(255,255,255,.4);line-height:1.65;max-width:260px}
+    .footer-col-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .footer-links{display:flex;flex-direction:column;gap:10px}
+    .footer-links a{font-size:14px;color:rgba(255,255,255,.55);transition:color .2s}
+    .footer-links a:hover{color:white}
+    .footer-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:24px}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .footer-copy,.footer-tagline{font-size:13px;color:rgba(255,255,255,.28)}
+    .footer-tagline{font-style:italic}
+
+    @media(max-width:760px){
+      .sobre-title{font-size:36px}
+      .sobre-lead{font-size:16px}
+      .features-grid{grid-template-columns:1fr}
+      .commit-grid{grid-template-columns:1fr}
+      .app-block{flex-direction:column;padding:32px;gap:20px;text-align:center}
+      .app-block-badge{display:none}
+      .missao-block{padding:32px 24px}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:32px}
+    }
+    @media(max-width:480px){
+      .sobre-hero{padding:120px 22px 56px}
+      .sobre-wrap{padding:40px 22px 80px}
+      .footer-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html#inicio" class="nav-logo">
+      <img src="logo.png" alt="Romanza">
+      <div>
+        <div class="nav-logo-name">Romanza</div>
+        <div class="nav-logo-sub">Romances para devorar</div>
+      </div>
+    </a>
+    <a href="index.html#app" class="btn-primary">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
+      Baixar App
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="sobre-hero">
+  <a href="index.html" class="sobre-back">← Voltar à Romanza</a>
+  <div class="sobre-eyebrow" style="margin-top:24px">Quem somos</div>
+  <h1 class="sobre-title">Bem-vindo ao<br>Romanza</h1>
+  <p class="sobre-lead">Uma plataforma digital dedicada aos apaixonados pela leitura — eBooks e audiobooks originais, em português, sempre consigo.</p>
+</section>
+
+<div class="sobre-wrap">
+
+  <!-- MISSION -->
+  <div class="missao-block">
+    <div class="missao-icon">🎯</div>
+    <div class="missao-title">A Nossa Missão</div>
+    <p class="missao-text">Acreditamos que a leitura deve ser acessível, prática e envolvente. A nossa missão é aproximar leitores de histórias inesquecíveis, combinando tecnologia, conforto e uma biblioteca em constante crescimento. Quer esteja em casa, no trabalho ou em viagem, a Romanza permite-lhe levar os seus livros favoritos sempre consigo.</p>
+  </div>
+
+  <!-- O QUE OFERECEMOS -->
+  <div class="sobre-section">
+    <div class="features-title">O Que Oferecemos</div>
+    <p class="features-sub">Através da nossa plataforma poderá desfrutar de:</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-emoji">📚</div>
+        <div>
+          <div class="feature-label">eBooks</div>
+          <div class="feature-desc">Leia os nossos livros em qualquer dispositivo, com a melhor experiência de leitura digital.</div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">🎧</div>
+        <div>
+          <div class="feature-label">Audiobooks</div>
+          <div class="feature-desc">Ouça as suas histórias favoritas onde e quando quiser, mesmo em viagem ou a fazer exercício.</div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">📖</div>
+        <div>
+          <div class="feature-label">Biblioteca Exclusiva</div>
+          <div class="feature-desc">Obras originais Romanza em diversos géneros, com novos títulos adicionados regularmente.</div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">🔖</div>
+        <div>
+          <div class="feature-label">Marcadores</div>
+          <div class="feature-desc">A moeda virtual da aplicação para desbloquear capítulos e conteúdos exclusivos.</div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">❤️</div>
+        <div>
+          <div class="feature-label">Favoritos</div>
+          <div class="feature-desc">Guarde os seus livros preferidos e aceda rapidamente à sua biblioteca pessoal.</div>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-emoji">📱</div>
+        <div>
+          <div class="feature-label">Sincronização</div>
+          <div class="feature-desc">Continue a leitura do ponto onde ficou, entre o website e a aplicação Android.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OS NOSSOS LIVROS -->
+  <div class="sobre-section">
+    <div class="sobre-section-title">Os Nossos Livros</div>
+    <p>Todo o conteúdo disponível na Romanza é composto por obras próprias ou disponibilizadas com a devida autorização dos respetivos titulares dos direitos.</p>
+    <p>Trabalhamos continuamente para expandir o nosso catálogo, oferecendo novos títulos, séries e histórias em diversos géneros literários.</p>
+  </div>
+
+  <!-- APP -->
+  <div class="app-block">
+    <div class="app-block-text">
+      <div class="app-block-title">Aplicação Gratuita para Android</div>
+      <p class="app-block-desc">O download é gratuito e os utilizadores podem começar a explorar a plataforma imediatamente. Disponibilizamos também planos Premium com acesso ilimitado ao catálogo durante o período da subscrição.</p>
+      <a href="index.html#app" class="btn-gplay-sobre">
+        <svg width="20" height="20" viewBox="0 0 48 48" fill="none"><path d="M7 4.5L28.8 24 7 43.5V4.5z" fill="#E8736A"/><path d="M7 4.5L28.8 24 40 17.5l-9-5.1L7 4.5z" fill="rgba(255,255,255,.85)"/><path d="M7 43.5L28.8 24 40 30.5l-9 5.1L7 43.5z" fill="rgba(255,255,255,.55)"/><path d="M40 17.5L28.8 24 40 30.5l5-6.5-5-6.5z" fill="rgba(255,255,255,.95)"/></svg>
+        <div>
+          <div class="gplay-sub">Em breve em</div>
+          <div class="gplay-name">Google Play</div>
+        </div>
+      </a>
+    </div>
+    <div class="app-block-badge">📱</div>
+  </div>
+
+  <!-- O NOSSO COMPROMISSO -->
+  <div class="sobre-section">
+    <div class="sobre-section-title">O Nosso Compromisso</div>
+    <div class="commit-grid">
+      <div class="commit-item"><div class="commit-check">✓</div><div class="commit-text">Disponibilizar uma plataforma segura e intuitiva</div></div>
+      <div class="commit-item"><div class="commit-check">✓</div><div class="commit-text">Publicar conteúdos de elevada qualidade</div></div>
+      <div class="commit-item"><div class="commit-check">✓</div><div class="commit-text">Respeitar os direitos de autor e a propriedade intelectual</div></div>
+      <div class="commit-item"><div class="commit-check">✓</div><div class="commit-text">Proteger a privacidade dos nossos utilizadores</div></div>
+      <div class="commit-item"><div class="commit-check">✓</div><div class="commit-text">Melhorar continuamente os serviços e funcionalidades</div></div>
+      <div class="commit-item"><div class="commit-check">✓</div><div class="commit-text">Garantir uma experiência de leitura agradável em qualquer dispositivo</div></div>
+    </div>
+  </div>
+
+  <!-- PUBLICIDADE -->
+  <div class="sobre-section">
+    <div class="sobre-section-title">Publicidade</div>
+    <p>O website da Romanza poderá apresentar publicidade através do Google AdSense e de outros parceiros publicitários, contribuindo para a manutenção e desenvolvimento da plataforma.</p>
+    <p>A aplicação móvel poderá apresentar conteúdos promocionais próprios relacionados com os nossos serviços e funcionalidades.</p>
+  </div>
+
+  <!-- CONTACTO -->
+  <div class="sobre-section">
+    <div class="sobre-section-title">Contacto</div>
+    <p>Valorizamos a opinião dos nossos leitores. Caso tenha dúvidas, sugestões ou pretenda entrar em contacto connosco, utilize os canais de suporte disponibilizados na plataforma.</p>
+    <p>E-mail: <a href="mailto:Romanza.live@hotmail.com" style="color:#9B2335;font-weight:600">Romanza.live@hotmail.com</a></p>
+  </div>
+
+  <!-- VISION -->
+  <div class="vision-block">
+    <div class="vision-title">A Nossa Visão</div>
+    <p class="vision-text">Queremos tornar a Romanza uma referência na leitura digital em língua portuguesa, reunindo uma comunidade apaixonada por livros, autores e histórias que inspiram, emocionam e entretêm.</p>
+    <div class="vision-tagline">Romances para devorar, onde quer que estejas.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="logo.png" alt="Romanza">
+          <span class="footer-brand-name">Romanza</span>
+        </div>
+        <p class="footer-desc">Romances para devorar — onde quer que estejas. Biblioteca exclusiva em português.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Explorar</div>
+        <div class="footer-links">
+          <a href="index.html#catalogo">Catálogo</a>
+          <a href="index.html#reviews">Reviews</a>
+          <a href="index.html#comunidade">Comunidade</a>
+          <a href="index.html#pedidos">Votação</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Informação</div>
+        <div class="footer-links">
+          <a href="index.html#faq">FAQ</a>
+          <a href="sobre.html">Sobre nós</a>
+          <a href="privacidade.html">Privacidade</a>
+          <a href="termos.html">Termos</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="index.html">Contacto</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Download</div>
+        <a href="index.html#app" style="display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white;padding:12px 18px;border-radius:12px;width:100%;">
+          <svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M7 4.5L28.8 24 7 43.5V4.5z" fill="#E8736A"/><path d="M7 4.5L28.8 24 40 17.5l-9-5.1L7 4.5z" fill="rgba(255,255,255,.8)"/><path d="M7 43.5L28.8 24 40 30.5l-9 5.1L7 43.5z" fill="rgba(255,255,255,.5)"/><path d="M40 17.5L28.8 24 40 30.5l5-6.5-5-6.5z" fill="rgba(255,255,255,.95)"/></svg>
+          <div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase">Em breve em</div>
+            <div style="font-size:15px;font-weight:600;margin-top:2px">Google Play</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Romanza. Todos os direitos reservados.</div>
+      <div class="footer-tagline">Romances para devorar — onde quer que estejas.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
