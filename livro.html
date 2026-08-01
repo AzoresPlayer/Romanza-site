@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Romanza</title>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1642941696229305"
+     crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:#FAF7F2;color:#1E0D12;font-family:'DM Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    a{color:inherit;text-decoration:none}
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:#F0E8E2}
+    ::-webkit-scrollbar-thumb{background:#9B2335;border-radius:4px}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(250,247,242,0.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(232,220,224,0.7)}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 32px;height:70px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+    .nav-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .nav-logo img{width:38px;height:38px;border-radius:10px}
+    .nav-logo-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#1E0D12;letter-spacing:-.3px;line-height:1.1}
+    .nav-logo-sub{font-size:9px;color:#9C8090;letter-spacing:.8px;text-transform:uppercase}
+    .nav-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#9B2335}
+    .nav-back:hover{color:#7B1A28}
+    .btn-primary{background:#9B2335;color:white;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:background .2s;flex-shrink:0;border:none;cursor:pointer}
+    .btn-primary:hover{background:#7B1A28}
+
+    /* Book Page */
+    .book-page{flex:1;max-width:1100px;margin:0 auto;padding:110px 32px 80px;width:100%}
+
+    /* Back link */
+    .bp-back{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:#9B2335;margin-bottom:36px}
+    .bp-back:hover{color:#7B1A28}
+
+    /* Two column layout */
+    .bp-layout{display:grid;grid-template-columns:280px 1fr;gap:56px;align-items:start}
+
+    /* Cover column */
+    .bp-cover-wrap{position:sticky;top:100px}
+    .bp-cover{width:280px;height:380px;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(30,13,18,.22),0 8px 20px rgba(30,13,18,.12);position:relative;background:#2D1520}
+    .bp-cover img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .bp-cover-letter{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:120px;font-weight:700;opacity:.18}
+    .bp-adulto-badge{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.6);color:white;font-size:11px;font-weight:700;padding:4px 8px;border-radius:8px;letter-spacing:.5px;backdrop-filter:blur(4px)}
+
+    /* Info column */
+    .bp-genre-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:5px 14px;border-radius:100px;margin-bottom:18px}
+    .bp-title{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:#1E0D12;line-height:1.15;margin-bottom:10px}
+    .bp-author{font-size:16px;color:#7C5060;margin-bottom:18px;font-weight:500}
+    .bp-rating{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+    .bp-stars{color:#E8736A;font-size:18px;letter-spacing:2px}
+    .bp-rating-num{font-size:18px;font-weight:700;color:#1E0D12}
+    .bp-rating-label{font-size:13px;color:#9C8090}
+
+    .bp-resume-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9B2335;margin-bottom:12px}
+    .bp-desc{font-size:16px;line-height:1.78;color:#5C4050;margin-bottom:40px}
+
+    /* Action buttons */
+    .bp-actions{display:flex;gap:14px;flex-wrap:wrap}
+    .btn-ler-online{flex:1;min-width:140px;background:#9B2335;color:white;padding:16px 24px;border-radius:100px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-ler-online:hover{background:#7B1A28;transform:translateY(-1px)}
+    .btn-ler-app{flex:1;min-width:140px;background:white;color:#9B2335;padding:16px 24px;border-radius:100px;font-size:15px;font-weight:700;border:2px solid #E8C0C8;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-ler-app:hover{border-color:#9B2335;transform:translateY(-1px);box-shadow:0 4px 16px rgba(155,35,53,.15)}
+
+    /* Info card below buttons */
+    .bp-info-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;padding-top:28px;border-top:1px solid #EFE3E7}
+    .bp-chip{display:flex;align-items:center;gap:6px;background:white;border:1px solid #EDE4E8;padding:8px 14px;border-radius:12px;font-size:13px;color:#5C4050}
+    .bp-chip-icon{font-size:15px}
+
+    /* Not found */
+    .bp-not-found{text-align:center;padding:80px 20px}
+    .bp-not-found h2{font-family:'Playfair Display',serif;font-size:28px;color:#1E0D12;margin-bottom:12px}
+    .bp-not-found p{color:#9C8090;font-size:16px;margin-bottom:28px}
+
+    /* Toast */
+    #toast-container{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+    .toast{padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.18);pointer-events:auto;animation:toastIn .25s ease}
+    @keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    .toast-success{background:#1A4A2A;color:#A8F0C0}
+    .toast-info{background:#1E0D12;color:#F0E8E2}
+    .toast-error{background:#4A1A1A;color:#F0A0A0}
+
+    /* Footer */
+    footer{background:#180A10;color:white;padding:56px 32px 32px;margin-top:auto}
+    .footer-inner{max-width:1200px;margin:0 auto}
+    .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr;gap:48px;margin-bottom:48px}
+    .footer-brand{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+    .footer-brand img{width:36px;height:36px;border-radius:9px}
+    .footer-brand-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white}
+    .footer-desc{font-size:14px;color:rgba(255,255,255,.4);line-height:1.65;max-width:260px}
+    .footer-col-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:16px}
+    .footer-links{display:flex;flex-direction:column;gap:10px}
+    .footer-links a{font-size:14px;color:rgba(255,255,255,.55);transition:color .2s}
+    .footer-links a:hover{color:white}
+    .footer-divider{height:1px;background:rgba(255,255,255,.06);margin-bottom:24px}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .footer-copy,.footer-tagline{font-size:13px;color:rgba(255,255,255,.28)}
+    .footer-tagline{font-style:italic}
+
+    @media(max-width:800px){
+      .bp-layout{grid-template-columns:1fr;gap:32px}
+      .bp-cover-wrap{position:static;display:flex;justify-content:center}
+      .bp-cover{width:220px;height:300px}
+      .bp-title{font-size:28px}
+    }
+    @media(max-width:600px){
+      .book-page{padding:90px 20px 60px}
+      .bp-actions{flex-direction:column}
+      .btn-ler-online,.btn-ler-app{min-width:unset}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
+    }
+    @media(max-width:420px){
+      .footer-grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html#inicio" class="nav-logo">
+      <img src="logo.png" alt="Romanza">
+      <div>
+        <div class="nav-logo-name">Romanza</div>
+        <div class="nav-logo-sub">Romances para devorar</div>
+      </div>
+    </a>
+    <a href="index.html#app" class="btn-primary">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
+      Baixar App
+    </a>
+  </div>
+</nav>
+
+<main class="book-page" id="book-page-main">
+  <a href="index.html#catalogo" class="bp-back">← Voltar ao catálogo</a>
+  <div id="bp-content"></div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="logo.png" alt="Romanza">
+          <span class="footer-brand-name">Romanza</span>
+        </div>
+        <p class="footer-desc">Romances para devorar — onde quer que estejas. Biblioteca exclusiva em português.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Explorar</div>
+        <div class="footer-links">
+          <a href="index.html#catalogo">Catálogo</a>
+          <a href="index.html#reviews">Reviews</a>
+          <a href="index.html#comunidade">Comunidade</a>
+          <a href="index.html#pedidos">Votação</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Informação</div>
+        <div class="footer-links">
+          <a href="index.html#faq">FAQ</a>
+          <a href="sobre.html">Sobre nós</a>
+          <a href="privacidade.html">Privacidade</a>
+          <a href="termos.html">Termos</a>
+          <a href="cookies.html">Cookies</a>
+          <a href="index.html">Contacto</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Download</div>
+        <a href="index.html#app" style="display:inline-flex;align-items:center;gap:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:white;padding:12px 18px;border-radius:12px;width:100%;text-decoration:none">
+          <svg width="18" height="18" viewBox="0 0 48 48" fill="none"><path d="M7 4.5L28.8 24 7 43.5V4.5z" fill="#E8736A"/><path d="M7 4.5L28.8 24 40 17.5l-9-5.1L7 4.5z" fill="rgba(255,255,255,.8)"/><path d="M7 43.5L28.8 24 40 30.5l-9 5.1L7 43.5z" fill="rgba(255,255,255,.5)"/><path d="M40 17.5L28.8 24 40 30.5l5-6.5-5-6.5z" fill="rgba(255,255,255,.95)"/></svg>
+          <div>
+            <div style="font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase">Em breve em</div>
+            <div style="font-size:15px;font-weight:600;margin-top:2px">Google Play</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="footer-divider"></div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 Romanza. Todos os direitos reservados.</div>
+      <div class="footer-tagline">Romances para devorar — onde quer que estejas.</div>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+
+<script>
+const BOOKS = [
+  {
+    id:1, titulo:'A Chave do Castelo Antigo', autor:'B.A. Dutra', genero:'suspense', rating:4.8, novo:true,
+    cover:'covers/a-chave-do-castelo-antigo.jpg',
+    descricao:'Durante uma visita de estudo a Guimarães, Miguel encontra uma antiga chave medieval com a inscrição latina "Qui quaerit invenit" — Quem procura, encontra. Com os amigos Tomás, Flora e Patrícia, inicia uma investigação que combina análise histórica, trabalho de arquivo e observação científica, conduzindo-os a uma câmara oculta junto ao Castelo de Guimarães e a um legado preservado há mais de oito séculos.',
+  },
+  {
+    id:2, titulo:'As Filhas do Nilo — A Sacerdotisa Proibida', autor:'B.A. Dutra', genero:'historico', rating:4.9, novo:true,
+    cover:'covers/as-filhas-do-nilo.jpg',
+    descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino. Juntos descobrem o lendário Papiro das Filhas do Nilo — e um segredo que pode custar a vida de Nefertari.',
+  },
+  {
+    id:3, titulo:'Kael: Senhor das Chamas Perpétuas', autor:'B.A. Dutra', genero:'fantasy', rating:4.7, adulto:true,
+    cover:'covers/kael-senhor-das-chamas-perpetuas.jpg',
+    descricao:'Na Amazónia, a arqueóloga Isabel rompe acidentalmente um selo ancestral e desperta Kael — um ser demoníaco aprisionado há oito mil anos. Em vez de fugir, ela enfrenta o desconhecido com curiosidade. O que começa com desconfiança transforma-se numa ligação profunda baseada em diálogos, confiança e descoberta mútua — entre o humano e o sobrenatural.',
+  },
+  {
+    id:4, titulo:'Magia Sexual', autor:'B.A. Dutra', genero:'erotico', rating:4.6, adulto:true,
+    cover:'covers/magia-sexual.jpg',
+    descricao:'Dorian Blackwood, um poderoso bruxo imortal de cinco séculos, e Isabella Ferreira, editora de Lisboa cuja vida comum esconde um extraordinário potencial mágico. Guiado por uma antiga profecia no Grimório das Chamas Eternas, Dorian descobre que Isabella é a Portadora destinada a despertar um poder capaz de transformar o equilíbrio entre os mundos mágico e humano. À medida que ela descobre a sua verdadeira natureza, ambos desenvolvem uma intensa ligação emocional e espiritual — mas a poderosa Ordem dos Bruxos Sombrios pretende controlar essa energia a qualquer custo, obrigando-os a decidir entre o destino imposto e um novo caminho guiado pelo amor.',
+  },
+  {
+    id:5, titulo:'Marte: O Último Exílio', autor:'B.A. Dutra', genero:'scifi', rating:4.8, novo:true,
+    cover:'covers/marte-o-ultimo-exilio.jpg',
+    descricao:'Após o colapso de Marte, Lyra transporta os cristais biotecnológicos Soru\'than que preservam a memória do seu povo. Ao chegar ao Sistema Solar, começa a ter visões de Caio, um oceanógrafo terrestre que sonha com ela. Enquanto o Protocolo Prometeu ameaça os refugiados marcianos, os dois descobrem uma ligação psíquica que transcende o espaço e o tempo.',
+  },
+  {
+    id:6, titulo:'O Livro das Sombras', autor:'B.A. Dutra', genero:'fantasy', rating:4.8, novo:true,
+    cover:'covers/o-livro-das-sombras.jpg',
+    descricao:'Isabela, restauradora de manuscritos, recebe um misterioso códice medieval que parece estar vivo — reage ao toque e altera o seu conteúdo. O livro concede desejos autênticos, mas sempre a um preço equivalente. A sua ativação desperta Damian, um Guardião imortal de setecentos anos cuja regra inviolável é nunca apaixonar-se pela guardiã escolhida. Em Lisboa, entre páginas que mudam sozinhas e símbolos que emergem na pele de Isabela, ambos enfrentam o dilema entre preservar um equilíbrio secular ou desafiá-lo pelo amor.',
+  },
+  {
+    id:7, titulo:'O Tempo da Vontade', autor:'B.A. Dutra', genero:'scifi', rating:4.7, novo:true,
+    cover:'covers/o-tempo-da-vontade.jpg',
+    descricao:'Em 2047, Lyra, agente da Agência de Inteligência Estratégica, viaja ao passado para infiltrar uma organização tecnológica cujo projeto causará centenas de milhões de mortes no futuro. Em Lisboa, conhece Dante Ferreiro, um arqueólogo com uma capacidade única de interpretar padrões invisíveis. Enquanto a operação revela infiltrações e lealdades divididas, a ligação entre os dois aprofunda-se — e Lyra questiona se o destino pode realmente ser alterado. Livro 1 da Trilogia Cronos Partido.',
+  },
+  {
+    id:8, titulo:'Triângulo do Desejo', autor:'B.A. Dutra', genero:'erotico', rating:4.6, adulto:true,
+    cover:'covers/triangulo-do-desejo.jpg',
+    descricao:'Helena Duarte, jornalista investigativa, parte em busca do irmão desaparecido no Triângulo das Bermudas. A expedição leva-a ao encontro de Dante Valente, um experiente capitão, e de Serena, uma mergulhadora com uma ligação inexplicável a uma ilha secreta onde existiu uma civilização antiga que amplificava emoções e memórias. Enquanto resgata o irmão, Helena desenvolve um intenso vínculo com Dante e Serena — um triângulo nascido de confiança, vulnerabilidade e desejo.',
+  },
+];
+
+const GENEROS_MAP = {
+  suspense:  { label:'Suspense', bg:'#DCF0F4', color:'#1A5A6A' },
+  historico: { label:'Histórico', bg:'#FDF3DC', color:'#8B6914' },
+  fantasy:   { label:'Fantasia', bg:'#EDE0F8', color:'#6B3A8A' },
+  erotico:   { label:'Erótico +18', bg:'#F8DCE4', color:'#7A1A30' },
+  scifi:     { label:'Ficção Científica', bg:'#DCE8F8', color:'#1A3A6A' },
+};
+
+const COVER_STYLES = {
+  historico: { bg:'linear-gradient(155deg,#7A5810 0%,#C09040 55%,#503508 100%)', color:'#FDF8EC' },
+  fantasy:   { bg:'linear-gradient(155deg,#200D50 0%,#5B2888 55%,#100530 100%)', color:'#EDD8F8' },
+  suspense:  { bg:'linear-gradient(155deg,#0A1A28 0%,#1A3A55 55%,#060E18 100%)', color:'#C0DCF0' },
+  erotico:   { bg:'linear-gradient(155deg,#450818 0%,#780F2D 55%,#280408 100%)', color:'#F8C8D8' },
+  scifi:     { bg:'linear-gradient(155deg,#050E28 0%,#0A2050 55%,#030810 100%)', color:'#C0E0FF' },
+};
+
+function stars(r) {
+  const full = Math.round(r);
+  return '★'.repeat(full) + '☆'.repeat(5 - full);
+}
+
+function showToast(msg, type = 'info') {
+  let c = document.getElementById('toast-container');
+  const el = document.createElement('div');
+  el.className = `toast toast-${type}`;
+  el.textContent = msg;
+  c.appendChild(el);
+  setTimeout(() => el.remove(), 3800);
+}
+
+function render() {
+  const params = new URLSearchParams(window.location.search);
+  const id = +params.get('id');
+  const book = BOOKS.find(b => b.id === id);
+  const content = document.getElementById('bp-content');
+
+  if (!book) {
+    content.innerHTML = `
+      <div class="bp-not-found">
+        <h2>Livro não encontrado</h2>
+        <p>Este livro não existe ou foi removido do catálogo.</p>
+        <a href="index.html#catalogo" class="btn-primary" style="display:inline-flex">← Ver catálogo</a>
+      </div>`;
+    return;
+  }
+
+  document.title = `${book.titulo} — Romanza`;
+
+  const gi = GENEROS_MAP[book.genero] || GENEROS_MAP.suspense;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+
+  content.innerHTML = `
+    <div class="bp-layout">
+      <div class="bp-cover-wrap">
+        <div class="bp-cover" id="bp-cover-box" style="background:${cs.bg}">
+          ${book.cover ? `<img src="${book.cover}" alt="${book.titulo}" onerror="this.style.display='none'">` : ''}
+          <div class="bp-cover-letter" style="color:${cs.color}">${book.titulo.charAt(0)}</div>
+          ${book.adulto ? `<span class="bp-adulto-badge">+18</span>` : ''}
+        </div>
+      </div>
+      <div class="bp-info">
+        <span class="bp-genre-badge" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
+        <h1 class="bp-title">${book.titulo}</h1>
+        <div class="bp-author">por ${book.autor}</div>
+        <div class="bp-rating">
+          <span class="bp-stars">${stars(book.rating)}</span>
+          <span class="bp-rating-num">${book.rating.toFixed(1)}</span>
+          <span class="bp-rating-label">/ 5.0</span>
+        </div>
+        <div class="bp-resume-label">Resumo</div>
+        <p class="bp-desc">${book.descricao}</p>
+        <div class="bp-actions">
+          <button class="btn-ler-online" id="btn-ler-online">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            Ler Online
+          </button>
+          <button class="btn-ler-app" id="btn-ler-app">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
+            Ler na APP
+          </button>
+        </div>
+        <div class="bp-info-chips">
+          ${book.novo ? `<div class="bp-chip"><span class="bp-chip-icon">✨</span> Novo no catálogo</div>` : ''}
+          ${book.adulto ? `<div class="bp-chip"><span class="bp-chip-icon">🔞</span> Conteúdo para adultos</div>` : ''}
+          <div class="bp-chip"><span class="bp-chip-icon">🇵🇹</span> Em português</div>
+          <div class="bp-chip"><span class="bp-chip-icon">📖</span> eBook & Audiobook</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('btn-ler-online').addEventListener('click', () => {
+    showToast('🚀 Leitor online em breve! Descarrega a app para leres agora.', 'info');
+  });
+  document.getElementById('btn-ler-app').addEventListener('click', () => {
+    showToast('📱 App em breve na Google Play! Regista-te para seres das primeiras a saber.', 'info');
+  });
+
+  if (book.cover) {
+    const img = content.querySelector('img');
+    if (img) {
+      img.addEventListener('load', () => {
+        content.querySelector('.bp-cover-letter').style.display = 'none';
+      });
+    }
+  }
+}
+
+render();
+</script>
+</body>
+</html>

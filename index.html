@@ -1151,74 +1151,8 @@ function renderFaq() {
 
 // ── MODAL ──
 function openBook(id) {
-  const book = BOOKS.find(b => b.id === id);
-  if (!book) return;
-  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
-  const gi = generoInfo(book.genero);
-
-  const modalCover = document.getElementById('modal-cover');
-  modalCover.style.background = cs.bg;
-  modalCover.style.backgroundImage = '';
-  let existingImg = modalCover.querySelector('img.cover-img');
-  if (book.cover) {
-    if (!existingImg) {
-      existingImg = document.createElement('img');
-      existingImg.className = 'cover-img';
-      existingImg.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;';
-      existingImg.onerror = function(){ this.style.display='none'; };
-      modalCover.insertBefore(existingImg, modalCover.firstChild);
-    }
-    existingImg.src = book.cover;
-    existingImg.style.display = '';
-    document.getElementById('modal-cover-letter').textContent = '';
-  } else {
-    if (existingImg) existingImg.style.display = 'none';
-    document.getElementById('modal-cover-letter').textContent = book.titulo.charAt(0);
-    document.getElementById('modal-cover-letter').style.color = cs.color;
-  }
-  document.getElementById('modal-cover-title').textContent = book.titulo;
-  document.getElementById('modal-cover-author').textContent = book.autor;
-
-  const badge = document.getElementById('modal-genre-badge');
-  badge.textContent = gi.label;
-  badge.style.background = gi.bg;
-  badge.style.color = gi.color;
-
-  document.getElementById('modal-title').textContent = book.titulo;
-  document.getElementById('modal-author').textContent = 'por ' + book.autor;
-  document.getElementById('modal-stars').textContent = stars(book.rating);
-  document.getElementById('modal-rating-num').textContent = book.rating.toFixed(1);
-  document.getElementById('modal-rating-count').textContent = `(${book.numReviews} reviews)`;
-  document.getElementById('modal-desc').textContent = book.descricao;
-  document.getElementById('modal-pages-num').textContent = book.pags;
-
-  const reviewList = document.getElementById('modal-review-list');
-  reviewList.innerHTML = REVIEWS.slice(0, 2).map(r => `
-    <div class="modal-review">
-      <div class="modal-review-header">
-        <div class="modal-review-avatar">${r.initial}</div>
-        <div class="modal-review-user">${r.user}<br><span class="modal-review-stars">${stars(r.rating)}</span></div>
-        <div class="modal-review-date">${r.data}</div>
-      </div>
-      <p class="modal-review-text">"${r.texto}"</p>
-    </div>
-  `).join('');
-
-  document.getElementById('modal-overlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  window.open('livro.html?id=' + id, '_blank');
 }
-
-function closeModal() {
-  document.getElementById('modal-overlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-document.getElementById('modal-overlay').addEventListener('click', closeModal);
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('btn-read-app').addEventListener('click', () => {
-  closeModal();
-  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-});
 
 // ── NEWSLETTER ──
 document.getElementById('btn-newsletter').addEventListener('click', () => {
@@ -1381,39 +1315,6 @@ document.querySelector('.btn-new-topic').addEventListener('click', () => {
     showToast('✓ Tópico publicado!', 'success');
     renderThreads();
   });
-});
-
-// ── WISHLIST ──
-const wishlist = new Set();
-document.querySelector('.btn-wishlist').addEventListener('click', function() {
-  const titulo = document.getElementById('modal-title').textContent;
-  if (wishlist.has(titulo)) {
-    wishlist.delete(titulo);
-    this.textContent = '♡';
-    this.style.cssText = '';
-    showToast('Removido da lista de desejos.', 'info');
-  } else {
-    wishlist.add(titulo);
-    this.textContent = '♥';
-    this.style.cssText = 'color:#9B2335;transform:scale(1.2)';
-    showToast(`✓ "${titulo}" adicionado à lista de desejos!`, 'success');
-  }
-});
-
-// Reset wishlist btn when modal opens
-const _origOpenBook = openBook;
-window.openBook = function(id) {
-  _origOpenBook(id);
-  const titulo = BOOKS.find(b => b.id === id)?.titulo;
-  const btn = document.querySelector('.btn-wishlist');
-  if (wishlist.has(titulo)) { btn.textContent = '♥'; btn.style.cssText = 'color:#9B2335'; }
-  else { btn.textContent = '♡'; btn.style.cssText = ''; }
-};
-
-// ── VER TODAS AS REVIEWS ──
-document.querySelector('.btn-all-reviews').addEventListener('click', () => {
-  closeModal();
-  setTimeout(() => document.getElementById('reviews').scrollIntoView({ behavior:'smooth' }), 200);
 });
 
 // ── GOOGLE PLAY BUTTONS ──
