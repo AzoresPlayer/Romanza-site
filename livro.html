@@ -724,6 +724,55 @@ function closeNavDd() {
 }
 document.addEventListener('click', e => { if (!e.target.closest('#nav-user')) closeNavDd(); });
 
+function openLeitorOnline(book) {
+  if (document.getElementById('reader-overlay')) return;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  const ov = document.createElement('div');
+  ov.id = 'reader-overlay';
+  ov.className = 'reader-overlay';
+  ov.innerHTML = `
+    <div class="reader-modal" role="dialog" aria-modal="true">
+      <div class="reader-header">
+        ${book.cover
+          ? `<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
+          : `<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
+        <div class="reader-header-meta">
+          <div class="reader-tag" style="background:#9B2335">Leitura Online</div>
+          <div class="reader-header-title">${book.titulo}</div>
+        </div>
+        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="reader-progress-bar"><div class="reader-progress-fill" style="width:5%;background:#9B2335"></div></div>
+      <div class="reader-body">
+        <div class="reader-chapter">Capítulo 1 — Início · Pré-visualização</div>
+        <div class="reader-text">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
+      </div>
+      <div class="reader-fade"></div>
+      <div class="reader-footer" style="flex-direction:column;gap:10px;padding:16px 20px 20px">
+        <div style="background:#FDE8EC;border-radius:14px;padding:14px 18px;text-align:center;width:100%">
+          <div style="font-size:13px;font-weight:700;color:#9B2335;margin-bottom:4px">🔒 Conteúdo completo com Plano Premium</div>
+          <div style="font-size:12px;color:#7C5060;line-height:1.5">Subscreve para leres todos os capítulos sem limite, diretamente no browser.</div>
+        </div>
+        <div style="display:flex;gap:10px;width:100%">
+          <div style="font-size:12px;font-weight:700;color:#9C8090;align-self:center;flex:1">5% lido · Capítulo 1</div>
+          <button class="reader-cta" id="reader-cta-loja" style="white-space:nowrap">Ver planos →</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  const close = () => { ov.remove(); document.body.style.overflow = ''; };
+  document.getElementById('reader-close').addEventListener('click', close);
+  document.getElementById('reader-cta-loja').addEventListener('click', () => {
+    close();
+    window.open('index.html#loja', '_blank');
+  });
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
+}
+
 function openAmostra(book) {
   if (document.getElementById('reader-overlay')) return;
   const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
@@ -840,9 +889,7 @@ function render() {
   `;
 
   document.getElementById('btn-amostra').addEventListener('click', () => openAmostra(book));
-  document.getElementById('btn-ler-online').addEventListener('click', () => {
-    showToast('🚀 Leitor online em breve! Descarrega a app para leres agora.', 'info');
-  });
+  document.getElementById('btn-ler-online').addEventListener('click', () => openLeitorOnline(book));
   document.getElementById('btn-ler-app').addEventListener('click', () => {
     showToast('📱 App em breve na Google Play! Regista-te para seres das primeiras a saber.', 'info');
   });

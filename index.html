@@ -199,6 +199,59 @@
     .btn-more-info{background:white;color:#5C4050;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:500;border:1.5px solid #E8DCE0;cursor:pointer;transition:all .2s}
     .btn-more-info:hover{border-color:#9B2335}
 
+    /* Loja */
+    #loja{background:white;padding:80px 32px}
+    .loja-inner{max-width:1100px;margin:0 auto}
+    .loja-app-header{display:flex;align-items:flex-start;gap:22px;margin-bottom:24px}
+    .loja-app-icon{width:88px;height:88px;border-radius:20px;box-shadow:0 8px 28px rgba(155,35,53,.22);flex-shrink:0}
+    .loja-app-meta{flex:1;min-width:0}
+    .loja-app-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#1E0D12;line-height:1.15;margin-bottom:3px}
+    .loja-app-dev{font-size:13px;color:#9B2335;font-weight:600;margin-bottom:7px}
+    .loja-app-rating{display:flex;align-items:center;gap:8px;font-size:13px;color:#5C4050;flex-wrap:wrap;margin-bottom:10px}
+    .loja-app-stars{color:#E8736A;letter-spacing:1px}
+    .loja-app-sep{color:#D0C0C8}
+    .loja-app-badges{display:flex;gap:7px;flex-wrap:wrap}
+    .loja-badge{padding:3px 11px;border-radius:100px;background:#F5EEE8;color:#7C5060;font-size:11px;font-weight:600;border:1px solid #EDE4E8}
+    .btn-loja-instalar{flex-shrink:0;background:#9B2335;color:white;padding:12px 28px;border-radius:100px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .1s;margin-top:4px}
+    .btn-loja-instalar:hover{background:#7B1A28;transform:translateY(-1px)}
+    .loja-divider{height:1px;background:#F0E8EA;margin:0 0 26px}
+    .loja-screenshots{display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:28px}
+    .loja-screenshots::-webkit-scrollbar{display:none}
+    .loja-shot{scroll-snap-align:start;flex-shrink:0;width:118px;height:172px;border-radius:14px;overflow:hidden;box-shadow:0 4px 16px rgba(30,13,18,.13);position:relative;background:#2D1520;cursor:pointer;transition:transform .2s}
+    .loja-shot:hover{transform:scale(1.04)}
+    .loja-shot img{width:100%;height:100%;object-fit:cover;display:block}
+    .loja-shot-ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:48px;font-weight:700;opacity:.25;color:white}
+    .loja-stats{display:flex;background:#FAF7F2;border-radius:14px;border:1px solid #EFE3E7;margin-bottom:28px;overflow:hidden}
+    .loja-stat{flex:1;padding:18px 12px;text-align:center}
+    .loja-stat+.loja-stat{border-left:1px solid #EDE4E8}
+    .loja-stat-val{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#1E0D12}
+    .loja-stat-stars{color:#E8736A;font-size:11px;letter-spacing:1px;margin:1px 0}
+    .loja-stat-lbl{font-size:10px;color:#9C8090;font-weight:600;letter-spacing:.4px;text-transform:uppercase}
+    .loja-section-lbl{font-size:14px;font-weight:700;color:#1E0D12;margin-bottom:10px}
+    .loja-about{font-size:14px;color:#5C4050;line-height:1.75;margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid #F0E8EA}
+    .loja-features{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid #F0E8EA}
+    .loja-feat{display:flex;align-items:center;gap:7px;background:#FDE8EC;color:#9B2335;padding:7px 14px;border-radius:100px;font-size:13px;font-weight:600;border:1px solid rgba(155,35,53,.12)}
+    .loja-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .loja-plan{border:1.5px solid #EDE4E8;border-radius:20px;padding:24px;position:relative;transition:border-color .2s,box-shadow .2s}
+    .loja-plan:hover{border-color:#D8C0C8;box-shadow:0 4px 20px rgba(155,35,53,.08)}
+    .loja-plan.featured{border-color:#9B2335;background:linear-gradient(150deg,#FDE8EC 0%,#FAF7F2 100%)}
+    .loja-plan-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#9B2335;color:white;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 14px;border-radius:100px;white-space:nowrap}
+    .loja-plan-name{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#9C8090;margin-bottom:10px}
+    .loja-plan-price{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:#1E0D12;line-height:1}
+    .loja-plan-price sub{font-size:14px;font-weight:400;color:#9C8090;font-family:'DM Sans',sans-serif;bottom:0}
+    .loja-plan-note{font-size:12px;color:#B09098;margin:3px 0 16px}
+    .loja-plan-feats{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:8px}
+    .loja-plan-feats li{font-size:13px;color:#5C4050;display:flex;align-items:flex-start;gap:8px;line-height:1.4}
+    .loja-plan-feats li::before{content:'✓';color:#9B2335;font-weight:700;flex-shrink:0;margin-top:1px}
+    .btn-plan{width:100%;padding:11px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;border:2px solid transparent;transition:all .2s}
+    .btn-plan-free{background:white;color:#9B2335;border-color:#E8DCE0}
+    .btn-plan-free:hover{border-color:#9B2335}
+    .btn-plan-premium{background:#9B2335;color:white;border-color:#9B2335}
+    .btn-plan-premium:hover{background:#7B1A28;border-color:#7B1A28}
+    .btn-plan-soon{background:#FAF7F2;color:#B09098;border-color:#EDE4E8;cursor:default;opacity:.7}
+    @media(max-width:860px){.loja-plans{grid-template-columns:1fr}}
+    @media(max-width:600px){.loja-app-header{flex-wrap:wrap}.btn-loja-instalar{width:100%}.loja-stats{display:grid;grid-template-columns:repeat(3,1fr)}}
+
     /* Requests */
     #pedidos{background:white;padding:80px 32px}
     .requests-inner{max-width:1100px;margin:0 auto}
@@ -425,6 +478,7 @@
       <a href="#catalogo">Catálogo</a>
       <a href="#reviews">Reviews</a>
       <a href="#comunidade">Comunidade</a>
+      <a href="#loja">Loja</a>
       <a href="#pedidos">Votação</a>
       <a href="#faq">FAQ</a>
     </div>
@@ -593,6 +647,130 @@
         <button class="btn-register">Criar conta gratuita</button>
         <a href="#app" class="btn-more-info">Saber mais</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOJA -->
+<section id="loja">
+  <div class="loja-inner">
+    <div class="section-tag">LOJA</div>
+    <h2 class="section-title" style="margin-bottom:32px">Biblioteca Digital</h2>
+
+    <!-- App header row (Google Play style) -->
+    <div class="loja-app-header">
+      <img src="logo.png" alt="Romanza" class="loja-app-icon">
+      <div class="loja-app-meta">
+        <div class="loja-app-name">Romanza — Biblioteca Digital</div>
+        <div class="loja-app-dev">B.A. Dutra · Livros & Romance</div>
+        <div class="loja-app-rating">
+          <span class="loja-app-stars">★★★★★</span>
+          <strong>4.9</strong>
+          <span class="loja-app-sep">·</span>
+          <span>1.2K avaliações</span>
+          <span class="loja-app-sep">·</span>
+          <span>Classificação +18</span>
+        </div>
+        <div class="loja-app-badges">
+          <span class="loja-badge">Em Português</span>
+          <span class="loja-badge">8 livros</span>
+          <span class="loja-badge">Leitura Online</span>
+          <span class="loja-badge">Comunidade</span>
+        </div>
+      </div>
+      <button class="btn-loja-instalar" id="btn-loja-instalar">
+        Subscrever
+      </button>
+    </div>
+
+    <div class="loja-divider"></div>
+
+    <!-- Screenshots: book covers carousel -->
+    <div class="loja-screenshots" id="loja-shots"></div>
+
+    <!-- Stats row -->
+    <div class="loja-stats">
+      <div class="loja-stat">
+        <div class="loja-stat-val">4.9</div>
+        <div class="loja-stat-stars">★★★★★</div>
+        <div class="loja-stat-lbl">Avaliação</div>
+      </div>
+      <div class="loja-stat">
+        <div class="loja-stat-val">8+</div>
+        <div class="loja-stat-lbl">Livros</div>
+      </div>
+      <div class="loja-stat">
+        <div class="loja-stat-val">+18</div>
+        <div class="loja-stat-lbl">Classificação</div>
+      </div>
+      <div class="loja-stat">
+        <div class="loja-stat-val">PT</div>
+        <div class="loja-stat-lbl">Idioma</div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="loja-section-lbl">Sobre a biblioteca</div>
+    <div class="loja-about">
+      A Romanza é a primeira biblioteca digital exclusiva de romances em português. Suspense, fantasia, ficção científica e romance erótico — escritos por B.A. Dutra. Lê online diretamente no browser ou na app, em qualquer dispositivo, a qualquer hora.
+    </div>
+
+    <!-- Features chips -->
+    <div class="loja-section-lbl">Características</div>
+    <div class="loja-features">
+      <span class="loja-feat">📖 Leitura online</span>
+      <span class="loja-feat">🔒 Conteúdo exclusivo</span>
+      <span class="loja-feat">🇵🇹 100% em português</span>
+      <span class="loja-feat">💬 Comunidade ativa</span>
+      <span class="loja-feat">📱 App em breve</span>
+      <span class="loja-feat">✨ Novos livros regularmente</span>
+    </div>
+
+    <!-- Subscription plans -->
+    <div class="loja-section-lbl">Planos de subscrição</div>
+    <div class="loja-plans">
+
+      <div class="loja-plan">
+        <div class="loja-plan-name">Gratuito</div>
+        <div class="loja-plan-price">€0<sub>/mês</sub></div>
+        <div class="loja-plan-note">Para sempre grátis</div>
+        <ul class="loja-plan-feats">
+          <li>Amostras gratuitas de todos os livros</li>
+          <li>Acesso à comunidade</li>
+          <li>Votação de livros</li>
+          <li>Conta pessoal</li>
+        </ul>
+        <button class="btn-plan btn-plan-free" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">Explorar grátis</button>
+      </div>
+
+      <div class="loja-plan featured">
+        <div class="loja-plan-tag">MELHOR VALOR</div>
+        <div class="loja-plan-name">Premium Anual</div>
+        <div class="loja-plan-price">€3.33<sub>/mês</sub></div>
+        <div class="loja-plan-note">Faturado como €39.99/ano</div>
+        <ul class="loja-plan-feats">
+          <li>Todos os livros completos</li>
+          <li>Leitura online ilimitada</li>
+          <li>Novidades em primeira mão</li>
+          <li>Comunidade exclusiva</li>
+          <li>Sem anúncios</li>
+        </ul>
+        <button class="btn-plan btn-plan-soon" disabled>Em breve</button>
+      </div>
+
+      <div class="loja-plan">
+        <div class="loja-plan-name">Premium Mensal</div>
+        <div class="loja-plan-price">€4.99<sub>/mês</sub></div>
+        <div class="loja-plan-note">Cancela quando quiseres</div>
+        <ul class="loja-plan-feats">
+          <li>Todos os livros completos</li>
+          <li>Leitura online ilimitada</li>
+          <li>Novidades em primeira mão</li>
+          <li>Comunidade exclusiva</li>
+        </ul>
+        <button class="btn-plan btn-plan-soon" disabled>Em breve</button>
+      </div>
+
     </div>
   </div>
 </section>
@@ -1344,6 +1522,33 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
     showToast('🚀 Em breve na Google Play! Subscreve a newsletter para seres das primeiras a saber.', 'info');
   });
 });
+
+// ── LOJA: screenshots + subscribe button ──
+(function() {
+  const covers = [
+    { src:'covers/a-chave-do-castelo-antigo.jpg',  letter:'A', id:1 },
+    { src:'covers/as-filhas-do-nilo.jpg',           letter:'A', id:2 },
+    { src:'covers/kael-senhor-das-chamas-perpetuas.jpg', letter:'K', id:3 },
+    { src:'covers/magia-sexual.jpg',                letter:'M', id:4 },
+    { src:'covers/marte-o-ultimo-exilio.jpg',        letter:'M', id:5 },
+    { src:'covers/o-livro-das-sombras.jpg',          letter:'O', id:6 },
+    { src:'covers/o-tempo-da-vontade.jpg',           letter:'O', id:7 },
+    { src:'covers/triangulo-do-desejo.jpg',          letter:'T', id:8 },
+  ];
+  const wrap = document.getElementById('loja-shots');
+  if (wrap) {
+    covers.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'loja-shot';
+      el.title = 'Ver livro';
+      el.innerHTML = `<img src="${c.src}" alt="" onerror="this.style.display='none'"><div class="loja-shot-ph">${c.letter}</div>`;
+      el.addEventListener('click', () => openBook(c.id));
+      wrap.appendChild(el);
+    });
+  }
+  const btn = document.getElementById('btn-loja-instalar');
+  if (btn) btn.addEventListener('click', () => showToast('Subscrições em breve! Regista-te para seres das primeiras a saber.', 'info'));
+})();
 
 // ── FOOTER LINKS SEM DESTINO ──
 document.querySelectorAll('footer a[href="#"]').forEach(link => {
