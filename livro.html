@@ -406,7 +406,7 @@ const M = {
 };
 
 function isRegistered() {
-  try { const d = JSON.parse(localStorage.getItem(GATE_KEY)); return !!(d && d.email && d.termos && d.verified); } catch { return false; }
+  try { const d = JSON.parse(localStorage.getItem(GATE_KEY)); return !!(d && d.email && d.verified); } catch { return false; }
 }
 
 function gateErr(field, show) {
@@ -552,7 +552,7 @@ function verifyOTP() {
   let toStore;
   if (mode === 'login') {
     const ex = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
-    toStore = { ...ex, email: d.email, verified: true, loginEm: new Date().toISOString() };
+    toStore = { ...ex, email: d.email, verified: true, termos: true, loginEm: new Date().toISOString() };
   } else {
     toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 20 };
   }
