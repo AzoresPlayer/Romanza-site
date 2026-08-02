@@ -976,6 +976,9 @@ function _showAccessDialog(book) {
       M.spend(cost);
       M.startSession(book.id, min);
       close();
+      refreshMarcBar();
+      updateNavUser();
+      showToast(`🎫 -${cost} Marcadores descontados. Boas leituras!`, 'success');
       _openTimedReader(book, min * 60000);
     });
   });
@@ -1059,7 +1062,13 @@ function _openTimedReader(book, msLeft) {
       expEl.style.display = 'flex';
     }
   }, 1000);
-  const close = () => { clearInterval(tick); ov.remove(); document.body.style.overflow=''; };
+  const close = () => {
+    clearInterval(tick);
+    ov.remove();
+    document.body.style.overflow='';
+    refreshMarcBar();
+    updateNavUser();
+  };
   document.getElementById('reader-close').addEventListener('click', close);
   ov.addEventListener('click', e => { if(e.target===ov) close(); });
   document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',esc);}});
