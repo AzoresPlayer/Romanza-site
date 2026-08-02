@@ -412,16 +412,18 @@ async function sendVerificationEmail(email, nome) {
   const code = genOTP();
   _otp = { code, expiresAt: Date.now() + 10 * 60 * 1000, attempts: 0 };
   try {
-    await emailjs.send(EJS.serviceId, EJS.templateId, {
+    const resp = await emailjs.send(EJS.serviceId, EJS.templateId, {
       to_email: email,
-      to_name: nome || 'Utilizador',
+      to_name:  nome || 'Utilizador',
       otp_code: code,
     }, EJS.publicKey);
-    return true;
+    console.log('EmailJS OK:', resp.status, resp.text);
+    return { ok: true };
   } catch (err) {
     console.error('EmailJS error:', err);
     _otp = null;
-    return false;
+    const msg = err?.text || err?.message || JSON.stringify(err) || 'Erro desconhecido';
+    return { ok: false, msg };
   }
 }
 
@@ -435,12 +437,12 @@ async function showOTPStep(pendingData, mode) {
 
   const sent = await sendVerificationEmail(pendingData.email, pendingData.nome);
 
-  if (!sent) {
+  if (!sent.ok) {
     document.getElementById('gate-modal').innerHTML = `
       <div class="gate-age-block">
         <span class="gate-age-icon">⚠️</span>
         <h2 class="gate-age-title">Erro ao enviar email</h2>
-        <p class="gate-age-text">Não foi possível enviar o código de verificação. Verifica o endereço de email e tenta novamente.</p>
+        <p class="gate-age-text">Não foi possível enviar o código de verificação.<br><small style="color:#C0392B;font-size:12px">${sent.msg}</small></p>
         <button class="btn-gate-back" onclick="showGateForm()">← Tentar novamente</button>
       </div>`;
     return;
