@@ -405,6 +405,15 @@ const EJS = {
 
 let _otp = null; // { code, expiresAt, attempts, pendingData, mode }
 
+const KNOWN_KEY = 'romanza-known-emails';
+function getKnownEmails() { try { return JSON.parse(localStorage.getItem(KNOWN_KEY)) || []; } catch { return []; } }
+function markEmailKnown(email) {
+  const list = getKnownEmails();
+  const e = email.toLowerCase();
+  if (!list.includes(e)) { list.push(e); localStorage.setItem(KNOWN_KEY, JSON.stringify(list)); }
+}
+function isEmailKnown(email) { return getKnownEmails().includes(email.toLowerCase()); }
+
 /* ── Marcadores & Session helpers ── */
 const M = {
   _g() { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } },
@@ -577,6 +586,7 @@ function verifyOTP() {
   } else {
     toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 100 };
   }
+  markEmailKnown(toStore.email);
   localStorage.setItem(GATE_KEY, JSON.stringify(toStore));
   closeGate();
   if (mode === 'register') {
@@ -654,6 +664,21 @@ function showGateForm() {
     if (!termos)                                        { gateErr('termos', true); ok = false; }
     if (!ok) return;
     if (parseInt(idStr) < 18) { showAgeBlock(); return; }
+
+    // Block re-registration with already registered email
+    if (isEmailKnown(email)) {
+      const emailInput = document.getElementById('g-email');
+      if (emailInput) emailInput.style.borderColor = '#9B2335';
+      let notice = document.getElementById('gate-email-known');
+      if (!notice) {
+        notice = document.createElement('div');
+        notice.id = 'gate-email-known';
+        notice.style.cssText = 'background:#FDE8EC;border:1px solid rgba(155,35,53,.2);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:13px;color:#9B2335;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap';
+        emailInput?.parentNode?.insertBefore(notice, emailInput.nextSibling);
+      }
+      notice.innerHTML = `<span>Este email já está registado.</span><button type="button" onclick="showLoginForm()" style="background:#9B2335;color:white;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Entrar na minha conta →</button>`;
+      return;
+    }
 
     const btn = this.querySelector('button[type=submit]');
     if (btn) { btn.disabled = true; btn.textContent = 'A enviar código...'; }
