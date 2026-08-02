@@ -410,8 +410,8 @@ function showGateForm() {
       <p class="gate-login">Já tens conta? <span id="gate-ja-tenho">Entrar</span></p>
     </div>`;
 
-  // Real-time age block
-  document.getElementById('g-idade').addEventListener('input', function() {
+  // Block under-18 only when the user leaves the age field (not while typing)
+  document.getElementById('g-idade').addEventListener('blur', function() {
     const v = parseInt(this.value);
     if (!isNaN(v) && v > 0 && v < 18) showAgeBlock();
   });
