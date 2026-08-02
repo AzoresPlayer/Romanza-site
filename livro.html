@@ -37,6 +37,7 @@
     .nav-user-avatar{width:28px;height:28px;border-radius:50%;background:#9B2335;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
     .nav-user-label{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .nav-chevron{color:#9C8090;transition:transform .2s;flex-shrink:0}
+    .nav-marc-pill{display:inline-flex;align-items:center;gap:4px;background:#FDE8EC;color:#9B2335;font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;border:1px solid rgba(155,35,53,.15);white-space:nowrap;flex-shrink:0}
     .nav-user-dd{position:absolute;top:calc(100% + 10px);right:0;background:white;border-radius:16px;box-shadow:0 8px 40px rgba(30,13,18,.18);border:1px solid #EFE4E8;min-width:220px;overflow:hidden;z-index:300;animation:ddIn .18s ease}
     @keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
     .nav-user-info{padding:14px 16px 12px;border-bottom:1px solid #F0E8E2}
@@ -233,6 +234,26 @@
     </div>
   </div>
 </nav>
+
+<!-- Marcadores wallet bar (visible when logged in) -->
+<div id="marc-bar" style="display:none;background:white;border-bottom:1px solid #F0E8EA;padding:10px 32px">
+  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px;flex:1">
+      <span style="font-size:22px">🎫</span>
+      <div>
+        <div id="marc-bar-count" style="font-size:18px;font-weight:800;color:#9B2335;line-height:1">100</div>
+        <div style="font-size:10px;color:#9C8090;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Marcadores disponíveis</div>
+      </div>
+    </div>
+    <button id="marc-checkin" style="display:flex;align-items:center;gap:6px;background:#FDE8EC;border:1.5px solid rgba(155,35,53,.15);color:#9B2335;border-radius:100px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">
+      📅 Check-in Diário <span style="background:#9B2335;color:white;border-radius:100px;padding:1px 7px;font-size:10px">+20</span>
+    </button>
+    <button id="marc-convidar" style="display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #EDE4E8;color:#1E0D12;border-radius:100px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">
+      👤 Convidar Amigo <span style="background:#5C4050;color:white;border-radius:100px;padding:1px 7px;font-size:10px">+60</span>
+    </button>
+    <a href="index.html#loja" style="font-size:12px;font-weight:600;color:#9C8090;text-decoration:none;white-space:nowrap">Ver Loja →</a>
+  </div>
+</div>
 
 <main class="book-page" id="book-page-main">
   <a href="index.html#catalogo" class="bp-back">← Voltar ao catálogo</a>
@@ -554,7 +575,7 @@ function verifyOTP() {
     const ex = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
     toStore = { ...ex, email: d.email, verified: true, termos: true, loginEm: new Date().toISOString() };
   } else {
-    toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 20 };
+    toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 100 };
   }
   localStorage.setItem(GATE_KEY, JSON.stringify(toStore));
   closeGate();
@@ -683,11 +704,46 @@ function showLoginForm() {
   });
 }
 
+function refreshMarcBar() {
+  const bar = document.getElementById('marc-bar');
+  const countEl = document.getElementById('marc-bar-count');
+  const u = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)); } catch { return null; } })();
+  if (!u || !u.verified) { if (bar) bar.style.display = 'none'; return; }
+  if (bar) bar.style.display = 'block';
+  if (countEl) countEl.textContent = u.marcadores || 0;
+}
+
+(function initMarcBar() {
+  refreshMarcBar();
+  document.getElementById('marc-checkin')?.addEventListener('click', () => {
+    const u = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)); } catch { return null; } })();
+    if (!u) return;
+    const today = new Date().toISOString().slice(0,10);
+    if (u.lastCheckin === today) { showToast('Já fizeste o check-in hoje! Volta amanhã 🎫', 'info'); return; }
+    u.marcadores = (u.marcadores || 0) + 20;
+    u.lastCheckin = today;
+    localStorage.setItem(GATE_KEY, JSON.stringify(u));
+    showToast('🎫 +20 Marcadores! Check-in diário feito!', 'success');
+    refreshMarcBar();
+    updateNavUser();
+  });
+  document.getElementById('marc-convidar')?.addEventListener('click', () => {
+    const u = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)); } catch { return null; } })();
+    if (!u || !u.email) return;
+    const code = btoa(u.email).replace(/[^A-Z0-9]/gi,'').toUpperCase().slice(0,8);
+    const text = `Junta-te à Romanza com o meu código ${code} e ganha 60 marcadores grátis! 📖 romanza.live`;
+    if (navigator.share) navigator.share({ title:'Romanza', text }).catch(()=>{});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showToast('Código copiado! Partilha com amigos 🎫','success')).catch(()=>showToast('Código: '+code,'info'));
+    else showToast('O teu código: '+code,'info');
+  });
+})();
+
 function closeGate() {
   document.getElementById('gate-overlay').style.display = 'none';
   document.body.style.overflow = '';
   render();
   updateNavUser();
+  refreshMarcBar();
 }
 
 function updateNavUser() {
@@ -699,10 +755,12 @@ function updateNavUser() {
   if (user && user.email) {
     const initial = (user.nome || user.email).charAt(0).toUpperCase();
     const firstName = (user.nome || user.email).split(' ')[0];
+    const marc = user.marcadores || 0;
     wrap.innerHTML = `
       <button class="nav-user-btn" id="nav-user-btn" aria-expanded="false" aria-haspopup="true">
         <div class="nav-user-avatar">${initial}</div>
         <span class="nav-user-label">${firstName}</span>
+        <span class="nav-marc-pill">🎫 ${marc}</span>
         <svg class="nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>`;
     document.getElementById('nav-user-btn').addEventListener('click', function(e) {

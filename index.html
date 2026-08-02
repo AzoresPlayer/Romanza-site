@@ -45,6 +45,7 @@
     .nav-user-avatar{width:28px;height:28px;border-radius:50%;background:#9B2335;color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
     .nav-user-label{max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .nav-chevron{color:#9C8090;transition:transform .2s;flex-shrink:0}
+    .nav-marc-pill{display:inline-flex;align-items:center;gap:4px;background:#FDE8EC;color:#9B2335;font-size:11px;font-weight:800;padding:3px 9px;border-radius:100px;border:1px solid rgba(155,35,53,.15);white-space:nowrap;flex-shrink:0}
     .nav-user-dd{position:absolute;top:calc(100% + 10px);right:0;background:white;border-radius:16px;box-shadow:0 8px 40px rgba(30,13,18,.18);border:1px solid #EFE4E8;min-width:220px;overflow:hidden;z-index:300;animation:ddIn .18s ease}
     @keyframes ddIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
     .nav-user-info{padding:14px 16px 12px;border-bottom:1px solid #F0E8E2}
@@ -1703,10 +1704,12 @@ initCookieBanner();
   if (user && user.email && user.verified) {
     const initial = (user.nome || user.email).charAt(0).toUpperCase();
     const firstName = (user.nome || user.email).split(' ')[0];
+    const marc = user.marcadores || 0;
     wrap.innerHTML = `
       <button class="nav-user-btn" id="nav-user-btn" aria-expanded="false" aria-haspopup="true">
         <div class="nav-user-avatar">${initial}</div>
         <span class="nav-user-label">${firstName}</span>
+        <span class="nav-marc-pill">🎫 ${marc}</span>
         <svg class="nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>`;
     document.getElementById('nav-user-btn').addEventListener('click', function(e) {
