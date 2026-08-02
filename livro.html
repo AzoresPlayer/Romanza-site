@@ -592,9 +592,15 @@ function verifyOTP() {
   const mode = _otp.mode;
   _otp = null;
   let toStore;
+  let _recoveredMarc = false;
   if (mode === 'login') {
     const ex = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
     toStore = { ...ex, email: d.email, verified: true, termos: true, loginEm: new Date().toISOString() };
+    // Recovery: data was wiped (no marcadores) but email was previously registered
+    if (!(toStore.marcadores > 0) && isEmailKnown(d.email)) {
+      toStore.marcadores = 100;
+      _recoveredMarc = true;
+    }
   } else {
     toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 100 };
   }
@@ -604,6 +610,8 @@ function verifyOTP() {
   closeGate();
   if (mode === 'register') {
     setTimeout(() => showToast('🎫 Bem-vinda! Recebeste 100 Marcadores de boas-vindas!', 'success'), 400);
+  } else if (_recoveredMarc) {
+    setTimeout(() => showToast('🎫 Os teus Marcadores foram restaurados! Boas-vindas de volta.', 'success'), 400);
   }
 }
 
@@ -1197,6 +1205,15 @@ try {
 } catch {}
 
 if (isRegistered()) {
+  // Recover marcadores if data was wiped by old logout bug
+  try {
+    const _ru = JSON.parse(localStorage.getItem(GATE_KEY)) || {};
+    if (!(_ru.marcadores > 0) && _ru.email && isEmailKnown(_ru.email)) {
+      _ru.marcadores = 100;
+      localStorage.setItem(GATE_KEY, JSON.stringify(_ru));
+      setTimeout(() => showToast('🎫 Os teus Marcadores foram restaurados!', 'success'), 1200);
+    }
+  } catch {}
   render();
   updateNavUser();
 } else {
