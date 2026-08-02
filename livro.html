@@ -384,6 +384,27 @@ const EJS = {
 
 let _otp = null; // { code, expiresAt, attempts, pendingData, mode }
 
+/* ── Marcadores & Session helpers ── */
+const M = {
+  _g() { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } },
+  _s(d) { localStorage.setItem(GATE_KEY, JSON.stringify(d)); },
+  count() { return this._g().marcadores || 0; },
+  add(n) { const d = this._g(); this._s({...d, marcadores:(d.marcadores||0)+n}); },
+  spend(n) { const d = this._g(); this._s({...d, marcadores:Math.max(0,(d.marcadores||0)-n)}); },
+  premium() { const p = this._g().premium; return !!(p && p.expiraEm && new Date(p.expiraEm) > new Date()); },
+  session(bid) {
+    const s = this._g().readingSession;
+    if (!s || s.bookId !== bid) return null;
+    const ms = new Date(s.endTime) - Date.now();
+    return ms > 0 ? {...s, msLeft:ms} : null;
+  },
+  startSession(bid, min) {
+    const d = this._g();
+    this._s({...d, readingSession:{bookId:bid, minutos:min, endTime:new Date(Date.now()+min*60000).toISOString()}});
+  },
+  clearSession() { const d = this._g(); delete d.readingSession; this._s(d); },
+};
+
 function isRegistered() {
   try { const d = JSON.parse(localStorage.getItem(GATE_KEY)); return !!(d && d.email && d.termos && d.verified); } catch { return false; }
 }
@@ -533,7 +554,7 @@ function verifyOTP() {
     const ex = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
     toStore = { ...ex, email: d.email, verified: true, loginEm: new Date().toISOString() };
   } else {
-    toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm };
+    toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 20 };
   }
   localStorage.setItem(GATE_KEY, JSON.stringify(toStore));
   closeGate();
@@ -692,10 +713,12 @@ function updateNavUser() {
       this.querySelector('.nav-chevron').style.transform = 'rotate(180deg)';
       const dd = document.createElement('div');
       dd.className = 'nav-user-dd'; dd.id = 'nav-user-dd';
+      const marc = user.marcadores || 0;
       dd.innerHTML = `
         <div class="nav-user-info">
           <div class="nav-user-info-name">${user.nome || 'Utilizador'}</div>
           <div class="nav-user-info-email">${user.email}</div>
+          <div style="margin-top:6px;font-size:12px;font-weight:700;color:#9B2335">🎫 ${marc} Marcadores</div>
         </div>
         <button class="nav-dd-action" id="nav-logout">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
@@ -726,51 +749,164 @@ document.addEventListener('click', e => { if (!e.target.closest('#nav-user')) cl
 
 function openLeitorOnline(book) {
   if (document.getElementById('reader-overlay')) return;
-  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  if (M.premium()) { _openFullReader(book); return; }
+  const session = M.session(book.id);
+  if (session) { _openTimedReader(book, session.msLeft); return; }
+  _showAccessDialog(book);
+}
+
+function _showAccessDialog(book) {
+  if (document.getElementById('reader-overlay')) return;
+  const marcadores = M.count();
+  const opts = [{min:30,cost:50,label:'30 Minutos de Leitura'},{min:60,cost:100,label:'60 Minutos de Leitura'},{min:120,cost:180,label:'120 Minutos de Leitura'}];
   const ov = document.createElement('div');
   ov.id = 'reader-overlay';
   ov.className = 'reader-overlay';
   ov.innerHTML = `
-    <div class="reader-modal" role="dialog" aria-modal="true">
+    <div class="reader-modal" role="dialog" aria-modal="true" style="max-width:420px">
       <div class="reader-header">
-        ${book.cover
-          ? `<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
-          : `<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
-        <div class="reader-header-meta">
-          <div class="reader-tag" style="background:#9B2335">Leitura Online</div>
+        <div class="reader-header-meta" style="flex:1">
+          <div class="reader-tag" style="background:#9B2335">Acesso ao Livro</div>
           <div class="reader-header-title">${book.titulo}</div>
         </div>
-        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
+        <button class="reader-close" id="reader-close">&times;</button>
       </div>
-      <div class="reader-progress-bar"><div class="reader-progress-fill" style="width:5%;background:#9B2335"></div></div>
-      <div class="reader-body">
-        <div class="reader-chapter">Capítulo 1 — Início · Pré-visualização</div>
-        <div class="reader-text">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
-      </div>
-      <div class="reader-fade"></div>
-      <div class="reader-footer" style="flex-direction:column;gap:10px;padding:16px 20px 20px">
-        <div style="background:#FDE8EC;border-radius:14px;padding:14px 18px;text-align:center;width:100%">
-          <div style="font-size:13px;font-weight:700;color:#9B2335;margin-bottom:4px">🔒 Conteúdo completo com Plano Premium</div>
-          <div style="font-size:12px;color:#7C5060;line-height:1.5">Subscreve para leres todos os capítulos sem limite, diretamente no browser.</div>
+      <div class="reader-body" style="padding:20px 20px 24px">
+        <div style="background:#FEF9EC;border:1.5px solid #F5C518;border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+          <span style="font-size:13px;color:#1E0D12;font-weight:600">O teu saldo</span>
+          <span style="font-size:16px;font-weight:800;color:#9B2335">🎫 ${marcadores} Marcadores</span>
         </div>
-        <div style="display:flex;gap:10px;width:100%">
-          <div style="font-size:12px;font-weight:700;color:#9C8090;align-self:center;flex:1">5% lido · Capítulo 1</div>
-          <button class="reader-cta" id="reader-cta-loja" style="white-space:nowrap">Ver planos →</button>
+        <button id="dial-premium" style="display:flex;align-items:center;gap:14px;width:100%;background:#9B2335;border:none;border-radius:12px;padding:14px 18px;margin-bottom:20px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:left">
+          <span style="font-size:20px">★</span>
+          <div>
+            <div style="font-size:13px;font-weight:800;color:white;letter-spacing:.3px">SUBSCREVER PREMIUM</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.65);margin-top:2px">Acesso ilimitado sem gastar marcadores</div>
+          </div>
+        </button>
+        <div style="font-size:11px;font-weight:700;color:#9C8090;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Usar Marcadores</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          ${opts.map(o => {
+            const ok = marcadores >= o.cost;
+            return `<button class="dial-time-btn" data-min="${o.min}" data-cost="${o.cost}"
+              style="display:flex;align-items:center;justify-content:space-between;background:${ok?'white':'#FAF7F2'};border:1.5px solid ${ok?'#EDE4E8':'#F0E8EA'};border-radius:12px;padding:14px 16px;cursor:${ok?'pointer':'not-allowed'};opacity:${ok?'1':'.45'};font-family:'DM Sans',sans-serif;width:100%"
+              ${ok?'':'disabled'}>
+              <span style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#1E0D12">⏱️ ${o.label}</span>
+              <span style="font-size:13px;font-weight:700;color:#9B2335">🎫 ${o.cost}</span>
+            </button>`;
+          }).join('')}
         </div>
+        ${marcadores < 50 ? `
+          <div style="margin-top:16px;background:#FDE8EC;border-radius:12px;padding:12px 16px;text-align:center">
+            <div style="font-size:12px;font-weight:700;color:#9B2335">Saldo insuficiente</div>
+            <div style="font-size:11px;color:#7C5060;margin-top:3px;line-height:1.5">Faz o check-in diário ou convida amigos para ganhar marcadores grátis!</div>
+            <button id="dial-loja" style="margin-top:10px;background:#9B2335;color:white;border:none;border-radius:100px;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Ir à Loja →</button>
+          </div>` : ''}
       </div>
     </div>`;
   document.body.appendChild(ov);
   document.body.style.overflow = 'hidden';
   const close = () => { ov.remove(); document.body.style.overflow = ''; };
   document.getElementById('reader-close').addEventListener('click', close);
-  document.getElementById('reader-cta-loja').addEventListener('click', () => {
-    close();
-    window.open('index.html#loja', '_blank');
-  });
   ov.addEventListener('click', e => { if (e.target === ov) close(); });
-  document.addEventListener('keydown', function esc(e) {
-    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  document.addEventListener('keydown', function esc(e) { if (e.key==='Escape'){close();document.removeEventListener('keydown',esc);} });
+  document.getElementById('dial-premium').addEventListener('click', () => { close(); window.open('index.html#loja','_blank'); });
+  document.getElementById('dial-loja')?.addEventListener('click', () => { close(); window.open('index.html#loja','_blank'); });
+  ov.querySelectorAll('.dial-time-btn:not([disabled])').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const min = +btn.dataset.min, cost = +btn.dataset.cost;
+      M.spend(cost);
+      M.startSession(book.id, min);
+      close();
+      _openTimedReader(book, min * 60000);
+    });
   });
+}
+
+function _openFullReader(book) {
+  if (document.getElementById('reader-overlay')) return;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  const ov = document.createElement('div');
+  ov.id = 'reader-overlay'; ov.className = 'reader-overlay';
+  ov.innerHTML = `
+    <div class="reader-modal" role="dialog" aria-modal="true">
+      <div class="reader-header">
+        ${book.cover?`<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`:`<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
+        <div class="reader-header-meta">
+          <div class="reader-tag" style="background:#9B2335">★ Premium · Acesso Ilimitado</div>
+          <div class="reader-header-title">${book.titulo}</div>
+        </div>
+        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="reader-progress-bar"><div class="reader-progress-fill" style="width:5%;background:#9B2335"></div></div>
+      <div class="reader-body">
+        <div class="reader-chapter">Capítulo 1 — Início</div>
+        <div class="reader-text">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  const close = () => { ov.remove(); document.body.style.overflow = ''; };
+  document.getElementById('reader-close').addEventListener('click', close);
+  ov.addEventListener('click', e => { if (e.target===ov) close(); });
+  document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',esc);}});
+}
+
+function _openTimedReader(book, msLeft) {
+  if (document.getElementById('reader-overlay')) return;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  const fmt = ms => { const s=Math.max(0,Math.floor(ms/1000)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+  const ov = document.createElement('div');
+  ov.id = 'reader-overlay'; ov.className = 'reader-overlay';
+  ov.innerHTML = `
+    <div class="reader-modal" role="dialog" aria-modal="true" style="position:relative">
+      <div class="reader-header">
+        ${book.cover?`<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`:`<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
+        <div class="reader-header-meta">
+          <div class="reader-tag" style="background:#5C7A9B">⏱️ <span id="rd-timer">${fmt(msLeft)}</span> restantes</div>
+          <div class="reader-header-title">${book.titulo}</div>
+        </div>
+        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="reader-progress-bar"><div id="rd-bar" class="reader-progress-fill" style="width:100%;background:#5C7A9B;transition:width 1s linear"></div></div>
+      <div class="reader-body">
+        <div class="reader-chapter">Capítulo 1 — Início</div>
+        <div class="reader-text">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
+      </div>
+      <div id="rd-expired" style="display:none;position:absolute;inset:0;background:rgba(30,13,18,.93);align-items:center;justify-content:center;z-index:20;border-radius:inherit;flex-direction:column;text-align:center;padding:32px 24px">
+        <div style="font-size:48px;margin-bottom:16px">⏰</div>
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px">Tempo Esgotado</div>
+        <div style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:28px">O teu tempo de leitura terminou.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px">
+          <button id="exp-more" style="background:#9B2335;color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎫 Comprar mais tempo</button>
+          <button id="exp-premium" style="background:#F5C518;color:#1E0D12;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">★ Subscrever Premium</button>
+          <button id="exp-close" style="background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  const total = msLeft;
+  const end = Date.now() + msLeft;
+  const timerEl = document.getElementById('rd-timer');
+  const barEl = document.getElementById('rd-bar');
+  const expEl = document.getElementById('rd-expired');
+  const tick = setInterval(() => {
+    const rem = end - Date.now();
+    if (timerEl) timerEl.textContent = fmt(rem);
+    if (barEl) barEl.style.width = Math.max(0, rem/total*100) + '%';
+    if (rem <= 0) {
+      clearInterval(tick);
+      M.clearSession();
+      expEl.style.display = 'flex';
+    }
+  }, 1000);
+  const close = () => { clearInterval(tick); ov.remove(); document.body.style.overflow=''; };
+  document.getElementById('reader-close').addEventListener('click', close);
+  ov.addEventListener('click', e => { if(e.target===ov) close(); });
+  document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',esc);}});
+  document.getElementById('exp-more').addEventListener('click', ()=>{ close(); _showAccessDialog(book); });
+  document.getElementById('exp-premium').addEventListener('click', ()=>{ close(); window.open('index.html#loja','_blank'); });
+  document.getElementById('exp-close').addEventListener('click', close);
 }
 
 function openAmostra(book) {

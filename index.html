@@ -1489,21 +1489,79 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
   });
 });
 
-// ── LOJA: check-in + convidar + referral code ──
+// ── LOJA: Marcadores system ──
 (function() {
-  const user = (() => { try { return JSON.parse(localStorage.getItem('romanza-user-v1')); } catch(e) { return null; } })();
-  const refEl = document.getElementById('loja-ref-code');
-  if (refEl && user && user.email) {
-    const code = user.email.split('@')[0].toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8).padEnd(6,'X');
-    refEl.textContent = code;
+  const KEY = 'romanza-user-v1';
+  const getU = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; } };
+  const setU = d => localStorage.setItem(KEY, JSON.stringify(d));
+  const hasPremium = () => { const u=getU(); const p=u&&u.premium; return !!(p&&p.expiraEm&&new Date(p.expiraEm)>new Date()); };
+  const count = () => { const u=getU(); return (u&&u.marcadores)||0; };
+
+  function genRef(email) {
+    return btoa(email).replace(/[^A-Z0-9]/gi,'').toUpperCase().slice(0,8);
   }
-  const checkin = document.getElementById('btn-checkin');
-  if (checkin) checkin.addEventListener('click', () => showToast('Check-in diário em breve! Instala a app para ganhares marcadores.', 'info'));
-  const convidar = document.getElementById('btn-convidar');
-  if (convidar) convidar.addEventListener('click', () => {
-    const code = refEl ? refEl.textContent : '—';
-    showToast(`Partilha o teu código ${code} com amigos para ganhares 60 marcadores!`, 'info');
+
+  function refreshStatus() {
+    const bar = document.querySelector('.loja-status-bar');
+    if (!bar) return;
+    const u = getU();
+    if (!u || !u.verified) return;
+    if (hasPremium()) {
+      bar.innerHTML = '✓&nbsp; <strong style="color:#9B2335">Premium Ativo</strong>';
+    } else {
+      bar.innerHTML = `🔕&nbsp; Sem Acesso Ativo &nbsp;·&nbsp; <strong style="color:#9B2335">🎫 ${count()} Marcadores</strong>`;
+    }
+  }
+
+  function refreshRefCode() {
+    const el = document.getElementById('loja-ref-code');
+    const u = getU();
+    if (el && u && u.email) el.textContent = genRef(u.email);
+  }
+
+  refreshStatus();
+  refreshRefCode();
+
+  // Check-in diário
+  document.getElementById('btn-checkin')?.addEventListener('click', () => {
+    const u = getU();
+    if (!u || !u.verified) { showToast('Regista-te para ganhar marcadores!', 'info'); return; }
+    const today = new Date().toISOString().slice(0,10);
+    if (u.lastCheckin === today) { showToast('Já fizeste o check-in hoje! Volta amanhã para mais 🎫', 'info'); return; }
+    u.marcadores = (u.marcadores || 0) + 20;
+    u.lastCheckin = today;
+    setU(u);
+    showToast('🎫 +20 Marcadores! Check-in diário feito com sucesso!', 'success');
+    refreshStatus();
   });
+
+  // Convidar amigo
+  document.getElementById('btn-convidar')?.addEventListener('click', () => {
+    const u = getU();
+    if (!u || !u.verified) { showToast('Regista-te primeiro!', 'info'); return; }
+    const code = genRef(u.email);
+    const text = `Junta-te à Romanza com o meu código ${code} e ganha 60 marcadores grátis! 📖 romanza.live`;
+    if (navigator.share) {
+      navigator.share({ title: 'Romanza', text }).catch(() => {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => showToast('Código copiado! Partilha com os teus amigos 🎫', 'success')).catch(() => showToast('Código: ' + code, 'info'));
+    } else {
+      showToast('O teu código: ' + code, 'info');
+    }
+  });
+
+  // Trocar Marcadores por Tempo → redireciona para catálogo
+  document.querySelectorAll('.loja-trocar-row').forEach(row => {
+    row.addEventListener('click', () => {
+      const u = getU();
+      if (!u || !u.verified) { showToast('Regista-te para usar marcadores!', 'info'); return; }
+      if (count() < 50) { showToast('Saldo insuficiente. Faz o check-in diário para ganhar marcadores grátis!', 'info'); return; }
+      showToast('Escolhe um livro e clica em "Ler Online" para usar os teus marcadores! 📖', 'info');
+      setTimeout(() => window.location.href = 'index.html#catalogo', 800);
+    });
+  });
+
+  // Subscribe / buy buttons
   document.querySelectorAll('.btn-sub-mensal,.btn-sub-anual,.btn-mark').forEach(b =>
     b.addEventListener('click', () => showToast('Pagamentos em breve! Instala a app Romanza para subscrever.', 'info'))
   );
@@ -1659,10 +1717,12 @@ initCookieBanner();
       this.querySelector('.nav-chevron').style.transform = 'rotate(180deg)';
       const dd = document.createElement('div');
       dd.className = 'nav-user-dd'; dd.id = 'nav-user-dd';
+      const marc = (user.marcadores || 0);
       dd.innerHTML = `
         <div class="nav-user-info">
           <div class="nav-user-info-name">${user.nome || 'Utilizador'}</div>
           <div class="nav-user-info-email">${user.email}</div>
+          <div style="margin-top:6px;font-size:12px;font-weight:700;color:#9B2335">🎫 ${marc} Marcadores</div>
         </div>
         <button class="nav-dd-action" id="nav-logout">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
