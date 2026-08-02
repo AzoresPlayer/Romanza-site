@@ -648,7 +648,7 @@
 
     <!-- Status + Premium CTA -->
     <div class="loja-status-bar">🔕&nbsp; Sem Acesso Ativo</div>
-    <button class="loja-premium-banner" onclick="showToast('Subscrições em breve! Regista-te para seres das primeiras a saber.','info')">
+    <button class="loja-premium-banner" onclick="document.getElementById('loja-planos').scrollIntoView({behavior:'smooth',block:'start'})">
       <span class="loja-premium-star">★</span>
       <div>
         <div class="loja-premium-text-main">TORNA-TE PREMIUM</div>
@@ -690,7 +690,7 @@
     <div class="loja-ref-row">O teu código: <span id="loja-ref-code">—</span></div>
 
     <!-- Planos de Assinatura -->
-    <div class="loja-sec-hdr">Planos de Assinatura</div>
+    <div class="loja-sec-hdr" id="loja-planos">Planos de Assinatura</div>
     <div class="loja-subs">
       <div class="loja-sub-card">
         <div class="loja-sub-top">
