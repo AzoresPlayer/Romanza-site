@@ -143,9 +143,47 @@
     @media(max-width:420px){
       .footer-grid{grid-template-columns:1fr}
     }
+
+    /* ── Registration Gate ── */
+    .gate-overlay{position:fixed;inset:0;z-index:2000;background:rgba(8,4,6,.97);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+    .gate-modal{background:#FAF7F2;border-radius:24px;max-width:460px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 48px 120px rgba(0,0,0,.8)}
+    .gate-header{padding:32px 32px 0;text-align:center}
+    .gate-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px}
+    .gate-logo img{width:40px;height:40px;border-radius:10px}
+    .gate-logo-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1E0D12}
+    .gate-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#1E0D12;margin-bottom:8px;line-height:1.2}
+    .gate-sub{font-size:14px;color:#9C8090;line-height:1.6;margin-bottom:28px}
+    .gate-divider{height:1px;background:#EFE3E7;margin:0 32px 24px}
+    .gate-body{padding:0 32px 32px}
+    .gate-form-group{margin-bottom:16px}
+    .gate-label{display:block;font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#9B2335;margin-bottom:6px}
+    .gate-input{width:100%;border:1.5px solid #EDE4E8;border-radius:12px;padding:12px 16px;font-size:15px;font-family:'DM Sans',sans-serif;color:#1E0D12;background:white;outline:none;transition:border-color .2s,background .2s}
+    .gate-input:focus{border-color:#9B2335;box-shadow:0 0 0 3px rgba(155,35,53,.1)}
+    .gate-input.gate-err{border-color:#C0392B;background:#FFF5F5}
+    .gate-err-msg{font-size:12px;color:#C0392B;margin-top:5px;display:none;font-weight:500}
+    .gate-terms{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;margin-top:20px}
+    .gate-terms input[type=checkbox]{margin-top:3px;width:17px;height:17px;flex-shrink:0;accent-color:#9B2335;cursor:pointer}
+    .gate-terms label{font-size:13px;color:#5C4050;line-height:1.6;cursor:pointer}
+    .gate-terms a{color:#9B2335;text-decoration:underline}
+    .btn-gate-submit{width:100%;background:#9B2335;color:white;padding:15px 24px;border-radius:100px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .1s;margin-top:20px;letter-spacing:.2px}
+    .btn-gate-submit:hover{background:#7B1A28;transform:translateY(-1px)}
+    .gate-login{text-align:center;margin-top:14px;font-size:13px;color:#9C8090}
+    .gate-login span{color:#9B2335;font-weight:600;cursor:pointer;text-decoration:underline}
+    /* Age block */
+    .gate-age-block{padding:40px 32px 36px;text-align:center}
+    .gate-age-icon{font-size:60px;margin-bottom:16px;display:block}
+    .gate-age-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#1E0D12;margin-bottom:10px}
+    .gate-age-text{font-size:15px;color:#9C8090;line-height:1.65;margin-bottom:28px}
+    .btn-gate-back{display:inline-flex;align-items:center;gap:6px;background:#F0E8E2;color:#9B2335;padding:12px 26px;border-radius:100px;font-size:14px;font-weight:700;border:none;cursor:pointer;text-decoration:none}
+    .btn-gate-back:hover{background:#E8DCD8}
+    @media(max-width:480px){.gate-header{padding:24px 22px 0}.gate-body{padding:0 22px 26px}.gate-divider{margin:0 22px 20px}}
   </style>
 </head>
 <body>
+
+<div id="gate-overlay" class="gate-overlay" style="display:none" role="dialog" aria-modal="true" aria-label="Registo obrigatório">
+  <div class="gate-modal" id="gate-modal"></div>
+</div>
 
 <nav>
   <div class="nav-inner">
@@ -301,6 +339,162 @@ function showToast(msg, type = 'info') {
   setTimeout(() => el.remove(), 3800);
 }
 
+/* ── Registration Gate ── */
+const GATE_KEY = 'romanza-user-v1';
+
+function isRegistered() {
+  try { const d = JSON.parse(localStorage.getItem(GATE_KEY)); return !!(d && d.email && d.termos); } catch { return false; }
+}
+
+function gateErr(field, show) {
+  const msg = document.getElementById('gerr-' + field);
+  const inp = document.getElementById('g-' + field);
+  if (msg) msg.style.display = show ? 'block' : 'none';
+  if (inp) inp.classList.toggle('gate-err', show);
+}
+
+function showAgeBlock() {
+  document.getElementById('gate-modal').innerHTML = `
+    <div class="gate-age-block">
+      <span class="gate-age-icon">🚫</span>
+      <h2 class="gate-age-title">Acesso Restrito</h2>
+      <p class="gate-age-text">A Romanza contém literatura exclusiva para maiores de 18&nbsp;anos.<br>Não tens idade suficiente para acederes a esta plataforma.</p>
+      <a href="index.html" class="btn-gate-back">← Voltar ao início</a>
+    </div>`;
+}
+
+function showGateForm() {
+  const ov = document.getElementById('gate-overlay');
+  ov.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  document.getElementById('gate-modal').innerHTML = `
+    <div class="gate-header">
+      <div class="gate-logo">
+        <img src="logo.png" alt="Romanza">
+        <span class="gate-logo-name">Romanza</span>
+      </div>
+      <h2 class="gate-title">Cria a tua conta gratuita</h2>
+      <p class="gate-sub">Para acederes à nossa biblioteca precisas de uma conta.<br>É gratuito e demora menos de um minuto.</p>
+    </div>
+    <div class="gate-divider"></div>
+    <div class="gate-body">
+      <form id="gate-form" novalidate>
+        <div class="gate-form-group">
+          <label class="gate-label" for="g-nome">Nome completo</label>
+          <input class="gate-input" type="text" id="g-nome" placeholder="O teu nome completo" autocomplete="name">
+          <div class="gate-err-msg" id="gerr-nome">Por favor, introduz o teu nome.</div>
+        </div>
+        <div class="gate-form-group">
+          <label class="gate-label" for="g-idade">Idade</label>
+          <input class="gate-input" type="number" id="g-idade" placeholder="A tua idade" min="1" max="120">
+          <div class="gate-err-msg" id="gerr-idade">Por favor, introduz a tua idade.</div>
+        </div>
+        <div class="gate-form-group">
+          <label class="gate-label" for="g-tel">Telemóvel</label>
+          <input class="gate-input" type="tel" id="g-tel" placeholder="+351 9XX XXX XXX" autocomplete="tel">
+          <div class="gate-err-msg" id="gerr-tel">Por favor, introduz um número de telemóvel válido.</div>
+        </div>
+        <div class="gate-form-group">
+          <label class="gate-label" for="g-email">E-mail</label>
+          <input class="gate-input" type="email" id="g-email" placeholder="o.teu@email.com" autocomplete="email">
+          <div class="gate-err-msg" id="gerr-email">Por favor, introduz um e-mail válido.</div>
+        </div>
+        <div class="gate-terms">
+          <input type="checkbox" id="g-termos">
+          <label for="g-termos">Li e aceito os <a href="termos.html" target="_blank">Termos de Serviço</a> e a <a href="privacidade.html" target="_blank">Política de Privacidade</a> da Romanza.</label>
+        </div>
+        <div class="gate-err-msg" id="gerr-termos" style="margin-bottom:4px">Deves aceitar os termos para continuar.</div>
+        <button type="submit" class="btn-gate-submit">Criar conta e entrar</button>
+      </form>
+      <p class="gate-login">Já tens conta? <span id="gate-ja-tenho">Entrar</span></p>
+    </div>`;
+
+  // Real-time age block
+  document.getElementById('g-idade').addEventListener('input', function() {
+    const v = parseInt(this.value);
+    if (!isNaN(v) && v > 0 && v < 18) showAgeBlock();
+  });
+
+  // "Já tenho conta" — re-validate stored data or simply accept
+  document.getElementById('gate-ja-tenho').addEventListener('click', function() {
+    showLoginForm();
+  });
+
+  document.getElementById('gate-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const nome  = document.getElementById('g-nome').value.trim();
+    const idStr = document.getElementById('g-idade').value.trim();
+    const tel   = document.getElementById('g-tel').value.trim();
+    const email = document.getElementById('g-email').value.trim();
+    const termos = document.getElementById('g-termos').checked;
+    let ok = true;
+
+    ['nome','idade','tel','email','termos'].forEach(f => gateErr(f, false));
+
+    if (!nome)                                        { gateErr('nome',   true); ok = false; }
+    if (!idStr || isNaN(+idStr) || +idStr < 1)        { gateErr('idade',  true); ok = false; }
+    if (!tel || tel.replace(/\D/g,'').length < 9)     { gateErr('tel',    true); ok = false; }
+    if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)){ gateErr('email',  true); ok = false; }
+    if (!termos)                                       { gateErr('termos', true); ok = false; }
+    if (!ok) return;
+
+    if (parseInt(idStr) < 18) { showAgeBlock(); return; }
+
+    localStorage.setItem(GATE_KEY, JSON.stringify({
+      nome, idade: parseInt(idStr), telemovel: tel, email, termos: true,
+      registadoEm: new Date().toISOString()
+    }));
+    closeGate();
+  });
+}
+
+function showLoginForm() {
+  document.getElementById('gate-modal').innerHTML = `
+    <div class="gate-header">
+      <div class="gate-logo">
+        <img src="logo.png" alt="Romanza">
+        <span class="gate-logo-name">Romanza</span>
+      </div>
+      <h2 class="gate-title">Bem-vindo/a de volta</h2>
+      <p class="gate-sub">Introduz o teu e-mail para entrares na tua conta.</p>
+    </div>
+    <div class="gate-divider"></div>
+    <div class="gate-body">
+      <form id="login-form" novalidate>
+        <div class="gate-form-group">
+          <label class="gate-label" for="l-email">E-mail</label>
+          <input class="gate-input" type="email" id="l-email" placeholder="o.teu@email.com" autocomplete="email">
+          <div class="gate-err-msg" id="lerr-email">Por favor, introduz um e-mail válido.</div>
+        </div>
+        <button type="submit" class="btn-gate-submit">Entrar</button>
+      </form>
+      <p class="gate-login">Ainda não tens conta? <span id="gate-registar">Registar</span></p>
+    </div>`;
+
+  document.getElementById('gate-registar').addEventListener('click', showGateForm);
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('l-email').value.trim();
+    if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+      const msg = document.getElementById('lerr-email');
+      msg.style.display = 'block';
+      document.getElementById('l-email').classList.add('gate-err');
+      return;
+    }
+    // For a static site, accept any valid email as "login" and mark as registered
+    const existing = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
+    localStorage.setItem(GATE_KEY, JSON.stringify({ ...existing, email, termos: true, loginEm: new Date().toISOString() }));
+    closeGate();
+  });
+}
+
+function closeGate() {
+  document.getElementById('gate-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  render();
+}
+
 function openAmostra(book) {
   if (document.getElementById('reader-overlay')) return;
   const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
@@ -434,7 +628,11 @@ function render() {
   }
 }
 
-render();
+if (isRegistered()) {
+  render();
+} else {
+  showGateForm();
+}
 </script>
 </body>
 </html>
