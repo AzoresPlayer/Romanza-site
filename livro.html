@@ -59,11 +59,39 @@
     .bp-desc{font-size:16px;line-height:1.78;color:#5C4050;margin-bottom:40px}
 
     /* Action buttons */
-    .bp-actions{display:flex;gap:14px;flex-wrap:wrap}
-    .btn-ler-online{flex:1;min-width:140px;background:#9B2335;color:white;padding:16px 24px;border-radius:100px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .bp-actions{display:flex;flex-direction:column;gap:12px}
+    .bp-actions-row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-amostra{width:100%;background:#F5C518;color:#1A0800;padding:16px 24px;border-radius:100px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .15s,box-shadow .2s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 20px rgba(245,197,24,.4)}
+    .btn-amostra:hover{background:#DFB200;transform:translateY(-2px);box-shadow:0 8px 28px rgba(245,197,24,.5)}
+    .btn-ler-online{flex:1;min-width:130px;background:#9B2335;color:white;padding:16px 20px;border-radius:100px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:background .2s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px}
     .btn-ler-online:hover{background:#7B1A28;transform:translateY(-1px)}
-    .btn-ler-app{flex:1;min-width:140px;background:white;color:#9B2335;padding:16px 24px;border-radius:100px;font-size:15px;font-weight:700;border:2px solid #E8C0C8;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .btn-ler-app{flex:1;min-width:130px;background:white;color:#9B2335;padding:16px 20px;border-radius:100px;font-size:14px;font-weight:700;border:2px solid #E8C0C8;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
     .btn-ler-app:hover{border-color:#9B2335;transform:translateY(-1px);box-shadow:0 4px 16px rgba(155,35,53,.15)}
+
+    /* Reader modal */
+    .reader-overlay{position:fixed;inset:0;z-index:500;background:rgba(8,4,6,.9);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    .reader-modal{background:#FDFAF7;border-radius:20px;max-width:640px;width:100%;height:90vh;max-height:780px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6)}
+    .reader-header{padding:16px 20px;border-bottom:1px solid #EFE4E8;display:flex;align-items:center;gap:12px;flex-shrink:0;background:white}
+    .reader-cover-thumb{width:36px;height:50px;border-radius:6px;object-fit:cover;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+    .reader-cover-ph{width:36px;height:50px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;font-weight:700}
+    .reader-header-meta{flex:1;min-width:0}
+    .reader-tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#F5C518;background:#1A0800;padding:2px 8px;border-radius:100px;display:inline-block;margin-bottom:4px}
+    .reader-header-title{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#1E0D12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .reader-close{width:30px;height:30px;border-radius:50%;background:#F5EEE8;color:#7C5060;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;flex-shrink:0;line-height:1}
+    .reader-close:hover{background:#EDE0E6}
+    .reader-progress-bar{height:3px;background:#F0E4E8;flex-shrink:0}
+    .reader-progress-fill{height:100%;background:#F5C518;width:5%;transition:width .5s ease}
+    .reader-body{flex:1;overflow-y:auto;padding:32px 36px 0;position:relative}
+    .reader-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#9B2335;margin-bottom:24px}
+    .reader-text{font-family:'Playfair Display',serif;font-size:17px;line-height:2;color:#1E0D12}
+    .reader-text p{margin-bottom:22px}
+    .reader-text p:first-of-type::first-letter{font-size:3.2em;line-height:.85;float:left;margin:4px 10px 0 0;color:#9B2335;font-weight:700}
+    .reader-fade{height:140px;background:linear-gradient(transparent,#FDFAF7);margin-top:-80px;position:relative;z-index:2;pointer-events:none;flex-shrink:0}
+    .reader-footer{padding:14px 20px 18px;border-top:1px solid #EFE4E8;display:flex;align-items:center;justify-content:space-between;gap:16px;background:white;flex-shrink:0}
+    .reader-pct{font-size:12px;font-weight:700;color:#9C8090;letter-spacing:.5px}
+    .reader-cta{background:#9B2335;color:white;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .2s;white-space:nowrap}
+    .reader-cta:hover{background:#7B1A28}
+    @media(max-width:500px){.reader-body{padding:24px 22px 0}.reader-text{font-size:15px;line-height:1.85}}
 
     /* Info card below buttons */
     .bp-info-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;padding-top:28px;border-top:1px solid #EFE3E7}
@@ -197,41 +225,49 @@ const BOOKS = [
     id:1, titulo:'A Chave do Castelo Antigo', autor:'B.A. Dutra', genero:'suspense', rating:4.8, novo:true,
     cover:'covers/a-chave-do-castelo-antigo.jpg',
     descricao:'Durante uma visita de estudo a Guimarães, Miguel encontra uma antiga chave medieval com a inscrição latina "Qui quaerit invenit" — Quem procura, encontra. Com os amigos Tomás, Flora e Patrícia, inicia uma investigação que combina análise histórica, trabalho de arquivo e observação científica, conduzindo-os a uma câmara oculta junto ao Castelo de Guimarães e a um legado preservado há mais de oito séculos.',
+    amostra:`<p>A manhã caía sobre Guimarães com uma luz dourada e hesitante, como se o sol próprio respeitasse os séculos de história que aquelas pedras guardavam. Miguel Ferreira ajustou a mochila às costas e respirou fundo o ar fresco de outubro — um ar que cheirava a musgo, a granito molhado, e àquele indefinível aroma de tempo acumulado que só as cidades muito antigas sabem guardar.</p><p>«Qui quaerit invenit», murmurou ele, repetindo as palavras que tinha lido na pequena chave de ferro que encontrara, havia menos de uma hora, entre as raízes de uma oliveira centenária junto ao muro norte do castelo.</p><p>Quem procura, enconta.</p><p>Tomás aproximou-se, franzindo o sobrolho por baixo dos óculos redondos que insistia em usar apesar das gozações dos colegas. «Onde é que achaste mesmo isso, Miguel?»</p><p>«Junto ao muro do castelo, como já te disse.» Miguel abriu a palma da mão e deixou a chave à vista. Era pequena, escura, pesada para o seu tamanho, com a pátina de quem passou décadas enterrada. Na argola, quase imperceptível sem a luz do telemóvel, uma inscrição circular que corria toda a volta. «Alguém escondeu isto aqui de propósito.»</p><p>Flora e Patrícia chegaram a correr, ofegantes, com os cadernos de campo ainda abertos. A visita de estudo ao centro histórico de Guimarães tinha começado há menos de duas horas, mas Miguel sentia nos ossos — com aquela certeza irracional que os historiadores aprendem a temer e a respeitar em simultâneo — que o verdadeiro trabalho ainda estava a começar.</p><p>«Chave medieval», disse Flora, inclinando-se para examinar o objeto sem o tocar. «Provavelmente século XII ou XIII. Olhem para a forma do arco — é gótico primitivo.»</p><p>«Achas que abre alguma coisa aqui perto?» perguntou Patrícia, olhando para os muros do castelo como se esperasse que uma porta secreta aparecesse de repente.</p><p>Miguel fechou a mão à volta da chave. A inscrição latina pesava-lhe na memória como uma promessa ou um aviso. <em>Qui quaerit invenit.</em> Não era uma afirmação inocente. Era um convite.</p><p>«Só há uma maneira de descobrir», disse ele.</p>`,
   },
   {
     id:2, titulo:'As Filhas do Nilo — A Sacerdotisa Proibida', autor:'B.A. Dutra', genero:'historico', rating:4.9, novo:true,
     cover:'covers/as-filhas-do-nilo.jpg',
     descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino. Juntos descobrem o lendário Papiro das Filhas do Nilo — e um segredo que pode custar a vida de Nefertari.',
+    amostra:`<p>O sangue misturava-se com a água do Lago Sagrado e colorava o alvorecer de vermelho.</p><p>Nefertari viu-o antes de qualquer outra sacerdotisa. Acordara antes de Rá abrir os olhos — um hábito de trinta anos que nenhuma circunstância conseguira quebrar — e descera sozinha às margens do lago para as orações da madrugada. Ali estava o corpo de Meritaten, Terceira Sacerdotisa do Templo de Ísis, deitada de bruços sobre as pedras polidas, com o véu branco tingido de carmesim até à cintura.</p><p>Nefertari não gritou. As Primeiras Sacerdotisas não gritam.</p><p>Ajoelhou-se lentamente, com o cerimonial de quem sabe que cada gesto tem significado, e tocou o pulso frio de Meritaten. Depois levantou os olhos para as estrelas que ainda piscavam sobre os pilões de Karnak, indiferentes ao crime que acabara de ser cometido na sua sombra.</p><p>Alguém matara uma serva de Ísis. Alguém que conhecia o templo por dentro. Alguém que sabia que, àquela hora de silêncio anterior ao alvorecer, Meritaten seria a única alma acordada nas margens do lago.</p><p>«Que Ísis me guie», sussurrou Nefertari para o espelho imóvel da água, «porque a justiça não pode esperar por Rá.»</p><p>Quando o general Kha'em-uaset chegou ao templo três horas mais tarde, encontrou a Primeira Sacerdotisa de pé junto ao corpo, imóvel como uma estátua, com os olhos secos e o olhar do qual o medo tinha sido completamente varrido. O que ficara em seu lugar era pior: determinação.</p><p>«Quem deu entrada no templo esta noite?» perguntou ele, sem cumprimento nem cerimónia.</p><p>«Ninguém que não devia estar aqui», respondeu ela. «O que significa que quem matou Meritaten já cá estava.»</p>`,
   },
   {
     id:3, titulo:'Kael: Senhor das Chamas Perpétuas', autor:'B.A. Dutra', genero:'fantasy', rating:4.7, adulto:true,
     cover:'covers/kael-senhor-das-chamas-perpetuas.jpg',
     descricao:'Na Amazónia, a arqueóloga Isabel rompe acidentalmente um selo ancestral e desperta Kael — um ser demoníaco aprisionado há oito mil anos. Em vez de fugir, ela enfrenta o desconhecido com curiosidade. O que começa com desconfiança transforma-se numa ligação profunda baseada em diálogos, confiança e descoberta mútua — entre o humano e o sobrenatural.',
+    amostra:`<p>O último capítulo que Isabel Mendes escreveu na sua tese chamava-se «Mitos de Aprisionamento na Cultura Indígena Amazónica: Uma Análise Comparativa». Era um título seco, académico, perfeitamente adequado para uma arqueóloga de trinta e dois anos com quatro prémios científicos, zero aventuras registadas na vida, e uma convicção inabalável de que o mundo se explicava através de evidências mensuráveis.</p><p>Isso foi antes do selo.</p><p>A descoberta aconteceu num sítio arqueológico a duzentos quilómetros de Manaus, num terreno que nenhum investigador tinha sequer catalogado. Isabel encontrou-o por acidente — tropeçou numa raiz, caiu com as duas palmas espalmadas contra uma pedra negra e lisa que não devia estar ali, enterrada apenas a meio metro de profundidade na floresta primária.</p><p>A pedra era redonda. Coberta de símbolos que ela não reconhecia em nenhum sistema de escrita que tinha estudado. E quando as suas palmas tocaram a superfície polida e estranhamente quente, sentiu algo que nenhum relatório científico conseguiria descrever: o solo tremeu por baixo dela, um calor intenso subiu pelos seus braços, e a pedra partiu-se ao meio com um som como de trovão contido.</p><p>Isabel ficou imóvel durante trinta segundos. Depois, como a boa cientista que era, tirou o caderno do bolso e começou a tomar notas.</p><p>Não viu a sombra que se formava atrás dela. Só sentiu o calor — intenso, consciente, diferente do calor do sol — e levantou lentamente a cabeça do caderno.</p><p>O ser que a observava não era humano. Isso ficou imediatamente claro. Mas havia naqueles olhos de brasa qualquer coisa que Isabel reconheceu, contra toda a lógica: curiosidade.</p><p>«Tu», disse a voz, grave como pedra partida, «não deves ter medo de mim.»</p><p>Isabel baixou os olhos para o caderno e escreveu: <em>Sujeito comunica em português. Investigar origem linguística.</em></p>`,
   },
   {
     id:4, titulo:'Magia Sexual', autor:'B.A. Dutra', genero:'erotico', rating:4.6, adulto:true,
     cover:'covers/magia-sexual.jpg',
     descricao:'Dorian Blackwood, um poderoso bruxo imortal de cinco séculos, e Isabella Ferreira, editora de Lisboa cuja vida comum esconde um extraordinário potencial mágico. Guiado por uma antiga profecia no Grimório das Chamas Eternas, Dorian descobre que Isabella é a Portadora destinada a despertar um poder capaz de transformar o equilíbrio entre os mundos mágico e humano. À medida que ela descobre a sua verdadeira natureza, ambos desenvolvem uma intensa ligação emocional e espiritual — mas a poderosa Ordem dos Bruxos Sombrios pretende controlar essa energia a qualquer custo, obrigando-os a decidir entre o destino imposto e um novo caminho guiado pelo amor.',
+    amostra:`<p>Há coisas que uma editora de Lisboa aprende a reconhecer ao fim de dez anos de profissão: o cheiro de um manuscrito promissor, o silêncio específico de um prazo que já passou, e o momento exacto em que um autor começa a acreditar mais no seu ego do que no seu talento.</p><p>Isabella Ferreira era boa no seu trabalho. Muito boa. E por isso quando o manuscrito chegou — sem nome de autor, sem carta de apresentação, apenas um envelope preto com o seu nome escrito à mão em tinta dourada — a primeira coisa que fez foi colocá-lo na pilha de espera.</p><p>Foi a terceira noite que a convenceu a abri-lo.</p><p>A terceira noite em que sonhou com aquele livro. Não com o conteúdo — ela ainda não sabia o que estava lá dentro — mas com a capa de couro escuro, com o símbolo gravado que reconhecia sem saber de onde, com a sensação de que aquelas páginas a chamavam de uma forma que não tinha nome em nenhuma língua que ela conhecesse.</p><p>Abriu o manuscrito numa terça-feira de novembro, às onze da noite, com uma chávena de chá que esfriou sem ser tocada. Eram as primeiras páginas do Grimório das Chamas Eternas, embora ela ainda não soubesse isso. Leu durante horas sem perceber que as palavras faziam algo aos seus dedos — um formigueiro suave, um reconhecimento que vinha de muito mais fundo do que a memória.</p><p>Só quando chegou ao último parágrafo da primeira parte é que levantou os olhos.</p><p>Um homem estava sentado na cadeira em frente à sua secretária. Alto, de cabelo escuro, com uma expressão que não era exactamente benigna mas também não era ameaça. Era avaliação.</p><p>«Demoraste menos do que os outros», disse ele, em português perfeito com uma entoação que não pertencia a nenhuma região do mundo que Isabella soubesse identificar. «É um bom sinal.»</p><p>Isabella deveria ter gritado. Em vez disso, disse: «Quem é "os outros"?»</p>`,
   },
   {
     id:5, titulo:'Marte: O Último Exílio', autor:'B.A. Dutra', genero:'scifi', rating:4.8, novo:true,
     cover:'covers/marte-o-ultimo-exilio.jpg',
     descricao:'Após o colapso de Marte, Lyra transporta os cristais biotecnológicos Soru\'than que preservam a memória do seu povo. Ao chegar ao Sistema Solar, começa a ter visões de Caio, um oceanógrafo terrestre que sonha com ela. Enquanto o Protocolo Prometeu ameaça os refugiados marcianos, os dois descobrem uma ligação psíquica que transcende o espaço e o tempo.',
+    amostra:`<p>A última memória colectiva de Marte que Lyra carregava nos cristais era a cor do céu a mudar.</p><p>Não o vermelho que os humanos sempre imaginaram — esse era o Marte antigo, o Marte de antes das cúpulas, de antes da terraformação parcial que durara dois séculos antes de falhar. O Marte que Lyra conheceu tinha um céu de azul acinzentado às horas de ponta de radiação, e um laranja quase dourado no crepúsculo. Era esse céu que ela transportava nos Soru'than: o crepúsculo marciano dos últimos dias, gravado com uma fidelidade que a tecnologia terrestre ainda não conseguia replicar.</p><p>A nave cruzava agora a órbita de Júpiter. Mais vinte e dois dias de viagem até à Terra.</p><p>Lyra fechou os dedos à volta dos dois cristais que usava sempre junto ao corpo — não os de arquivo, guardados em câmaras pressurizadas, mas os pessoais, os que tinham captado as memórias da sua família. A superfície dos Soru'than era morna ao toque, iridescente, e pulsava com um ritmo que os cientistas terráqueos descreveram como «perturbadoramente próximo de um batimento cardíaco».</p><p>Os sobreviventes chamavam-lhe simplesmente: <em>o lembrar.</em></p><p>Foi durante a terceira noite de navegação solitária que Lyra sonhou com ele pela primeira vez. Um homem que ela nunca tinha visto, num mundo que ela reconhecia apenas de imagens das sondas de reconhecimento: oceano. Azul profundo e infinito. O homem estava de pé à beira de qualquer coisa, com os olhos fechados e a expressão de quem está a ouvir algo que mais ninguém consegue ouvir.</p><p>Quando acordou, os Soru'than ardiam com uma luz que nunca tinham tido antes. E havia uma palavra em português que permanecia no ar entre o sonho e a vigília como um eco:</p><p><em>Lyra.</em></p>`,
   },
   {
     id:6, titulo:'O Livro das Sombras', autor:'B.A. Dutra', genero:'fantasy', rating:4.8, novo:true,
     cover:'covers/o-livro-das-sombras.jpg',
     descricao:'Isabela, restauradora de manuscritos, recebe um misterioso códice medieval que parece estar vivo — reage ao toque e altera o seu conteúdo. O livro concede desejos autênticos, mas sempre a um preço equivalente. A sua ativação desperta Damian, um Guardião imortal de setecentos anos cuja regra inviolável é nunca apaixonar-se pela guardiã escolhida. Em Lisboa, entre páginas que mudam sozinhas e símbolos que emergem na pele de Isabela, ambos enfrentam o dilema entre preservar um equilíbrio secular ou desafiá-lo pelo amor.',
+    amostra:`<p>O livro chegou numa segunda-feira.</p><p>Isabela Torres tinha aprendido a desconfiar das segundas-feiras — não por superstição, mas por experiência: era nesse dia que chegavam os processos urgentes, os manuscritos em estado deplorável, as peças com restauros catastróficos feitos nos anos setenta. A segunda-feira era o dia em que o passado resolvia aparecer à porta da sua oficina no Chiado com exigências que a semana inteira não chegava para cumprir.</p><p>Mas este livro era diferente.</p><p>A encomenda chegara sem remetente identificável — apenas um endereço de recolha no Porto e uma nota manuscrita: <em>Urgente. Mãos experientes. Discreção absoluta.</em> O pagamento adiantado tinha sido generoso demais para recusar.</p><p>Isabela colocou o códice sobre a mesa de trabalho, debaixo da luz fria do examinador, e começou a avaliação inicial. Couro de vitela. Séculos XV ou XVI, talvez anterior. Fechos de prata com oxidação característica. Páginas de pergaminho com uma qualidade de conservação que não fazia sentido para a idade aparente do objeto.</p><p>Então tocou a capa com os dedos nus — um descuido, devia ter usado luvas, mas a curiosidade foi mais rápida que o protocolo — e o livro abriu-se.</p><p>Não foi um vento. Não foi um mecanismo. O livro abriu-se como se tivesse estado à espera.</p><p>E nas páginas que ficaram visíveis, escritas com uma tinta que mudava de cor consoante o ângulo da luz, estava o nome de Isabela Torres. O nome completo, incluindo o segundo nome que ela nunca usava e que praticamente ninguém conhecia.</p><p>Levou três respirações profundas a perceber que as suas mãos não estavam a tremer. E mais duas a perceber que algures atrás dela, no espaço da oficina que tinha trancado por dentro antes de começar o trabalho, alguém estava de pé.</p>`,
   },
   {
     id:7, titulo:'O Tempo da Vontade', autor:'B.A. Dutra', genero:'scifi', rating:4.7, novo:true,
     cover:'covers/o-tempo-da-vontade.jpg',
     descricao:'Em 2047, Lyra, agente da Agência de Inteligência Estratégica, viaja ao passado para infiltrar uma organização tecnológica cujo projeto causará centenas de milhões de mortes no futuro. Em Lisboa, conhece Dante Ferreiro, um arqueólogo com uma capacidade única de interpretar padrões invisíveis. Enquanto a operação revela infiltrações e lealdades divididas, a ligação entre os dois aprofunda-se — e Lyra questiona se o destino pode realmente ser alterado. Livro 1 da Trilogia Cronos Partido.',
+    amostra:`<p>O briefing para a Operação Cronos Partido foi entregue a Lyra Vasconcelos numa sala sem janelas, dois andares abaixo do nível da rua, numa quinta-feira que em 2047 ainda era uma quinta-feira normal para toda a gente que não trabalhava para a AIS.</p><p>«A missão é simples», disse o Director Matos, com aquele tom que os agentes da Agência de Inteligência Estratégica aprendiam a reconhecer como o tom de «nada nisto é simples». «Viajas para 2019. Infiltras a Prometheus Technologies. Identificas o ponto de origem do protocolo antes que seja implementado. Voltas.»</p><p>Lyra olhou para a fotografia na pasta — um edifício de vidro em Lisboa, num Lisboa de vinte e oito anos atrás que ela conhecia apenas de arquivo. «E se não conseguir identificar o ponto de origem?»</p><p>«Então em 2031, duzentos e quarenta e três milhões de pessoas morrem de uma forma que os nossos modelos preditivos associam directamente à Prometheus com uma margem de erro de 0,3%.» O Director fechou a sua própria pasta. «Simples, pois.»</p><p>A viagem no tempo não era o que os filmes do século XX tinham prometido. Não havia luz brilhante, não havia sensação de movimento. Era mais parecido com adormecer e acordar com uma memória diferente do último sítio onde tinhas estado. Em dois segundos subjectivos, Lyra passou de uma sala de briefing em 2047 para um passeio de Lisboa em outubro de 2019.</p><p>O cheiro era o que mais a desorientava sempre. 2019 cheirava diferente: mais escape, menos filtros atmosféricos, uma qualidade do ar que os pulmões de Lyra, habituados a vinte e sete anos de regulações pós-crise climática, registavam como surpreendentemente pesado.</p><p>Ela ajustou o casaco e verificou o telemóvel de época que a AIS lhe fornecera. Uma aplicação de transporte. Uma morada. E o nome do primeiro contacto: Dante Ferreiro, arqueólogo, sem qualquer registo de envolvimento político ou tecnológico.</p><p>Às vezes as peças mais importantes são as que ninguém nota.</p>`,
   },
   {
     id:8, titulo:'Triângulo do Desejo', autor:'B.A. Dutra', genero:'erotico', rating:4.6, adulto:true,
     cover:'covers/triangulo-do-desejo.jpg',
     descricao:'Helena Duarte, jornalista investigativa, parte em busca do irmão desaparecido no Triângulo das Bermudas. A expedição leva-a ao encontro de Dante Valente, um experiente capitão, e de Serena, uma mergulhadora com uma ligação inexplicável a uma ilha secreta onde existiu uma civilização antiga que amplificava emoções e memórias. Enquanto resgata o irmão, Helena desenvolve um intenso vínculo com Dante e Serena — um triângulo nascido de confiança, vulnerabilidade e desejo.',
+    amostra:`<p>O desaparecimento do seu irmão chegou a Helena Duarte numa mensagem de texto às 3h47 da manhã, enviada pela coordenadora da expedição científica com um laconismo que só podia significar pânico controlado: <em>Rui não apareceu para o regresso. Contacte-nos com urgência.</em></p><p>Helena estava acordada. Tinha estado acordada durante a maior parte daquela semana, como estava acordada durante a maior parte de qualquer semana em que tinha um prazo de investigação — e no jornalismo investigativo os prazos eram sempre para ontem. Mas quando leu a mensagem, o artigo sobre corrupção em contratos públicos tornou-se de repente completamente irrelevante.</p><p>Rui era o mais novo dos dois. Biólogo marinho, especializado em correntes abissais, apaixonado por esses lugares do oceano onde a pressão mata qualquer coisa que não tenha evoluído especificamente para sobreviver ali. Tinha embarcado numa expedição independente para o Atlântico central há três semanas, para uma zona que os mapas oficiais marcavam como «anomalia magnética não classificada» e que a comunidade científica não-oficial chamava, sem cerimónia, o Triângulo.</p><p>Helena reservou o primeiro voo disponível para as Bermudas ainda antes do amanhecer.</p><p>O capitão Dante Valente estava no cais quando ela chegou, de pé ao lado do único barco disponível para a zona que ela precisava de alcançar. Era mais alto do que ela esperava. Tinha o tipo de calma que ou se nasce com ela ou se aprende da pior maneira possível. Olhou para a mochila dela e para o equipamento de gravação e disse, sem entoação de julgamento: «É jornalista.»</p><p>«E o meu irmão está lá», disse Helena. «Isso importa mais.»</p><p>Dante Valente estudou-a durante um momento longo o suficiente para ser desconfortável. Depois acenou com a cabeça na direcção do barco.</p><p>«Embarca.»</p>`,
   },
 ];
 
@@ -263,6 +299,54 @@ function showToast(msg, type = 'info') {
   el.textContent = msg;
   c.appendChild(el);
   setTimeout(() => el.remove(), 3800);
+}
+
+function openAmostra(book) {
+  if (document.getElementById('reader-overlay')) return;
+  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  const ov = document.createElement('div');
+  ov.id = 'reader-overlay';
+  ov.className = 'reader-overlay';
+  ov.innerHTML = `
+    <div class="reader-modal" role="dialog" aria-modal="true" aria-label="Amostra de ${book.titulo}">
+      <div class="reader-header">
+        ${book.cover
+          ? `<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
+          : `<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
+        <div class="reader-header-meta">
+          <div class="reader-tag">Amostra gratuita</div>
+          <div class="reader-header-title">${book.titulo}</div>
+        </div>
+        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
+      </div>
+      <div class="reader-progress-bar"><div class="reader-progress-fill"></div></div>
+      <div class="reader-body">
+        <div class="reader-chapter">Capítulo 1 — Início</div>
+        <div class="reader-text">${book.amostra || '<p>Amostra não disponível.</p>'}</div>
+      </div>
+      <div class="reader-fade"></div>
+      <div class="reader-footer">
+        <div class="reader-pct">5% · Amostra gratuita</div>
+        <button class="reader-cta" id="reader-cta-app">Continuar na APP</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+
+  const close = () => {
+    ov.remove();
+    document.body.style.overflow = '';
+  };
+  document.getElementById('reader-close').addEventListener('click', close);
+  document.getElementById('reader-cta-app').addEventListener('click', () => {
+    close();
+    showToast('📱 App em breve na Google Play! Regista-te para seres das primeiras a saber.', 'info');
+  });
+  ov.addEventListener('click', e => { if (e.target === ov) close(); });
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
 }
 
 function render() {
@@ -307,14 +391,20 @@ function render() {
         <div class="bp-resume-label">Resumo</div>
         <p class="bp-desc">${book.descricao}</p>
         <div class="bp-actions">
-          <button class="btn-ler-online" id="btn-ler-online">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-            Ler Online
+          <button class="btn-amostra" id="btn-amostra">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            Ler Amostra
           </button>
-          <button class="btn-ler-app" id="btn-ler-app">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
-            Ler na APP
-          </button>
+          <div class="bp-actions-row">
+            <button class="btn-ler-online" id="btn-ler-online">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+              Ler Online
+            </button>
+            <button class="btn-ler-app" id="btn-ler-app">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
+              Ler na APP
+            </button>
+          </div>
         </div>
         <div class="bp-info-chips">
           ${book.novo ? `<div class="bp-chip"><span class="bp-chip-icon">✨</span> Novo no catálogo</div>` : ''}
@@ -326,6 +416,7 @@ function render() {
     </div>
   `;
 
+  document.getElementById('btn-amostra').addEventListener('click', () => openAmostra(book));
   document.getElementById('btn-ler-online').addEventListener('click', () => {
     showToast('🚀 Leitor online em breve! Descarrega a app para leres agora.', 'info');
   });
