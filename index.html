@@ -1733,7 +1733,13 @@ initCookieBanner();
         </button>`;
       wrap.appendChild(dd);
       document.getElementById('nav-logout').addEventListener('click', () => {
-        localStorage.removeItem(GATE_KEY);
+        try {
+          const d = JSON.parse(localStorage.getItem(GATE_KEY)) || {};
+          localStorage.setItem(GATE_KEY, JSON.stringify({
+            email: d.email, telemovel: d.telemovel, nome: d.nome,
+            marcadores: d.marcadores || 0, lastCheckin: d.lastCheckin
+          }));
+        } catch { localStorage.removeItem(GATE_KEY); }
         location.reload();
       });
     });

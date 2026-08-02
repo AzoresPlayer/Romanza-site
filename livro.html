@@ -678,6 +678,35 @@ function showGateForm() {
     if (!ok) return;
     if (parseInt(idStr) < 18) { showAgeBlock(); return; }
 
+    // Direct check against stored identifying data (handles pre-existing users and logout-preserved state)
+    const _stored = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
+    if (_stored.email && _stored.email.toLowerCase() === email) {
+      const emailInput = document.getElementById('g-email');
+      if (emailInput) emailInput.style.borderColor = '#9B2335';
+      let notice = document.getElementById('gate-email-known');
+      if (!notice) {
+        notice = document.createElement('div');
+        notice.id = 'gate-email-known';
+        notice.style.cssText = 'background:#FDE8EC;border:1px solid rgba(155,35,53,.2);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:13px;color:#9B2335;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap';
+        emailInput?.parentNode?.insertBefore(notice, emailInput.nextSibling);
+      }
+      notice.innerHTML = `<span>Este email já está registado.</span><button type="button" onclick="showLoginForm()" style="background:#9B2335;color:white;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Entrar na minha conta →</button>`;
+      return;
+    }
+    if (_stored.telemovel && _stored.telemovel.replace(/\D/g,'') === tel.replace(/\D/g,'')) {
+      const telInput = document.getElementById('g-tel');
+      if (telInput) telInput.style.borderColor = '#9B2335';
+      let notice = document.getElementById('gate-phone-known');
+      if (!notice) {
+        notice = document.createElement('div');
+        notice.id = 'gate-phone-known';
+        notice.style.cssText = 'background:#FDE8EC;border:1px solid rgba(155,35,53,.2);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:13px;color:#9B2335;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap';
+        telInput?.parentNode?.insertBefore(notice, telInput.nextSibling);
+      }
+      notice.innerHTML = `<span>Este número já está associado a uma conta.</span><button type="button" onclick="showLoginForm()" style="background:#9B2335;color:white;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Entrar na minha conta →</button>`;
+      return;
+    }
+
     // Block re-registration with already registered email
     if (isEmailKnown(email)) {
       const emailInput = document.getElementById('g-email');
@@ -841,7 +870,13 @@ function updateNavUser() {
         </button>`;
       wrap.appendChild(dd);
       document.getElementById('nav-logout').addEventListener('click', () => {
-        localStorage.removeItem(GATE_KEY);
+        try {
+          const d = JSON.parse(localStorage.getItem(GATE_KEY)) || {};
+          localStorage.setItem(GATE_KEY, JSON.stringify({
+            email: d.email, telemovel: d.telemovel, nome: d.nome,
+            marcadores: d.marcadores || 0, lastCheckin: d.lastCheckin
+          }));
+        } catch { localStorage.removeItem(GATE_KEY); }
         location.reload();
       });
     });
@@ -1154,6 +1189,12 @@ function render() {
     }
   }
 }
+
+// Backfill known lists from stored data so pre-existing users are always protected
+try {
+  const _bfd = JSON.parse(localStorage.getItem(GATE_KEY));
+  if (_bfd && _bfd.email) { markEmailKnown(_bfd.email); if (_bfd.telemovel) markPhoneKnown(_bfd.telemovel, _bfd.email); }
+} catch {}
 
 if (isRegistered()) {
   render();
