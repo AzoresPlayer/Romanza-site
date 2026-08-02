@@ -597,7 +597,7 @@ function showGateForm() {
     const nome   = document.getElementById('g-nome').value.trim();
     const idStr  = document.getElementById('g-idade').value.trim();
     const tel    = document.getElementById('g-tel').value.trim();
-    const email  = document.getElementById('g-email').value.trim();
+    const email  = document.getElementById('g-email').value.trim().toLowerCase();
     const termos = document.getElementById('g-termos').checked;
     let ok = true;
 
@@ -624,7 +624,7 @@ function showLoginForm() {
         <span class="gate-logo-name">Romanza</span>
       </div>
       <h2 class="gate-title">Bem-vindo/a de volta</h2>
-      <p class="gate-sub">Introduz o e-mail da tua conta registada.<br>Enviaremos um código de verificação.</p>
+      <p class="gate-sub">Introduz o e-mail da tua conta.<br>Enviaremos um código para confirmar a tua identidade.</p>
     </div>
     <div class="gate-divider"></div>
     <div class="gate-body">
@@ -633,7 +633,6 @@ function showLoginForm() {
           <label class="gate-label" for="l-email">E-mail</label>
           <input class="gate-input" type="email" id="l-email" placeholder="o.teu@email.com" autocomplete="email">
           <div class="gate-err-msg" id="lerr-email">Por favor, introduz um e-mail válido.</div>
-          <div class="gate-err-msg" id="lerr-unreg">Este email não está registado neste dispositivo. Por favor cria uma conta.</div>
         </div>
         <button type="submit" class="btn-gate-submit">Enviar código de acesso</button>
       </form>
@@ -643,23 +642,23 @@ function showLoginForm() {
   document.getElementById('gate-registar').addEventListener('click', showGateForm);
   document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const email = document.getElementById('l-email').value.trim();
+    const email = document.getElementById('l-email').value.trim().toLowerCase();
     const errEmail = document.getElementById('lerr-email');
-    const errUnreg = document.getElementById('lerr-unreg');
     const inp = document.getElementById('l-email');
-    errEmail.style.display = 'none'; errUnreg.style.display = 'none'; inp.classList.remove('gate-err');
+    errEmail.style.display = 'none'; inp.classList.remove('gate-err');
 
     if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
       errEmail.style.display = 'block'; inp.classList.add('gate-err'); return;
     }
+
+    // Recover any saved data for this email (e.g. name) if available
     let stored = null;
     try { stored = JSON.parse(localStorage.getItem(GATE_KEY)); } catch {}
-    if (!stored || stored.email !== email || !stored.verified) {
-      errUnreg.style.display = 'block'; inp.classList.add('gate-err'); return;
-    }
+    const savedNome = (stored && stored.email === email) ? (stored.nome || '') : '';
+
     const btn = this.querySelector('button[type=submit]');
     if (btn) { btn.disabled = true; btn.textContent = 'A enviar código...'; }
-    await showOTPStep({ email, nome: stored.nome || '', registadoEm: stored.registadoEm, termos: true, idade: stored.idade, telemovel: stored.telemovel }, 'login');
+    await showOTPStep({ email, nome: savedNome, termos: true, registadoEm: stored?.registadoEm, idade: stored?.idade, telemovel: stored?.telemovel }, 'login');
   });
 }
 
