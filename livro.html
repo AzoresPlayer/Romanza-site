@@ -414,6 +414,18 @@ function markEmailKnown(email) {
 }
 function isEmailKnown(email) { return getKnownEmails().includes(email.toLowerCase()); }
 
+const KNOWN_PHONES_KEY = 'romanza-known-phones';
+function getKnownPhones() { try { return JSON.parse(localStorage.getItem(KNOWN_PHONES_KEY)) || {}; } catch { return {}; } }
+function markPhoneKnown(phone, email) {
+  const map = getKnownPhones();
+  map[phone.replace(/\D/g, '')] = email.toLowerCase();
+  localStorage.setItem(KNOWN_PHONES_KEY, JSON.stringify(map));
+}
+function isPhoneKnown(phone) {
+  const map = getKnownPhones();
+  return map[phone.replace(/\D/g, '')] || false;
+}
+
 /* ── Marcadores & Session helpers ── */
 const M = {
   _g() { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } },
@@ -587,6 +599,7 @@ function verifyOTP() {
     toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm, marcadores: 100 };
   }
   markEmailKnown(toStore.email);
+  if (mode === 'register' && toStore.telemovel) markPhoneKnown(toStore.telemovel, toStore.email);
   localStorage.setItem(GATE_KEY, JSON.stringify(toStore));
   closeGate();
   if (mode === 'register') {
@@ -677,6 +690,22 @@ function showGateForm() {
         emailInput?.parentNode?.insertBefore(notice, emailInput.nextSibling);
       }
       notice.innerHTML = `<span>Este email já está registado.</span><button type="button" onclick="showLoginForm()" style="background:#9B2335;color:white;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Entrar na minha conta →</button>`;
+      return;
+    }
+
+    // Block re-registration with already registered phone number
+    const existingEmail = isPhoneKnown(tel);
+    if (existingEmail) {
+      const telInput = document.getElementById('g-tel');
+      if (telInput) telInput.style.borderColor = '#9B2335';
+      let notice = document.getElementById('gate-phone-known');
+      if (!notice) {
+        notice = document.createElement('div');
+        notice.id = 'gate-phone-known';
+        notice.style.cssText = 'background:#FDE8EC;border:1px solid rgba(155,35,53,.2);border-radius:10px;padding:12px 14px;margin-top:8px;font-size:13px;color:#9B2335;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap';
+        telInput?.parentNode?.insertBefore(notice, telInput.nextSibling);
+      }
+      notice.innerHTML = `<span>Este número já está associado a uma conta.</span><button type="button" onclick="showLoginForm()" style="background:#9B2335;color:white;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Entrar na minha conta →</button>`;
       return;
     }
 
