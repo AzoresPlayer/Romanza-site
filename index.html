@@ -1478,7 +1478,7 @@ initCookieBanner();
   }
   document.addEventListener('click', e => { if (!e.target.closest('#nav-user')) closeNavDd(); });
 
-  if (user && user.email) {
+  if (user && user.email && user.verified) {
     const initial = (user.nome || user.email).charAt(0).toUpperCase();
     const firstName = (user.nome || user.email).split(' ')[0];
     wrap.innerHTML = `

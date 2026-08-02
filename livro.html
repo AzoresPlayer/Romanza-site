@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Romanza</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1642941696229305"
      crossorigin="anonymous"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -194,6 +195,18 @@
     .btn-gate-back{display:inline-flex;align-items:center;gap:6px;background:#F0E8E2;color:#9B2335;padding:12px 26px;border-radius:100px;font-size:14px;font-weight:700;border:none;cursor:pointer;text-decoration:none}
     .btn-gate-back:hover{background:#E8DCD8}
     @media(max-width:480px){.gate-header{padding:24px 22px 0}.gate-body{padding:0 22px 26px}.gate-divider{margin:0 22px 20px}}
+    /* OTP step */
+    .gate-otp-input{width:100%;text-align:center;letter-spacing:12px;font-size:30px;font-weight:700;border:2px solid #EDE4E8;border-radius:14px;padding:16px 20px;font-family:'DM Sans',sans-serif;color:#1E0D12;background:white;outline:none;transition:border-color .2s,box-shadow .2s}
+    .gate-otp-input:focus{border-color:#9B2335;box-shadow:0 0 0 3px rgba(155,35,53,.1)}
+    .gate-otp-input.gate-err{border-color:#C0392B;background:#FFF5F5}
+    .otp-email-highlight{font-weight:700;color:#1E0D12;word-break:break-all}
+    .otp-resend{font-size:13px;color:#9C8090;text-align:center;margin-top:16px}
+    .otp-resend-btn{color:#9B2335;font-weight:600;cursor:pointer;text-decoration:underline}
+    .otp-resend-btn.disabled{color:#BBA8B0;cursor:default;text-decoration:none}
+    .gate-sending{text-align:center;padding:50px 32px 42px}
+    .gate-sending-icon{font-size:52px;display:block;margin-bottom:16px}
+    .gate-sending-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#1E0D12;margin-bottom:8px}
+    .gate-sending-sub{font-size:14px;color:#9C8090;line-height:1.6}
   </style>
 </head>
 <body>
@@ -362,8 +375,17 @@ function showToast(msg, type = 'info') {
 /* ── Registration Gate ── */
 const GATE_KEY = 'romanza-user-v1';
 
+// ▶ Configure em https://www.emailjs.com/ (conta gratuita — 200 emails/mês)
+const EJS = {
+  publicKey:  'SUBSTITUA_PELA_PUBLIC_KEY',   // Account → API Keys
+  serviceId:  'SUBSTITUA_PELO_SERVICE_ID',   // Email Services → Service ID
+  templateId: 'SUBSTITUA_PELO_TEMPLATE_ID',  // Email Templates → Template ID
+};
+
+let _otp = null; // { code, expiresAt, attempts, pendingData, mode }
+
 function isRegistered() {
-  try { const d = JSON.parse(localStorage.getItem(GATE_KEY)); return !!(d && d.email && d.termos); } catch { return false; }
+  try { const d = JSON.parse(localStorage.getItem(GATE_KEY)); return !!(d && d.email && d.termos && d.verified); } catch { return false; }
 }
 
 function gateErr(field, show) {
@@ -381,6 +403,135 @@ function showAgeBlock() {
       <p class="gate-age-text">A Romanza contém literatura exclusiva para maiores de 18&nbsp;anos.<br>Não tens idade suficiente para acederes a esta plataforma.</p>
       <a href="index.html" class="btn-gate-back">← Voltar ao início</a>
     </div>`;
+}
+
+/* ── OTP Email Verification ── */
+function genOTP() { return String(Math.floor(100000 + Math.random() * 900000)); }
+
+async function sendVerificationEmail(email, nome) {
+  const code = genOTP();
+  _otp = { code, expiresAt: Date.now() + 10 * 60 * 1000, attempts: 0 };
+  try {
+    await emailjs.send(EJS.serviceId, EJS.templateId, {
+      to_email: email,
+      to_name: nome || 'Utilizador',
+      otp_code: code,
+    }, EJS.publicKey);
+    return true;
+  } catch (err) {
+    console.error('EmailJS error:', err);
+    _otp = null;
+    return false;
+  }
+}
+
+async function showOTPStep(pendingData, mode) {
+  document.getElementById('gate-modal').innerHTML = `
+    <div class="gate-sending">
+      <span class="gate-sending-icon">✉️</span>
+      <div class="gate-sending-title">A enviar código...</div>
+      <div class="gate-sending-sub">A enviar para <strong>${pendingData.email}</strong><br>Por favor aguarda um momento.</div>
+    </div>`;
+
+  const sent = await sendVerificationEmail(pendingData.email, pendingData.nome);
+
+  if (!sent) {
+    document.getElementById('gate-modal').innerHTML = `
+      <div class="gate-age-block">
+        <span class="gate-age-icon">⚠️</span>
+        <h2 class="gate-age-title">Erro ao enviar email</h2>
+        <p class="gate-age-text">Não foi possível enviar o código de verificação. Verifica o endereço de email e tenta novamente.</p>
+        <button class="btn-gate-back" onclick="showGateForm()">← Tentar novamente</button>
+      </div>`;
+    return;
+  }
+
+  _otp.pendingData = pendingData;
+  _otp.mode = mode;
+  let countdown = 60;
+
+  document.getElementById('gate-modal').innerHTML = `
+    <div class="gate-header">
+      <div class="gate-logo">
+        <img src="logo.png" alt="Romanza">
+        <span class="gate-logo-name">Romanza</span>
+      </div>
+      <h2 class="gate-title">Verifica o teu email</h2>
+      <p class="gate-sub">Enviámos um código de 6 dígitos para<br><span class="otp-email-highlight">${pendingData.email}</span></p>
+    </div>
+    <div class="gate-divider"></div>
+    <div class="gate-body">
+      <div class="gate-form-group">
+        <label class="gate-label" for="g-otp">Código de verificação</label>
+        <input class="gate-otp-input" type="text" id="g-otp" maxlength="6" placeholder="000000" inputmode="numeric" autocomplete="one-time-code">
+        <div class="gate-err-msg" id="gerr-otp">Código incorreto. Tenta novamente.</div>
+      </div>
+      <button class="btn-gate-submit" id="btn-verify-otp">Verificar e entrar</button>
+      <div class="otp-resend">Não recebeste? <span class="otp-resend-btn disabled" id="otp-resend-btn">Reenviar em <span id="otp-countdown">${countdown}</span>s</span></div>
+    </div>`;
+
+  const inp = document.getElementById('g-otp');
+  inp.focus();
+  inp.addEventListener('input', function() { this.value = this.value.replace(/\D/g,'').slice(0,6); });
+  document.getElementById('btn-verify-otp').addEventListener('click', verifyOTP);
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') verifyOTP(); });
+
+  const timer = setInterval(() => {
+    countdown--;
+    const ct = document.getElementById('otp-countdown');
+    if (ct) ct.textContent = countdown;
+    if (countdown <= 0) {
+      clearInterval(timer);
+      const btn = document.getElementById('otp-resend-btn');
+      if (btn) {
+        btn.textContent = 'Reenviar código';
+        btn.classList.remove('disabled');
+        btn.addEventListener('click', () => showOTPStep(pendingData, mode));
+      }
+    }
+  }, 1000);
+}
+
+function verifyOTP() {
+  if (!_otp) return;
+  const entered = (document.getElementById('g-otp')?.value || '').trim();
+  const errEl = document.getElementById('gerr-otp');
+  const inp = document.getElementById('g-otp');
+
+  if (Date.now() > _otp.expiresAt) {
+    if (errEl) { errEl.textContent = 'Código expirado. Solicita um novo código.'; errEl.style.display = 'block'; }
+    return;
+  }
+  _otp.attempts++;
+  if (entered !== _otp.code) {
+    if (inp) inp.classList.add('gate-err');
+    if (errEl) { errEl.textContent = `Código incorreto (tentativa ${_otp.attempts}/5).`; errEl.style.display = 'block'; }
+    if (_otp.attempts >= 5) {
+      document.getElementById('gate-modal').innerHTML = `
+        <div class="gate-age-block">
+          <span class="gate-age-icon">🔒</span>
+          <h2 class="gate-age-title">Demasiadas tentativas</h2>
+          <p class="gate-age-text">Por segurança, bloqueámos este pedido. Solicita um novo código.</p>
+          <button class="btn-gate-back" onclick="showGateForm()">← Recomeçar</button>
+        </div>`;
+      _otp = null;
+    }
+    return;
+  }
+
+  // OTP correto
+  const d = _otp.pendingData;
+  const mode = _otp.mode;
+  _otp = null;
+  let toStore;
+  if (mode === 'login') {
+    const ex = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
+    toStore = { ...ex, email: d.email, verified: true, loginEm: new Date().toISOString() };
+  } else {
+    toStore = { nome: d.nome, idade: d.idade, telemovel: d.telemovel, email: d.email, termos: true, verified: true, registadoEm: d.registadoEm };
+  }
+  localStorage.setItem(GATE_KEY, JSON.stringify(toStore));
+  closeGate();
 }
 
 function showGateForm() {
@@ -425,47 +576,38 @@ function showGateForm() {
           <label for="g-termos">Li e aceito os <a href="termos.html" target="_blank">Termos de Serviço</a> e a <a href="privacidade.html" target="_blank">Política de Privacidade</a> da Romanza.</label>
         </div>
         <div class="gate-err-msg" id="gerr-termos" style="margin-bottom:4px">Deves aceitar os termos para continuar.</div>
-        <button type="submit" class="btn-gate-submit">Criar conta e entrar</button>
+        <button type="submit" class="btn-gate-submit">Criar conta e verificar email</button>
       </form>
       <p class="gate-login">Já tens conta? <span id="gate-ja-tenho">Entrar</span></p>
     </div>`;
 
-  // Block under-18 only when the user leaves the age field (not while typing)
   document.getElementById('g-idade').addEventListener('blur', function() {
     const v = parseInt(this.value);
     if (!isNaN(v) && v > 0 && v < 18) showAgeBlock();
   });
+  document.getElementById('gate-ja-tenho').addEventListener('click', showLoginForm);
 
-  // "Já tenho conta" — re-validate stored data or simply accept
-  document.getElementById('gate-ja-tenho').addEventListener('click', function() {
-    showLoginForm();
-  });
-
-  document.getElementById('gate-form').addEventListener('submit', function(e) {
+  document.getElementById('gate-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const nome  = document.getElementById('g-nome').value.trim();
-    const idStr = document.getElementById('g-idade').value.trim();
-    const tel   = document.getElementById('g-tel').value.trim();
-    const email = document.getElementById('g-email').value.trim();
+    const nome   = document.getElementById('g-nome').value.trim();
+    const idStr  = document.getElementById('g-idade').value.trim();
+    const tel    = document.getElementById('g-tel').value.trim();
+    const email  = document.getElementById('g-email').value.trim();
     const termos = document.getElementById('g-termos').checked;
     let ok = true;
 
     ['nome','idade','tel','email','termos'].forEach(f => gateErr(f, false));
-
-    if (!nome)                                        { gateErr('nome',   true); ok = false; }
-    if (!idStr || isNaN(+idStr) || +idStr < 1)        { gateErr('idade',  true); ok = false; }
-    if (!tel || tel.replace(/\D/g,'').length < 9)     { gateErr('tel',    true); ok = false; }
-    if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)){ gateErr('email',  true); ok = false; }
-    if (!termos)                                       { gateErr('termos', true); ok = false; }
+    if (!nome)                                         { gateErr('nome',   true); ok = false; }
+    if (!idStr || isNaN(+idStr) || +idStr < 1)         { gateErr('idade',  true); ok = false; }
+    if (!tel || tel.replace(/\D/g,'').length < 9)      { gateErr('tel',    true); ok = false; }
+    if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) { gateErr('email',  true); ok = false; }
+    if (!termos)                                        { gateErr('termos', true); ok = false; }
     if (!ok) return;
-
     if (parseInt(idStr) < 18) { showAgeBlock(); return; }
 
-    localStorage.setItem(GATE_KEY, JSON.stringify({
-      nome, idade: parseInt(idStr), telemovel: tel, email, termos: true,
-      registadoEm: new Date().toISOString()
-    }));
-    closeGate();
+    const btn = this.querySelector('button[type=submit]');
+    if (btn) { btn.disabled = true; btn.textContent = 'A enviar código...'; }
+    await showOTPStep({ nome, idade: parseInt(idStr), telemovel: tel, email, termos: true, registadoEm: new Date().toISOString() }, 'register');
   });
 }
 
@@ -477,7 +619,7 @@ function showLoginForm() {
         <span class="gate-logo-name">Romanza</span>
       </div>
       <h2 class="gate-title">Bem-vindo/a de volta</h2>
-      <p class="gate-sub">Introduz o teu e-mail para entrares na tua conta.</p>
+      <p class="gate-sub">Introduz o e-mail da tua conta registada.<br>Enviaremos um código de verificação.</p>
     </div>
     <div class="gate-divider"></div>
     <div class="gate-body">
@@ -486,26 +628,33 @@ function showLoginForm() {
           <label class="gate-label" for="l-email">E-mail</label>
           <input class="gate-input" type="email" id="l-email" placeholder="o.teu@email.com" autocomplete="email">
           <div class="gate-err-msg" id="lerr-email">Por favor, introduz um e-mail válido.</div>
+          <div class="gate-err-msg" id="lerr-unreg">Este email não está registado neste dispositivo. Por favor cria uma conta.</div>
         </div>
-        <button type="submit" class="btn-gate-submit">Entrar</button>
+        <button type="submit" class="btn-gate-submit">Enviar código de acesso</button>
       </form>
       <p class="gate-login">Ainda não tens conta? <span id="gate-registar">Registar</span></p>
     </div>`;
 
   document.getElementById('gate-registar').addEventListener('click', showGateForm);
-  document.getElementById('login-form').addEventListener('submit', function(e) {
+  document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const email = document.getElementById('l-email').value.trim();
+    const errEmail = document.getElementById('lerr-email');
+    const errUnreg = document.getElementById('lerr-unreg');
+    const inp = document.getElementById('l-email');
+    errEmail.style.display = 'none'; errUnreg.style.display = 'none'; inp.classList.remove('gate-err');
+
     if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-      const msg = document.getElementById('lerr-email');
-      msg.style.display = 'block';
-      document.getElementById('l-email').classList.add('gate-err');
-      return;
+      errEmail.style.display = 'block'; inp.classList.add('gate-err'); return;
     }
-    // For a static site, accept any valid email as "login" and mark as registered
-    const existing = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)) || {}; } catch { return {}; } })();
-    localStorage.setItem(GATE_KEY, JSON.stringify({ ...existing, email, termos: true, loginEm: new Date().toISOString() }));
-    closeGate();
+    let stored = null;
+    try { stored = JSON.parse(localStorage.getItem(GATE_KEY)); } catch {}
+    if (!stored || stored.email !== email || !stored.verified) {
+      errUnreg.style.display = 'block'; inp.classList.add('gate-err'); return;
+    }
+    const btn = this.querySelector('button[type=submit]');
+    if (btn) { btn.disabled = true; btn.textContent = 'A enviar código...'; }
+    await showOTPStep({ email, nome: stored.nome || '', registadoEm: stored.registadoEm, termos: true, idade: stored.idade, telemovel: stored.telemovel }, 'login');
   });
 }
 
