@@ -1737,7 +1737,8 @@ initCookieBanner();
           const d = JSON.parse(localStorage.getItem(GATE_KEY)) || {};
           localStorage.setItem(GATE_KEY, JSON.stringify({
             email: d.email, telemovel: d.telemovel, nome: d.nome,
-            marcadores: d.marcadores || 0, lastCheckin: d.lastCheckin
+            marcadores: d.marcadores || 0, lastCheckin: d.lastCheckin,
+            premium: d.premium || null, registadoEm: d.registadoEm || null
           }));
         } catch { localStorage.removeItem(GATE_KEY); }
         location.reload();
