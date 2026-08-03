@@ -1321,41 +1321,83 @@ function openAmostra(book) {
   ov.id = 'reader-overlay';
   ov.className = 'reader-overlay';
   ov.innerHTML = `
-    <div class="reader-modal" role="dialog" aria-modal="true" aria-label="Amostra de ${book.titulo}">
+    <div class="reader-modal" role="dialog" aria-modal="true" aria-label="Amostra de ${book.titulo}" style="position:relative">
       <div class="reader-header">
         ${book.cover
           ? `<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
           : `<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
         <div class="reader-header-meta">
-          <div class="reader-tag">Amostra gratuita</div>
+          <div class="reader-tag">Amostra gratuita · 5%</div>
           <div class="reader-header-title">${book.titulo}</div>
         </div>
         <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
       </div>
-      <div class="reader-progress-bar"><div class="reader-progress-fill"></div></div>
-      <div class="reader-body">
-        <div class="reader-chapter">Capítulo 1 — Início</div>
-        <div class="reader-text">${book.amostra || '<p>Amostra não disponível.</p>'}</div>
+      <div class="reader-progress-bar"><div class="reader-progress-fill" style="width:5%"></div></div>
+      <div class="reader-body" id="am-body">
+        <div class="reader-chapter" id="am-chapter">A carregar amostra…</div>
+        <div class="reader-text" id="am-text" style="min-height:200px">
+          <p style="color:#9C8090;text-align:center;padding:40px 0;font-style:italic">A carregar…</p>
+        </div>
+        <div id="am-wall" style="display:none;background:linear-gradient(transparent,#FDFAF7 28%);padding:120px 20px 32px;text-align:center;margin-top:-100px;position:relative;z-index:3">
+          <div style="background:white;border:1.5px solid #EDE4E8;border-radius:18px;padding:24px 20px;max-width:380px;margin:0 auto;box-shadow:0 8px 32px rgba(30,13,18,.1)">
+            <div style="font-size:28px;margin-bottom:10px">📖</div>
+            <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#1E0D12;margin-bottom:6px">Quiseste continuar a leitura?</div>
+            <div style="font-size:13px;color:#9C8090;margin-bottom:20px;line-height:1.6">Leste os teus 5% gratuitos de <em>${book.titulo}</em>.<br>Escolhe como queres continuar:</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <button id="am-btn-marc" style="background:#9B2335;color:white;border:none;border-radius:12px;padding:13px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">🎫 Continuar com Marcadores</button>
+              <button id="am-btn-prem" style="background:#F5C518;color:#1E0D12;border:none;border-radius:12px;padding:13px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px">★ Subscrever Premium — Acesso Ilimitado</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="reader-fade"></div>
-      <div class="reader-footer">
+      <div class="reader-footer" id="am-footer">
         <div class="reader-pct">5% · Amostra gratuita</div>
-        <button class="reader-cta" id="reader-cta-app">Continuar na APP</button>
+        <div style="display:flex;gap:8px">
+          <button class="reader-cta" id="am-foot-marc" style="background:#F5C518;color:#1E0D12;font-size:12px;padding:9px 14px">🎫 Marcadores</button>
+          <button class="reader-cta" id="am-foot-prem" style="font-size:12px;padding:9px 14px">★ Premium</button>
+        </div>
       </div>
     </div>
   `;
+
   document.body.appendChild(ov);
   document.body.style.overflow = 'hidden';
 
-  const close = () => {
-    ov.remove();
-    document.body.style.overflow = '';
-  };
+  // Carrega os primeiros 5% do livro do ficheiro
+  (async () => {
+    try {
+      const resp = await fetch(`books/livro-${book.id}.html`);
+      if (resp.ok) {
+        const html = await resp.text();
+        // Título do primeiro capítulo
+        const chapM = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
+        document.getElementById('am-chapter').textContent =
+          chapM ? chapM[1].replace(/<[^>]+>/g,'').trim() : 'Capítulo 1 — Início';
+        // Primeiros 5% dos parágrafos (mínimo 12, máximo 60)
+        const nodes = html.match(/<(?:p|h2)[^>]*>[\s\S]*?<\/(?:p|h2)>/g) || [];
+        const limit = Math.min(60, Math.max(12, Math.floor(nodes.length * 0.05)));
+        document.getElementById('am-text').innerHTML = nodes.slice(0, limit).join('');
+      } else {
+        document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
+        document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
+      }
+    } catch {
+      document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
+      document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
+    }
+    // Mostra o muro de paywall no final do conteúdo
+    document.getElementById('am-wall').style.display = 'block';
+  })();
+
+  const close = () => { ov.remove(); document.body.style.overflow = ''; };
+  const goMarc = () => { close(); _showAccessDialog(book); };
+  const goPrem = () => { close(); window.open('index.html#loja', '_blank'); };
+
   document.getElementById('reader-close').addEventListener('click', close);
-  document.getElementById('reader-cta-app').addEventListener('click', () => {
-    close();
-    showToast('📱 App em breve na Google Play! Regista-te para seres das primeiras a saber.', 'info');
-  });
+  document.getElementById('am-btn-marc').addEventListener('click', goMarc);
+  document.getElementById('am-btn-prem').addEventListener('click', goPrem);
+  document.getElementById('am-foot-marc').addEventListener('click', goMarc);
+  document.getElementById('am-foot-prem').addEventListener('click', goPrem);
   ov.addEventListener('click', e => { if (e.target === ov) close(); });
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
