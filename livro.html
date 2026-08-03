@@ -157,7 +157,9 @@
     .prd-content{max-width:660px;margin:0 auto;padding:40px 32px 80px}
     .prd-bm-notice{background:var(--rc);border:1.5px solid var(--rbr);border-radius:12px;padding:10px 16px;margin-bottom:24px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--rt);transition:background .3s,border-color .3s}
     .prd-bm-notice button{background:none;border:none;color:var(--ra);font-weight:700;cursor:pointer;text-decoration:underline;font-size:13px;padding:0;font-family:inherit}
-    .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:28px;transition:color .3s}
+    .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:12px;transition:color .3s}
+    .prd-copyright{font-size:10px;color:var(--rs);border:1px solid var(--rbr);border-radius:8px;padding:7px 12px;margin-bottom:24px;display:flex;align-items:center;gap:6px;background:var(--rc);line-height:1.45;transition:all .3s}
+    .prd-copyright svg{flex-shrink:0;opacity:.7}
     .prd-text{font-family:'Playfair Display',serif;line-height:1.95;color:var(--rt);transition:font-size .2s,color .3s}
     .prd-text p{margin-bottom:20px}
     .prd-text>p:first-of-type::first-letter,.prd-text h2+p::first-letter,.prd-text h3+p::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
@@ -1140,6 +1142,10 @@ function _openProReader(book, mode, msLeft) {
         <div class="prd-content">
           ${bmNoticeHTML}
           <div class="prd-chapter" id="prd-chapter">A carregar...</div>
+          <div class="prd-copyright" id="prd-copyright" style="display:none">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83A4 4 0 1 1 9.17 9.17"/></svg>
+            <span id="prd-copyright-text"></span>
+          </div>
           <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px"><p style="color:var(--rs);font-style:italic;text-align:center;padding:40px 0">A carregar o livro...</p></div>
         </div>
       </div>
@@ -1186,6 +1192,14 @@ function _openProReader(book, mode, msLeft) {
       } else {
         chapterEl.textContent = book.titulo || 'Capítulo 1';
         textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
+      }
+      // Aviso de direitos autorais
+      const cpEl = document.getElementById('prd-copyright');
+      const cpTxt = document.getElementById('prd-copyright-text');
+      if (cpEl && cpTxt) {
+        const year = new Date().getFullYear();
+        cpTxt.textContent = `© ${year} ${book.autor} · Todos os direitos reservados. É proibida a reprodução total ou parcial desta obra sem autorização prévia do autor.`;
+        cpEl.style.display = 'flex';
       }
     } catch {
       chapterEl.textContent = book.titulo || 'Capítulo 1';
@@ -1391,6 +1405,13 @@ function openAmostra(book) {
     } catch {
       document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
       document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
+    }
+    // Aviso de direitos autorais no topo da amostra
+    const amText = document.getElementById('am-text');
+    if (amText) {
+      const year = new Date().getFullYear();
+      const cpHtml = `<div style="font-size:10px;color:#9C8090;border:1px solid #EDE4E8;border-radius:8px;padding:7px 12px;margin-bottom:20px;display:flex;align-items:center;gap:6px;background:#FAF5F7;line-height:1.45"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83A4 4 0 1 1 9.17 9.17"/></svg>© ${year} ${book.autor} · Todos os direitos reservados. É proibida a reprodução total ou parcial desta obra sem autorização prévia do autor.</div>`;
+      amText.insertAdjacentHTML('afterbegin', cpHtml);
     }
     // Mostra o muro de paywall no final do conteúdo
     document.getElementById('am-wall').style.display = 'block';
