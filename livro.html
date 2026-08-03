@@ -157,9 +157,18 @@
     .prd-content{max-width:660px;margin:0 auto;padding:40px 32px 80px}
     .prd-bm-notice{background:var(--rc);border:1.5px solid var(--rbr);border-radius:12px;padding:10px 16px;margin-bottom:24px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--rt);transition:background .3s,border-color .3s}
     .prd-bm-notice button{background:none;border:none;color:var(--ra);font-weight:700;cursor:pointer;text-decoration:underline;font-size:13px;padding:0;font-family:inherit}
-    .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:12px;transition:color .3s}
-    .prd-copyright{font-size:10px;color:var(--rs);border:1px solid var(--rbr);border-radius:8px;padding:7px 12px;margin-bottom:24px;display:flex;align-items:center;gap:6px;background:var(--rc);line-height:1.45;transition:all .3s}
-    .prd-copyright svg{flex-shrink:0;opacity:.7}
+    .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:28px;transition:color .3s}
+    /* Copyright modal */
+    .cp-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,4,8,.72);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .cp-box{background:#FDFAF7;border-radius:20px;max-width:420px;width:100%;padding:32px 28px 28px;text-align:center;box-shadow:0 24px 64px rgba(10,4,8,.35);animation:cpIn .3s ease}
+    @keyframes cpIn{from{transform:scale(.9) translateY(12px);opacity:0}to{transform:none;opacity:1}}
+    .cp-icon{font-size:36px;margin-bottom:14px}
+    .cp-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#1E0D12;margin-bottom:6px}
+    .cp-author{font-size:13px;font-weight:600;color:#9B2335;margin-bottom:16px}
+    .cp-body{font-size:12px;color:#7C5060;line-height:1.7;margin-bottom:22px;border-top:1px solid #EDE4E8;border-bottom:1px solid #EDE4E8;padding:14px 0}
+    .cp-btn{background:#9B2335;color:white;border:none;border-radius:12px;padding:13px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:background .2s}
+    .cp-btn:hover{background:#7a1c2a}
+    .cp-note{font-size:10px;color:#BBA8B0;margin-top:12px;line-height:1.5}
     .prd-text{font-family:'Playfair Display',serif;line-height:1.95;color:var(--rt);transition:font-size .2s,color .3s}
     .prd-text p{margin-bottom:20px}
     .prd-text>p:first-of-type::first-letter,.prd-text h2+p::first-letter,.prd-text h3+p::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
@@ -1142,10 +1151,6 @@ function _openProReader(book, mode, msLeft) {
         <div class="prd-content">
           ${bmNoticeHTML}
           <div class="prd-chapter" id="prd-chapter">A carregar...</div>
-          <div class="prd-copyright" id="prd-copyright" style="display:none">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83A4 4 0 1 1 9.17 9.17"/></svg>
-            <span id="prd-copyright-text"></span>
-          </div>
           <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px"><p style="color:var(--rs);font-style:italic;text-align:center;padding:40px 0">A carregar o livro...</p></div>
         </div>
       </div>
@@ -1168,8 +1173,33 @@ function _openProReader(book, mode, msLeft) {
   const fillEl    = document.getElementById('prd-fill');
   const pctEl     = document.getElementById('prd-pct');
 
+  // ── Modal de direitos autorais ──
+  function _showCopyrightModal(onAccept) {
+    const year = new Date().getFullYear();
+    const overlay = document.createElement('div');
+    overlay.className = 'cp-overlay';
+    overlay.innerHTML = `
+      <div class="cp-box">
+        <div class="cp-icon">©</div>
+        <div class="cp-title">${book.titulo}</div>
+        <div class="cp-author">por ${book.autor}</div>
+        <div class="cp-body">
+          Esta obra está protegida por direitos de autor.<br>
+          É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>
+          A leitura nesta plataforma é estritamente pessoal e intransmissível.
+        </div>
+        <button class="cp-btn" id="cp-accept-btn">Entendi — Começar a Ler</button>
+        <div class="cp-note">© ${year} ${book.autor} · Todos os direitos reservados</div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#cp-accept-btn').addEventListener('click', () => {
+      overlay.remove();
+      onAccept();
+    });
+  }
+
   // ── Carregar conteúdo do livro ──
-  (async () => {
+  async function _loadBookContent() {
     try {
       const resp = await fetch(`books/livro-${book.id}.html`);
       if (resp.ok) {
@@ -1193,14 +1223,6 @@ function _openProReader(book, mode, msLeft) {
         chapterEl.textContent = book.titulo || 'Capítulo 1';
         textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
       }
-      // Aviso de direitos autorais
-      const cpEl = document.getElementById('prd-copyright');
-      const cpTxt = document.getElementById('prd-copyright-text');
-      if (cpEl && cpTxt) {
-        const year = new Date().getFullYear();
-        cpTxt.textContent = `© ${year} ${book.autor} · Todos os direitos reservados. É proibida a reprodução total ou parcial desta obra sem autorização prévia do autor.`;
-        cpEl.style.display = 'flex';
-      }
     } catch {
       chapterEl.textContent = book.titulo || 'Capítulo 1';
       textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
@@ -1210,7 +1232,11 @@ function _openProReader(book, mode, msLeft) {
       body.scrollTop = savedPos * (body.scrollHeight - body.clientHeight);
     }
     updateProgress();
-  })();
+  }
+
+  _showCopyrightModal(() => {
+    _loadBookContent();
+  });
   const bmFoot   = document.getElementById('prd-bm-foot');
   const bmHdrBtn = document.getElementById('prd-bm-btn');
 
@@ -1384,17 +1410,40 @@ function openAmostra(book) {
   document.body.appendChild(ov);
   document.body.style.overflow = 'hidden';
 
+  // Modal de direitos autorais → depois carrega a amostra
+  function _showAmCopyrightModal(onAccept) {
+    const year = new Date().getFullYear();
+    const overlay = document.createElement('div');
+    overlay.className = 'cp-overlay';
+    overlay.innerHTML = `
+      <div class="cp-box">
+        <div class="cp-icon">©</div>
+        <div class="cp-title">${book.titulo}</div>
+        <div class="cp-author">por ${book.autor}</div>
+        <div class="cp-body">
+          Esta obra está protegida por direitos de autor.<br>
+          É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>
+          A leitura nesta plataforma é estritamente pessoal e intransmissível.
+        </div>
+        <button class="cp-btn" id="cp-am-btn">Entendi — Ver Amostra Gratuita</button>
+        <div class="cp-note">© ${year} ${book.autor} · Todos os direitos reservados</div>
+      </div>`;
+    document.body.appendChild(overlay);
+    overlay.querySelector('#cp-am-btn').addEventListener('click', () => {
+      overlay.remove();
+      onAccept();
+    });
+  }
+
   // Carrega os primeiros 5% do livro do ficheiro
-  (async () => {
+  async function _loadAmostra() {
     try {
       const resp = await fetch(`books/livro-${book.id}.html`);
       if (resp.ok) {
         const html = await resp.text();
-        // Título do primeiro capítulo
         const chapM = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
         document.getElementById('am-chapter').textContent =
           chapM ? chapM[1].replace(/<[^>]+>/g,'').trim() : 'Capítulo 1 — Início';
-        // Primeiros 5% dos parágrafos (mínimo 12, máximo 60)
         const nodes = html.match(/<(?:p|h2)[^>]*>[\s\S]*?<\/(?:p|h2)>/g) || [];
         const limit = Math.min(60, Math.max(12, Math.floor(nodes.length * 0.05)));
         document.getElementById('am-text').innerHTML = nodes.slice(0, limit).join('');
@@ -1406,16 +1455,10 @@ function openAmostra(book) {
       document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
       document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
     }
-    // Aviso de direitos autorais no topo da amostra
-    const amText = document.getElementById('am-text');
-    if (amText) {
-      const year = new Date().getFullYear();
-      const cpHtml = `<div style="font-size:10px;color:#9C8090;border:1px solid #EDE4E8;border-radius:8px;padding:7px 12px;margin-bottom:20px;display:flex;align-items:center;gap:6px;background:#FAF5F7;line-height:1.45"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;opacity:.7"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83A4 4 0 1 1 9.17 9.17"/></svg>© ${year} ${book.autor} · Todos os direitos reservados. É proibida a reprodução total ou parcial desta obra sem autorização prévia do autor.</div>`;
-      amText.insertAdjacentHTML('afterbegin', cpHtml);
-    }
-    // Mostra o muro de paywall no final do conteúdo
     document.getElementById('am-wall').style.display = 'block';
-  })();
+  }
+
+  _showAmCopyrightModal(() => { _loadAmostra(); });
 
   const close = () => { ov.remove(); document.body.style.overflow = ''; };
   const goMarc = () => { close(); _showAccessDialog(book); };
