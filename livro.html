@@ -324,7 +324,7 @@
     <button id="marc-convidar" style="display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #EDE4E8;color:#1E0D12;border-radius:100px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">
       👤 Convidar Amigo <span style="background:#5C4050;color:white;border-radius:100px;padding:1px 7px;font-size:10px">+60</span>
     </button>
-    <a href="index.html#loja" style="font-size:12px;font-weight:600;color:#9C8090;text-decoration:none;white-space:nowrap">Ver Loja →</a>
+    <a href="index.html#loja-planos" style="font-size:12px;font-weight:600;color:#9C8090;text-decoration:none;white-space:nowrap">Ver Loja →</a>
   </div>
 </div>
 
@@ -1041,8 +1041,8 @@ function _showAccessDialog(book) {
   document.getElementById('reader-close').addEventListener('click', close);
   ov.addEventListener('click', e => { if (e.target === ov) close(); });
   document.addEventListener('keydown', function esc(e) { if (e.key==='Escape'){close();document.removeEventListener('keydown',esc);} });
-  document.getElementById('dial-premium').addEventListener('click', () => { close(); window.open('index.html#loja','_blank'); });
-  document.getElementById('dial-loja')?.addEventListener('click', () => { close(); window.open('index.html#loja','_blank'); });
+  document.getElementById('dial-premium').addEventListener('click', () => { close(); window.location.href='index.html#loja-planos'; });
+  document.getElementById('dial-loja')?.addEventListener('click', () => { close(); window.location.href='index.html#loja-planos'; });
   ov.querySelectorAll('.dial-time-btn:not([disabled])').forEach(btn => {
     btn.addEventListener('click', () => {
       const min = +btn.dataset.min, cost = +btn.dataset.cost;
@@ -1342,7 +1342,7 @@ function _openProReader(book, mode, msLeft) {
     }, 1000);
 
     document.getElementById('prd-exp-more')?.addEventListener('click',    () => { close(); _showAccessDialog(book); });
-    document.getElementById('prd-exp-premium')?.addEventListener('click', () => { close(); window.open('index.html#loja','_blank'); });
+    document.getElementById('prd-exp-premium')?.addEventListener('click', () => { close(); window.location.href='index.html#loja-planos'; });
     document.getElementById('prd-exp-close')?.addEventListener('click',   close);
   }
 
@@ -1462,7 +1462,7 @@ function openAmostra(book) {
 
   const close = () => { ov.remove(); document.body.style.overflow = ''; };
   const goMarc = () => { close(); _showAccessDialog(book); };
-  const goPrem = () => { close(); window.open('index.html#loja', '_blank'); };
+  const goPrem = () => { close(); window.location.href='index.html#loja-planos'; };
 
   document.getElementById('reader-close').addEventListener('click', close);
   document.getElementById('am-btn-marc').addEventListener('click', goMarc);
