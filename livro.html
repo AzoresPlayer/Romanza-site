@@ -169,6 +169,9 @@
     .cp-btn{background:#9B2335;color:white;border:none;border-radius:12px;padding:13px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:background .2s}
     .cp-btn:hover{background:#7a1c2a}
     .cp-note{font-size:10px;color:#BBA8B0;margin-top:12px;line-height:1.5}
+    /* Protecção contra cópia */
+    .prd-body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+    @media print{.prd{display:none!important}}
     .prd-text{font-family:'Playfair Display',serif;line-height:1.95;color:var(--rt);transition:font-size .2s,color .3s}
     .prd-text p{margin-bottom:20px}
     .prd-text>p:first-of-type::first-letter,.prd-text h2+p::first-letter,.prd-text h3+p::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
@@ -1359,6 +1362,19 @@ function _openProReader(book, mode, msLeft) {
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
   });
+
+  // ── Protecção contra cópia ──
+  const prdBody = document.getElementById('prd-body');
+  prdBody.addEventListener('copy',        e => e.preventDefault());
+  prdBody.addEventListener('cut',         e => e.preventDefault());
+  prdBody.addEventListener('contextmenu', e => e.preventDefault());
+  prdBody.addEventListener('dragstart',   e => e.preventDefault());
+  prdBody.addEventListener('keydown', e => {
+    const ctrl = e.ctrlKey || e.metaKey;
+    // Bloqueia Ctrl+C, Ctrl+A, Ctrl+P, Ctrl+S, PrintScreen
+    if (ctrl && ['c','a','p','s','u'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'PrintScreen') e.preventDefault();
+  });
 }
 
 function openAmostra(book) {
@@ -1472,6 +1488,18 @@ function openAmostra(book) {
   ov.addEventListener('click', e => { if (e.target === ov) close(); });
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
+
+  // ── Protecção contra cópia na amostra ──
+  const amBody = document.getElementById('am-body');
+  amBody.addEventListener('copy',        e => e.preventDefault());
+  amBody.addEventListener('cut',         e => e.preventDefault());
+  amBody.addEventListener('contextmenu', e => e.preventDefault());
+  amBody.addEventListener('dragstart',   e => e.preventDefault());
+  amBody.addEventListener('keydown', e => {
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && ['c','a','p','s','u'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'PrintScreen') e.preventDefault();
   });
 }
 
