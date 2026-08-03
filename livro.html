@@ -160,7 +160,10 @@
     .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:28px;transition:color .3s}
     .prd-text{font-family:'Playfair Display',serif;line-height:1.95;color:var(--rt);transition:font-size .2s,color .3s}
     .prd-text p{margin-bottom:20px}
-    .prd-text p:first-of-type::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
+    .prd-text>p:first-of-type::first-letter,.prd-text h2+p::first-letter,.prd-text h3+p::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
+    .prd-text h2{font-family:'Playfair Display',serif;font-size:1.15em;font-weight:700;color:var(--ra);margin:52px 0 22px;padding-top:40px;border-top:1px solid var(--rbr);letter-spacing:.5px;transition:color .3s,border-color .3s}
+    .prd-text h2:first-child{margin-top:0;padding-top:0;border-top:none}
+    .prd-text h3{font-family:'Playfair Display',serif;font-size:1em;font-style:italic;font-weight:600;color:var(--rs);margin:32px 0 16px;transition:color .3s}
     /* Footer */
     .prd-foot{background:var(--rh);border-top:1px solid var(--rbr);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;transition:background .3s,border-color .3s}
     .prd-pct{font-size:12px;font-weight:700;color:var(--rs)}
@@ -1165,23 +1168,27 @@ function _openProReader(book, mode, msLeft) {
       const resp = await fetch(`books/livro-${book.id}.html`);
       if (resp.ok) {
         const html = await resp.text();
-        // Extrai capítulo do primeiro <h2> ou <h3> se existir
-        const chapMatch = html.match(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/i);
-        if (chapMatch) {
-          chapterEl.textContent = chapMatch[1].replace(/<[^>]+>/g,'').trim();
-        } else {
-          chapterEl.textContent = 'Capítulo 1 — Início';
+        // Mantém h2/h3 no conteúdo — mostra todos os capítulos
+        textEl.innerHTML = html;
+        // Capítulo inicial = primeiro h2/h3
+        const firstH = textEl.querySelector('h2,h3');
+        chapterEl.textContent = firstH ? firstH.textContent.trim() : book.titulo;
+        // Actualiza barra de capítulo conforme o utilizador rola
+        const headings = Array.from(textEl.querySelectorAll('h2,h3'));
+        if (headings.length > 1) {
+          const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+              if (e.isIntersecting) chapterEl.textContent = e.target.textContent.trim();
+            });
+          }, { root: body, rootMargin: '0px 0px -80% 0px', threshold: 0 });
+          headings.forEach(h => obs.observe(h));
         }
-        // Remove as tags h2/h3 do conteúdo principal
-        const body_html = html.replace(/<h[23][^>]*>[\s\S]*?<\/h[23]>/gi, '').trim();
-        textEl.innerHTML = body_html;
       } else {
-        // Fallback para amostra embutida
-        chapterEl.textContent = 'Capítulo 1 — Início';
+        chapterEl.textContent = book.titulo || 'Capítulo 1';
         textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
       }
     } catch {
-      chapterEl.textContent = 'Capítulo 1 — Início';
+      chapterEl.textContent = book.titulo || 'Capítulo 1';
       textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
     }
     // Restaurar posição após conteúdo carregado
