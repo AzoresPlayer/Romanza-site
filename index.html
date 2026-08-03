@@ -303,8 +303,8 @@
     .cover-lb-hint{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.72));font-size:11px;font-weight:700;color:rgba(255,255,255,.8);text-align:center;letter-spacing:.5px;opacity:0;transition:opacity .2s;pointer-events:none}
     .cover-lb-back{position:absolute;inset:0;transform:rotateY(180deg);background:white;border-radius:0 0 24px 24px;display:flex;flex-direction:column;justify-content:center;padding:26px 24px 24px;min-height:100%}
     .cover-lb-sinopse{font-size:13.5px;line-height:1.75;color:#5C4050;margin-top:12px;flex:1}
-    .cover-lb-back-footer{margin-top:18px;display:flex;justify-content:center}
-    .btn-lb-flip-back{background:transparent;border:1.5px solid #EDE4E8;color:#9C8090;border-radius:100px;padding:8px 20px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,color .2s}
+    .cover-lb-back-footer{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .btn-lb-flip-back{background:transparent;border:1.5px solid #EDE4E8;color:#9C8090;border-radius:100px;padding:8px 20px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,color .2s;white-space:nowrap}
     .btn-lb-flip-back:hover{border-color:#9B2335;color:#9B2335}
 
     /* App download */
@@ -1298,6 +1298,9 @@ function openCoverLightbox(item) {
             <div class="cover-lb-sinopse">${item.sinopse || 'Sinopse em breve.'}</div>
             <div class="cover-lb-back-footer">
               <button class="btn-lb-flip-back" id="lb-flip-back">← Ver capa</button>
+              <button class="btn-vote ${userVoted === item.id ? 'voted' : ''}" id="lb-vote-btn" ${userVoted && userVoted !== item.id ? 'disabled' : ''} style="padding:9px 22px;font-size:13px">
+                ${userVoted === item.id ? '✓ Votado' : 'Votar'}
+              </button>
             </div>
           </div>
         </div>
@@ -1310,6 +1313,15 @@ function openCoverLightbox(item) {
   document.getElementById('lb-close').addEventListener('click', close);
   document.getElementById('lb-front').addEventListener('click', () => inner.classList.add('flipped'));
   document.getElementById('lb-flip-back').addEventListener('click', e => { e.stopPropagation(); inner.classList.remove('flipped'); });
+  document.getElementById('lb-vote-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    if (userVoted) return;
+    votes[item.id] = (votes[item.id] || 0) + 1;
+    userVoted = item.id;
+    const btn = document.getElementById('lb-vote-btn');
+    if (btn) { btn.textContent = '✓ Votado'; btn.classList.add('voted'); }
+    renderVotes();
+  });
   ov.addEventListener('click', close);
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
