@@ -1136,8 +1136,8 @@ function _openProReader(book, mode, msLeft) {
       <div class="prd-body" id="prd-body">
         <div class="prd-content">
           ${bmNoticeHTML}
-          <div class="prd-chapter">Capítulo 1 — Início</div>
-          <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
+          <div class="prd-chapter" id="prd-chapter">A carregar...</div>
+          <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px"><p style="color:var(--rs);font-style:italic;text-align:center;padding:40px 0">A carregar o livro...</p></div>
         </div>
       </div>
       <div class="prd-foot">
@@ -1153,10 +1153,43 @@ function _openProReader(book, mode, msLeft) {
   document.body.style.overflow = 'hidden';
 
   // ── Elementos ──
-  const body     = document.getElementById('prd-body');
-  const textEl   = document.getElementById('prd-text');
-  const fillEl   = document.getElementById('prd-fill');
-  const pctEl    = document.getElementById('prd-pct');
+  const body      = document.getElementById('prd-body');
+  const textEl    = document.getElementById('prd-text');
+  const chapterEl = document.getElementById('prd-chapter');
+  const fillEl    = document.getElementById('prd-fill');
+  const pctEl     = document.getElementById('prd-pct');
+
+  // ── Carregar conteúdo do livro ──
+  (async () => {
+    try {
+      const resp = await fetch(`books/livro-${book.id}.html`);
+      if (resp.ok) {
+        const html = await resp.text();
+        // Extrai capítulo do primeiro <h2> ou <h3> se existir
+        const chapMatch = html.match(/<h[23][^>]*>([\s\S]*?)<\/h[23]>/i);
+        if (chapMatch) {
+          chapterEl.textContent = chapMatch[1].replace(/<[^>]+>/g,'').trim();
+        } else {
+          chapterEl.textContent = 'Capítulo 1 — Início';
+        }
+        // Remove as tags h2/h3 do conteúdo principal
+        const body_html = html.replace(/<h[23][^>]*>[\s\S]*?<\/h[23]>/gi, '').trim();
+        textEl.innerHTML = body_html;
+      } else {
+        // Fallback para amostra embutida
+        chapterEl.textContent = 'Capítulo 1 — Início';
+        textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
+      }
+    } catch {
+      chapterEl.textContent = 'Capítulo 1 — Início';
+      textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
+    }
+    // Restaurar posição após conteúdo carregado
+    if (savedPos !== null && savedPos > 0) {
+      body.scrollTop = savedPos * (body.scrollHeight - body.clientHeight);
+    }
+    updateProgress();
+  })();
   const bmFoot   = document.getElementById('prd-bm-foot');
   const bmHdrBtn = document.getElementById('prd-bm-btn');
 
@@ -1181,13 +1214,6 @@ function _openProReader(book, mode, msLeft) {
     posTimer = setTimeout(savePos, 1500);
   });
 
-  // ── Restaurar última posição ──
-  setTimeout(() => {
-    if (savedPos !== null && savedPos > 0) {
-      body.scrollTop = savedPos * (body.scrollHeight - body.clientHeight);
-    }
-    updateProgress();
-  }, 150);
 
   // ── Ir para marcador ──
   document.getElementById('prd-goto-bm')?.addEventListener('click', () => {
