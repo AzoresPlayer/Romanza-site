@@ -235,6 +235,13 @@
     .btn-sub-mensal{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;background:#9B2335;color:white;border:none;cursor:default}
     .btn-sub-anual{width:100%;padding:14px;border-radius:12px;font-size:15px;font-weight:700;background:#F5C518;color:#1E0D12;border:none;cursor:default}
     .pp-wrap{min-height:46px;border-radius:12px;overflow:hidden}
+    .btn-paypal{width:100%;padding:13px 16px;border-radius:12px;font-size:14px;font-weight:700;background:#0070BA;color:white;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .2s,transform .1s}
+    .btn-paypal:hover{background:#005EA6;transform:translateY(-1px)}
+    .btn-paypal:active{transform:translateY(0)}
+    .pp-logo{font-size:13px;font-weight:900;letter-spacing:-.5px;line-height:1}
+    .pp-logo-p{color:#fff}
+    .pp-logo-ay{color:#9FCCF3}
+    .pp-logo-pal{color:#fff}
     .pp-login-prompt{display:block;width:100%;padding:13px;text-align:center;background:#F5EEE8;color:#9C8090;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;border:1.5px solid #EDE4E8;transition:border-color .2s,color .2s}
     .pp-login-prompt:hover{border-color:#9B2335;color:#9B2335}
     .loja-marks{display:grid;grid-template-columns:1fr 1fr;gap:14px}
@@ -1864,93 +1871,108 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
 
 // ── PAYPAL PAYMENTS ──
 (function initPayPal() {
-  // ★ Substitua pelo seu PayPal Client ID em developer.paypal.com → Apps & Credentials
-  const PAYPAL_CLIENT_ID = 'YOUR_PAYPAL_CLIENT_ID';
-
+  const PP_EMAIL = 'dutraferreira1@gmail.com';
   const KEY = 'romanza-user-v1';
   const getU = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; } };
   const setU = d => localStorage.setItem(KEY, JSON.stringify(d));
 
   const PRODUCTS = {
-    'pp-mensal':   { amount:'9.99',   desc:'Romanza Mensal',   tipo:'sub',  subTipo:'mensal',  dias:30    },
-    'pp-anual':    { amount:'79.99',  desc:'Romanza Anual',    tipo:'sub',  subTipo:'anual',   dias:365   },
-    'pp-marc100':  { amount:'4.99',   desc:'100 Marcadores',   tipo:'marc', qtd:100   },
-    'pp-marc500':  { amount:'19.99',  desc:'500 Marcadores',   tipo:'marc', qtd:500   },
-    'pp-marc1000': { amount:'34.99',  desc:'1000 Marcadores',  tipo:'marc', qtd:1000  },
-    'pp-marc5000': { amount:'149.99', desc:'5000 Marcadores',  tipo:'marc', qtd:5000  },
+    mensal:   { amount:'9.99',   desc:'Romanza Mensal — 30 dias Premium',  tipo:'sub',  subTipo:'mensal', dias:30,   btn:'⭐ Subscrever Mensal' },
+    anual:    { amount:'79.99',  desc:'Romanza Anual — 365 dias Premium',   tipo:'sub',  subTipo:'anual',  dias:365,  btn:'⭐ Subscrever Anual'  },
+    marc100:  { amount:'4.99',   desc:'Romanza — 100 Marcadores',           tipo:'marc', qtd:100,  btn:'Comprar 100 🎫' },
+    marc500:  { amount:'19.99',  desc:'Romanza — 500 Marcadores',           tipo:'marc', qtd:500,  btn:'Comprar 500 🎫' },
+    marc1000: { amount:'34.99',  desc:'Romanza — 1000 Marcadores',          tipo:'marc', qtd:1000, btn:'Comprar 1000 🎫' },
+    marc5000: { amount:'149.99', desc:'Romanza — 5000 Marcadores',          tipo:'marc', qtd:5000, btn:'Comprar 5000 🎫' },
   };
 
-  function activate(product) {
+  const CONTAINERS = {
+    'pp-mensal':'mensal', 'pp-anual':'anual',
+    'pp-marc100':'marc100', 'pp-marc500':'marc500',
+    'pp-marc1000':'marc1000', 'pp-marc5000':'marc5000'
+  };
+
+  function activate(code) {
+    const p = PRODUCTS[code];
+    if (!p) return;
     const u = getU() || {};
-    if (product.tipo === 'sub') {
-      const now = Date.now();
-      // Se já tem premium, estende a partir da data actual de expiração
+    if (p.tipo === 'sub') {
       const base = (u.premium && u.premium.expiraEm && new Date(u.premium.expiraEm) > new Date())
-        ? new Date(u.premium.expiraEm).getTime() : now;
-      u.premium = { tipo: product.subTipo, expiraEm: new Date(base + product.dias * 86400000).toISOString() };
+        ? new Date(u.premium.expiraEm).getTime() : Date.now();
+      u.premium = { tipo: p.subTipo, expiraEm: new Date(base + p.dias * 86400000).toISOString() };
       setU(u);
-      showToast(`★ Subscrição ${product.subTipo === 'mensal' ? 'Mensal' : 'Anual'} ativada! Bem-vinda ao Premium! 🎉`, 'success');
+      showToast(`★ Subscrição ${p.subTipo === 'mensal' ? 'Mensal' : 'Anual'} ativada! Bem-vinda ao Premium! 🎉`, 'success');
     } else {
-      u.marcadores = (u.marcadores || 0) + product.qtd;
+      u.marcadores = (u.marcadores || 0) + p.qtd;
       setU(u);
-      showToast(`🎫 +${product.qtd} Marcadores adicionados à tua conta!`, 'success');
-      if (typeof addPassXP === 'function') addPassXP(Math.round(product.qtd / 5));
+      showToast(`🎫 +${p.qtd} Marcadores adicionados à tua conta!`, 'success');
+      if (typeof addPassXP === 'function') addPassXP(Math.round(p.qtd / 5));
     }
-    // Atualizar UI
     if (typeof updateNavUser === 'function') updateNavUser();
-    // Refrescar pass
-    const passEl = document.getElementById('romanza-pass');
-    if (passEl) passEl.dispatchEvent(new Event('refresh'));
+    // Recarregar página após 2s para atualizar barra de estado
+    setTimeout(() => location.reload(), 2000);
   }
 
-  function loginPrompt(container) {
-    container.innerHTML = `<button class="pp-login-prompt" onclick="window.location.href='livro.html'">Inicia sessão para comprar</button>`;
-  }
-
-  function renderButton(id, product) {
-    const container = document.getElementById(id);
-    if (!container || typeof paypal === 'undefined') return;
+  // Detetar retorno do PayPal após pagamento
+  const urlP = new URLSearchParams(window.location.search);
+  const pago = urlP.get('rz_pago');
+  if (pago && PRODUCTS[pago]) {
+    history.replaceState({}, '', window.location.pathname + '#loja');
     const u = getU();
-    if (!u || !u.verified) { loginPrompt(container); return; }
-    try {
-      paypal.Buttons({
-        style: { layout:'vertical', color:'gold', shape:'pill', label:'pay', height:44 },
-        createOrder(data, actions) {
-          return actions.order.create({
-            purchase_units: [{ amount:{ value:product.amount, currency_code:'EUR' }, description:product.desc }]
-          });
-        },
-        onApprove(data, actions) {
-          return actions.order.capture().then(() => activate(product));
-        },
-        onError(err) {
-          console.error('PayPal:', err);
-          showToast('Erro no pagamento. Tente novamente.', 'error');
-        },
-        onCancel() { showToast('Pagamento cancelado.', 'info'); }
-      }).render('#' + id);
-    } catch(e) { console.warn('PayPal render error:', e); }
+    if (u && u.verified) {
+      activate(pago);
+    } else {
+      // Guardar ativação pendente até o utilizador iniciar sessão
+      try { localStorage.setItem('rz_pending_pago', pago); } catch {}
+      showToast('Pagamento recebido! Inicia sessão para ativar.', 'info');
+    }
   }
 
-  function initButtons() {
-    Object.entries(PRODUCTS).forEach(([id, product]) => renderButton(id, product));
+  // Verificar ativação pendente (utilizador acabou de iniciar sessão)
+  const pending = (() => { try { return localStorage.getItem('rz_pending_pago'); } catch { return null; } })();
+  if (pending && PRODUCTS[pending]) {
+    const u = getU();
+    if (u && u.verified) {
+      try { localStorage.removeItem('rz_pending_pago'); } catch {}
+      activate(pending);
+    }
   }
 
-  // Carregar SDK PayPal dinamicamente
-  if (typeof paypal !== 'undefined') {
-    initButtons();
-  } else {
-    const s = document.createElement('script');
-    s.src = `https://www.paypal.com/sdk/js?client-id=${PAYPAL_CLIENT_ID}&currency=EUR&locale=pt_PT`;
-    s.onload = initButtons;
-    s.onerror = () => {
-      Object.keys(PRODUCTS).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = '<div style="text-align:center;padding:10px;font-size:12px;color:#9C8090">Pagamento indisponível</div>';
-      });
-    };
-    document.head.appendChild(s);
-  }
+  // Abrir checkout PayPal
+  window._rzPay = function(code) {
+    const p = PRODUCTS[code];
+    if (!p) return;
+    const u = getU();
+    if (!u || !u.verified) {
+      showToast('Inicia sessão para comprar.', 'info');
+      setTimeout(() => window.location.href = 'livro.html', 900);
+      return;
+    }
+    const base = window.location.origin + window.location.pathname;
+    const params = new URLSearchParams({
+      cmd: '_xclick',
+      business: PP_EMAIL,
+      item_name: p.desc,
+      amount: p.amount,
+      currency_code: 'EUR',
+      no_shipping: '1',
+      rm: '2',
+      return: base + '?rz_pago=' + code + '#loja',
+      cancel_return: base + '#loja',
+      lc: 'PT'
+    });
+    window.location.href = 'https://www.paypal.com/cgi-bin/webscr?' + params.toString();
+  };
+
+  // Renderizar botões
+  Object.entries(CONTAINERS).forEach(([containerId, code]) => {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    const p = PRODUCTS[code];
+    el.innerHTML = `<button class="btn-paypal" onclick="window._rzPay('${code}')">
+      <span class="pp-logo"><span class="pp-logo-p">P</span><span class="pp-logo-ay">ay</span><span class="pp-logo-pal">Pal</span></span>
+      &nbsp;${p.btn}
+    </button>`;
+  });
 })();
 
 // ── FOOTER LINKS SEM DESTINO ──
