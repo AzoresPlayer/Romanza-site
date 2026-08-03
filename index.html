@@ -291,8 +291,21 @@
     .cover-lb-genre{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px}
     .cover-lb-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#1E0D12;line-height:1.2;margin-bottom:5px}
     .cover-lb-author{font-size:13px;color:#7C5060}
-    .cover-lb-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);color:white;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;line-height:1;backdrop-filter:blur(4px);transition:background .15s}
+    .cover-lb-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);color:white;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;line-height:1;backdrop-filter:blur(4px);transition:background .15s;z-index:10}
     .cover-lb-close:hover{background:rgba(0,0,0,.72)}
+    /* Flip effect */
+    .cover-lb-scene{perspective:1000px;width:100%}
+    .cover-lb-inner{position:relative;width:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+    .cover-lb-inner.flipped{transform:rotateY(180deg)}
+    .cover-lb-front,.cover-lb-back{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+    .cover-lb-front{position:relative;cursor:pointer}
+    .cover-lb-front:hover .cover-lb-hint{opacity:1}
+    .cover-lb-hint{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.72));font-size:11px;font-weight:700;color:rgba(255,255,255,.8);text-align:center;letter-spacing:.5px;opacity:0;transition:opacity .2s;pointer-events:none}
+    .cover-lb-back{position:absolute;inset:0;transform:rotateY(180deg);background:white;border-radius:0 0 24px 24px;display:flex;flex-direction:column;justify-content:center;padding:26px 24px 24px;min-height:100%}
+    .cover-lb-sinopse{font-size:13.5px;line-height:1.75;color:#5C4050;margin-top:12px;flex:1}
+    .cover-lb-back-footer{margin-top:18px;display:flex;justify-content:center}
+    .btn-lb-flip-back{background:transparent;border:1.5px solid #EDE4E8;color:#9C8090;border-radius:100px;padding:8px 20px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,color .2s}
+    .btn-lb-flip-back:hover{border-color:#9B2335;color:#9B2335}
 
     /* App download */
     #app{background:linear-gradient(135deg,#1A0810 0%,#300A1A 50%,#1A0810 100%);padding:96px 32px}
@@ -973,11 +986,16 @@ const THREADS = [
 ];
 
 const UPCOMING = [
-  { id:1, titulo:'Além do Código — O Despertar', autor:'B.A. Dutra', genero:'scifi', baseVotes:0, cover:'covers/alem-do-codigo-o-despertar.jpg' },
-  { id:2, titulo:'Beijos à Meia-Noite', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/beijos-a-meia-noite.jpg' },
-  { id:3, titulo:'Ligações do Tempo — O Despertar dos Sentidos', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/ligacoes-do-tempo.jpg' },
-  { id:4, titulo:'O Beijo das Sombras', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/o-beijo-das-sombras.jpg' },
-  { id:5, titulo:'Reino de Aço e Água — O Início da Viagem', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/reino-de-aco-e-agua.jpg' },
+  { id:1, titulo:'Além do Código — O Despertar', autor:'B.A. Dutra', genero:'scifi', baseVotes:0, cover:'covers/alem-do-codigo-o-despertar.jpg',
+    sinopse:'Numa era onde a tecnologia controla tudo, Lyra descobre que o código que corre o mundo esconde um segredo perigoso. Ao tentar desvendá-lo, apaixona-se pelo único homem que pode destruir tudo em que acredita. Entre linhas de código e promessas sussurradas, a fronteira entre dever e desejo dissolve-se.' },
+  { id:2, titulo:'Beijos à Meia-Noite', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/beijos-a-meia-noite.jpg',
+    sinopse:'Quando o relógio marca a meia-noite, o feitiço que mantém Selene presa entre dois mundos quebra. O príncipe das sombras que a encontra não está disposto a deixá-la partir — nem que seja preciso redefinir o próprio tempo. Um amor impossível que desafia a fronteira entre o real e o mágico.' },
+  { id:3, titulo:'Ligações do Tempo — O Despertar dos Sentidos', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/ligacoes-do-tempo.jpg',
+    sinopse:'Duas almas ligadas por um fio invisível através dos séculos. Quando Mara acorda com memórias que não são suas, percebe que o amor mais intenso da sua vida aconteceu há 300 anos — e que ele voltou. Mas desta vez, o tempo não lhes dá uma segunda hipótese... a menos que estejam dispostos a lutar por ela.' },
+  { id:4, titulo:'O Beijo das Sombras', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/o-beijo-das-sombras.jpg',
+    sinopse:'No reino das sombras, um beijo pode ser tanto uma maldição como uma salvação. A guerreira Inês aceita a missão impossível de conquistar o coração do rei sombrio — sem saber que o próprio coração dela já foi roubado. Num jogo de poder e sedução, quem vence perde tudo o que mais importa.' },
+  { id:5, titulo:'Reino de Aço e Água — O Início da Viagem', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/reino-de-aco-e-agua.jpg',
+    sinopse:'Num reino dividido entre o poder do aço e a magia das águas, uma princesa exilada e um corsário sem escrúpulos descobrem que o destino do reino está nas suas mãos. E que resistir um ao outro é a batalha mais difícil de todas. Uma aventura épica onde o amor nasce entre espadas e tempestades.' },
 ];
 
 const FAQS = [
@@ -1264,20 +1282,34 @@ function openCoverLightbox(item) {
   ov.className = 'cover-lb-ov';
   ov.innerHTML = `
     <div class="cover-lb-card" onclick="event.stopPropagation()">
-      ${item.cover
-        ? `<img src="${item.cover}" alt="${item.titulo}" class="cover-lb-img">`
-        : `<div class="cover-lb-ph" style="background:${gi.bg};color:${gi.color}">${item.titulo.charAt(0)}</div>`}
       <button class="cover-lb-close" id="lb-close" aria-label="Fechar">&times;</button>
-      <div class="cover-lb-info">
-        <span class="cover-lb-genre" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
-        <div class="cover-lb-title">${item.titulo}</div>
-        <div class="cover-lb-author">${item.autor}</div>
+      <div class="cover-lb-scene">
+        <div class="cover-lb-inner" id="lb-inner">
+          <div class="cover-lb-front" id="lb-front">
+            ${item.cover
+              ? `<img src="${item.cover}" alt="${item.titulo}" class="cover-lb-img">`
+              : `<div class="cover-lb-ph" style="background:${gi.bg};color:${gi.color}">${item.titulo.charAt(0)}</div>`}
+            <div class="cover-lb-hint">Clica para ver a sinopse ▸</div>
+          </div>
+          <div class="cover-lb-back" id="lb-back">
+            <span class="cover-lb-genre" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
+            <div class="cover-lb-title">${item.titulo}</div>
+            <div class="cover-lb-author">${item.autor}</div>
+            <div class="cover-lb-sinopse">${item.sinopse || 'Sinopse em breve.'}</div>
+            <div class="cover-lb-back-footer">
+              <button class="btn-lb-flip-back" id="lb-flip-back">← Ver capa</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>`;
   document.body.appendChild(ov);
   document.body.style.overflow = 'hidden';
+  const inner = document.getElementById('lb-inner');
   const close = () => { ov.remove(); document.body.style.overflow = ''; };
   document.getElementById('lb-close').addEventListener('click', close);
+  document.getElementById('lb-front').addEventListener('click', () => inner.classList.add('flipped'));
+  document.getElementById('lb-flip-back').addEventListener('click', e => { e.stopPropagation(); inner.classList.remove('flipped'); });
   ov.addEventListener('click', close);
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
