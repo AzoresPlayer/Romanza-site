@@ -243,6 +243,50 @@
     .btn-mark{padding:9px 22px;border-radius:100px;font-size:13px;font-weight:600;background:#FAF7F2;color:#9C8090;border:1.5px solid #EDE4E8;cursor:default}
     @media(max-width:640px){.loja-ganhar{grid-template-columns:1fr}.loja-marks{grid-template-columns:1fr}}
 
+    /* Romanza Pass */
+    .rpass{background:linear-gradient(140deg,#140810 0%,#2A1020 55%,#1A0D14 100%);border-radius:22px;overflow:hidden;margin-bottom:36px;position:relative}
+    .rpass::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(245,197,24,.12) 0%,transparent 70%);pointer-events:none}
+    .rpass-head{padding:24px 24px 16px;position:relative;z-index:1}
+    .rpass-eyebrow{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#F5C518;margin-bottom:6px}
+    .rpass-name{font-family:'Playfair Display',serif;font-size:27px;font-weight:700;color:white;line-height:1;margin-bottom:3px}
+    .rpass-season{font-size:11px;color:rgba(255,255,255,.38);margin-bottom:18px}
+    .rpass-lvl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .rpass-lvl-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(245,197,24,.15);border:1px solid rgba(245,197,24,.3);border-radius:100px;padding:4px 12px;font-size:11px;font-weight:800;color:#F5C518}
+    .rpass-xp-txt{font-size:11px;color:rgba(255,255,255,.4)}
+    .rpass-xp-track{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;margin-bottom:16px}
+    .rpass-xp-fill{height:100%;background:linear-gradient(90deg,#F5C518,#FFE066);border-radius:4px;transition:width .6s ease}
+    .rpass-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px}
+    .rpass-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px 10px;font-size:10px;color:rgba(255,255,255,.5)}
+    .rpass-chip b{color:#F5C518;font-weight:800}
+    /* Levels track */
+    .rpass-track-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 24px 20px}
+    .rpass-track-wrap::-webkit-scrollbar{display:none}
+    .rpass-track{display:flex;gap:0;position:relative}
+    .rpass-track::before{content:'';position:absolute;top:28px;left:28px;right:28px;height:2px;background:rgba(255,255,255,.08);z-index:0}
+    /* Row labels + grid */
+    .rpass-grid{display:flex;flex-direction:column;gap:10px}
+    .rpass-row{display:flex;align-items:center}
+    .rpass-row-lbl{width:72px;flex-shrink:0;font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;padding-right:6px}
+    .rpass-row-free .rpass-row-lbl{color:rgba(255,255,255,.4)}
+    .rpass-row-prem .rpass-row-lbl{color:#F5C518}
+    .rpass-nodes{display:flex;gap:0;flex:1}
+    .rpass-node{width:68px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px;position:relative;z-index:1}
+    .rpass-dot{width:56px;height:56px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border:2px solid transparent;transition:transform .2s,box-shadow .2s;font-size:10px;font-weight:800;line-height:1.2;text-align:center;padding:6px}
+    .rpass-dot.locked{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.08);color:rgba(255,255,255,.2);cursor:default}
+    .rpass-dot.claimable{background:linear-gradient(135deg,#F5C518,#FFD85C);color:#1A0800;cursor:pointer;box-shadow:0 0 20px rgba(245,197,24,.5);animation:rpGold 1.2s ease-in-out infinite alternate}
+    .rpass-dot.claimed{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.12);color:rgba(255,255,255,.35);cursor:default}
+    .rpass-dot.p-locked{background:rgba(155,35,53,.1);border-color:rgba(155,35,53,.2);color:rgba(255,255,255,.2);cursor:default}
+    .rpass-dot.p-claimable{background:linear-gradient(135deg,#9B2335,#D44);color:white;cursor:pointer;box-shadow:0 0 20px rgba(155,35,53,.6);animation:rpRed 1.2s ease-in-out infinite alternate}
+    .rpass-dot.p-claimed{background:rgba(155,35,53,.15);border-color:rgba(155,35,53,.25);color:#E87;cursor:default}
+    @keyframes rpGold{from{box-shadow:0 0 14px rgba(245,197,24,.4)}to{box-shadow:0 0 28px rgba(245,197,24,.8)}}
+    @keyframes rpRed{from{box-shadow:0 0 14px rgba(155,35,53,.4)}to{box-shadow:0 0 28px rgba(155,35,53,.8)}}
+    .rpass-dot-ico{font-size:16px;line-height:1}
+    .rpass-dot-val{font-size:9px;font-weight:800;white-space:nowrap}
+    .rpass-node-lv{font-size:9px;color:rgba(255,255,255,.25);font-weight:600;margin-top:2px}
+    .rpass-node-lv.active{color:#F5C518}
+    .rpass-divider{height:1px;background:rgba(255,255,255,.06);margin:0 24px 16px}
+    @media(max-width:640px){.rpass-head{padding:20px 18px 14px}.rpass-track-wrap{padding:4px 18px 18px}}
+
     /* Requests */
     #pedidos{background:white;padding:80px 32px}
     .requests-inner{max-width:1100px;margin:0 auto}
@@ -673,6 +717,9 @@
 <section id="loja">
   <div class="loja-inner">
     <h2 class="loja-title">Loja Romanza</h2>
+
+    <!-- Romanza Pass -->
+    <div id="romanza-pass"></div>
 
     <!-- Status + Premium CTA -->
     <div class="loja-status-bar">🔕&nbsp; Sem Acesso Ativo</div>
@@ -1371,6 +1418,7 @@ function renderVotes() {
       if (userVoted) return;
       votes[id] = (votes[id] || 0) + 1;
       userVoted = id;
+      if (typeof addPassXP === 'function') addPassXP(50);
       renderVotes();
     });
   });
@@ -1627,6 +1675,7 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
     u.lastCheckin = today;
     setU(u);
     showToast('🎫 +20 Marcadores! Check-in diário feito com sucesso!', 'success');
+    if (typeof addPassXP === 'function') addPassXP(200);
     refreshStatus();
   });
 
@@ -1643,6 +1692,7 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
     } else {
       showToast('O teu código: ' + code, 'info');
     }
+    if (typeof addPassXP === 'function') addPassXP(300);
   });
 
   // Trocar Marcadores por Tempo → redireciona para catálogo
@@ -1660,6 +1710,156 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
   document.querySelectorAll('.btn-sub-mensal,.btn-sub-anual,.btn-mark').forEach(b =>
     b.addEventListener('click', () => showToast('Pagamentos em breve! Instala a app Romanza para subscrever.', 'info'))
   );
+})();
+
+// ── ROMANZA PASS ──
+(function() {
+  const KEY = 'romanza-user-v1';
+  const getU = () => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } };
+  const setU = d => localStorage.setItem(KEY, JSON.stringify(d));
+  const hasPremium = () => { const u=getU(); const p=u&&u.premium; return !!(p&&p.expiraEm&&new Date(p.expiraEm)>new Date()); };
+
+  const LEVELS = [
+    { minXP:0,    free:20,  premium:50   },
+    { minXP:200,  free:30,  premium:80   },
+    { minXP:500,  free:50,  premium:120  },
+    { minXP:1000, free:20,  premium:100  },
+    { minXP:1800, free:100, premium:250, star:true },
+    { minXP:2800, free:50,  premium:150  },
+    { minXP:4000, free:80,  premium:200  },
+    { minXP:5500, free:150, premium:350  },
+    { minXP:7500, free:200, premium:500  },
+    { minXP:10000,free:500, premium:1000, star:true },
+  ];
+
+  function getPass(u) {
+    const xp = u.passXP || 0;
+    const cf = u.passClaimedFree || [];
+    const cp = u.passClaimedPremium || [];
+    let curLvl = 0;
+    for (let i = LEVELS.length - 1; i >= 0; i--) {
+      if (xp >= LEVELS[i].minXP) { curLvl = i; break; }
+    }
+    const nextLvl = curLvl < LEVELS.length - 1 ? curLvl + 1 : null;
+    const xpInLvl = nextLvl ? xp - LEVELS[curLvl].minXP : LEVELS[curLvl].minXP;
+    const xpNeeded = nextLvl ? LEVELS[nextLvl].minXP - LEVELS[curLvl].minXP : LEVELS[curLvl].minXP;
+    const pct = nextLvl ? Math.min(100, Math.round(xpInLvl / xpNeeded * 100)) : 100;
+    return { xp, curLvl, nextLvl, xpInLvl, xpNeeded, pct, cf, cp };
+  }
+
+  function render() {
+    const el = document.getElementById('romanza-pass');
+    if (!el) return;
+    const u = getU();
+    const isPrem = hasPremium();
+    const { xp, curLvl, nextLvl, xpInLvl, xpNeeded, pct, cf, cp } = getPass(u);
+
+    const freeNodes = LEVELS.map((lv, i) => {
+      const reached = xp >= lv.minXP;
+      const claimed = cf.includes(i);
+      let cls = 'locked', ico = '🔒', val = `${lv.free}🎫`;
+      if (claimed) { cls='claimed'; ico='✓'; }
+      else if (reached) { cls='claimable'; ico='🎁'; }
+      return `<div class="rpass-node">
+        <div class="rpass-dot ${cls}" data-type="free" data-idx="${i}" title="${reached && !claimed ? 'Clica para resgatar!' : ''}">
+          <span class="rpass-dot-ico">${ico}</span>
+          <span class="rpass-dot-val">${val}</span>
+        </div>
+        <div class="rpass-node-lv ${i===curLvl?'active':''}">Nv${i+1}${lv.star?'★':''}</div>
+      </div>`;
+    }).join('');
+
+    const premNodes = LEVELS.map((lv, i) => {
+      const reached = xp >= lv.minXP;
+      const claimed = cp.includes(i);
+      let cls, ico, val = `${lv.premium}🎫`;
+      if (!isPrem) { cls='p-locked'; ico='🔒'; }
+      else if (claimed) { cls='p-claimed'; ico='✓'; }
+      else if (reached) { cls='p-claimable'; ico='🎁'; }
+      else { cls='p-locked'; ico='🔒'; }
+      return `<div class="rpass-node">
+        <div class="rpass-dot ${cls}" data-type="prem" data-idx="${i}" title="${isPrem && reached && !claimed ? 'Clica para resgatar!' : (!isPrem ? 'Exclusivo Premium' : '')}">
+          <span class="rpass-dot-ico">${ico}</span>
+          <span class="rpass-dot-val">${val}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+    el.innerHTML = `
+      <div class="rpass">
+        <div class="rpass-head">
+          <div class="rpass-eyebrow">Passe da Temporada</div>
+          <div class="rpass-name">Romanza Pass</div>
+          <div class="rpass-season">Temporada 1 · 2026</div>
+          <div class="rpass-lvl-row">
+            <span class="rpass-lvl-badge">★ Nível ${curLvl+1}</span>
+            <span class="rpass-xp-txt">${nextLvl ? `${xpInLvl} / ${xpNeeded} XP` : 'Nível Máximo!'}</span>
+          </div>
+          <div class="rpass-xp-track"><div class="rpass-xp-fill" style="width:${pct}%"></div></div>
+          <div class="rpass-chips">
+            <span class="rpass-chip">📅 Check-in <b>+200 XP</b></span>
+            <span class="rpass-chip">👥 Convite <b>+300 XP</b></span>
+            <span class="rpass-chip">📖 Leitura <b>+100 XP</b></span>
+            <span class="rpass-chip">🗳️ Votação <b>+50 XP</b></span>
+          </div>
+        </div>
+        <div class="rpass-divider"></div>
+        <div class="rpass-track-wrap">
+          <div class="rpass-grid">
+            <div class="rpass-row rpass-row-free">
+              <div class="rpass-row-lbl">Grátis</div>
+              <div class="rpass-nodes rpass-track">${freeNodes}</div>
+            </div>
+            <div class="rpass-row rpass-row-prem">
+              <div class="rpass-row-lbl">Premium ★</div>
+              <div class="rpass-nodes rpass-track">${premNodes}</div>
+            </div>
+          </div>
+        </div>
+        ${!isPrem ? `<div style="text-align:center;padding:0 24px 18px;font-size:12px;color:rgba(255,255,255,.35)">★ Subscreve Premium para resgatar recompensas exclusivas</div>` : ''}
+      </div>`;
+
+    el.querySelectorAll('.rpass-dot.claimable').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = +dot.dataset.idx;
+        const u2 = getU();
+        const p2 = getPass(u2);
+        if (p2.cf.includes(idx)) return;
+        u2.passClaimedFree = [...(u2.passClaimedFree||[]), idx];
+        u2.marcadores = (u2.marcadores||0) + LEVELS[idx].free;
+        setU(u2);
+        showToast(`🎫 +${LEVELS[idx].free} Marcadores resgatados do Romanza Pass!`, 'success');
+        render();
+        // refresh nav/bar if available
+        if (typeof updateNavUser === 'function') updateNavUser();
+      });
+    });
+
+    el.querySelectorAll('.rpass-dot.p-claimable').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const idx = +dot.dataset.idx;
+        const u2 = getU();
+        const p2 = getPass(u2);
+        if (p2.cp.includes(idx)) return;
+        u2.passClaimedPremium = [...(u2.passClaimedPremium||[]), idx];
+        u2.marcadores = (u2.marcadores||0) + LEVELS[idx].premium;
+        setU(u2);
+        showToast(`🎫 +${LEVELS[idx].premium} Marcadores Premium resgatados!`, 'success');
+        render();
+        if (typeof updateNavUser === 'function') updateNavUser();
+      });
+    });
+  }
+
+  // Global function to add XP from other actions
+  window.addPassXP = function(amount) {
+    const u = getU();
+    u.passXP = (u.passXP || 0) + amount;
+    setU(u);
+    render();
+  };
+
+  render();
 })();
 
 // ── FOOTER LINKS SEM DESTINO ──
