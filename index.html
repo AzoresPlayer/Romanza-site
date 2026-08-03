@@ -279,6 +279,20 @@
     .btn-vote{flex-shrink:0;padding:8px 16px;border-radius:100px;border:1.5px solid #9B2335;background:transparent;color:#9B2335;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
     .btn-vote.voted{background:#9B2335;color:white}
     .btn-vote:disabled{cursor:default}
+    .vote-item-cover{cursor:zoom-in;transition:transform .2s,box-shadow .2s}
+    .vote-item-cover:hover{transform:scale(1.06);box-shadow:0 8px 20px rgba(0,0,0,.28)}
+    /* Cover lightbox */
+    .cover-lb-ov{position:fixed;inset:0;z-index:1000;background:rgba(8,4,6,.88);display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:lbIn .2s ease}
+    @keyframes lbIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+    .cover-lb-card{position:relative;background:white;border-radius:24px;overflow:hidden;max-width:340px;width:100%;box-shadow:0 40px 80px rgba(0,0,0,.55)}
+    .cover-lb-img{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+    .cover-lb-ph{width:100%;aspect-ratio:2/3;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:90px;font-weight:700;opacity:.18}
+    .cover-lb-info{padding:18px 22px 22px}
+    .cover-lb-genre{display:inline-block;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:10px}
+    .cover-lb-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#1E0D12;line-height:1.2;margin-bottom:5px}
+    .cover-lb-author{font-size:13px;color:#7C5060}
+    .cover-lb-close{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.5);color:white;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;line-height:1;backdrop-filter:blur(4px);transition:background .15s}
+    .cover-lb-close:hover{background:rgba(0,0,0,.72)}
 
     /* App download */
     #app{background:linear-gradient(135deg,#1A0810 0%,#300A1A 50%,#1A0810 100%);padding:96px 32px}
@@ -1241,6 +1255,35 @@ function openThread(id) {
   });
 }
 
+// ── COVER LIGHTBOX ──
+function openCoverLightbox(item) {
+  if (document.getElementById('cover-lb')) return;
+  const gi = generoInfo(item.genero);
+  const ov = document.createElement('div');
+  ov.id = 'cover-lb';
+  ov.className = 'cover-lb-ov';
+  ov.innerHTML = `
+    <div class="cover-lb-card" onclick="event.stopPropagation()">
+      ${item.cover
+        ? `<img src="${item.cover}" alt="${item.titulo}" class="cover-lb-img">`
+        : `<div class="cover-lb-ph" style="background:${gi.bg};color:${gi.color}">${item.titulo.charAt(0)}</div>`}
+      <button class="cover-lb-close" id="lb-close" aria-label="Fechar">&times;</button>
+      <div class="cover-lb-info">
+        <span class="cover-lb-genre" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
+        <div class="cover-lb-title">${item.titulo}</div>
+        <div class="cover-lb-author">${item.autor}</div>
+      </div>
+    </div>`;
+  document.body.appendChild(ov);
+  document.body.style.overflow = 'hidden';
+  const close = () => { ov.remove(); document.body.style.overflow = ''; };
+  document.getElementById('lb-close').addEventListener('click', close);
+  ov.addEventListener('click', close);
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
+}
+
 // ── VOTES ──
 function renderVotes() {
   const totalV = UPCOMING.reduce((s, item) => s + (votes[item.id] || item.baseVotes), 0);
@@ -1255,7 +1298,7 @@ function renderVotes() {
     return `
       <div class="vote-item">
         <div class="vote-item-top">
-          <img src="${item.cover}" alt="${item.titulo}" class="vote-item-cover">
+          <img src="${item.cover}" alt="${item.titulo}" class="vote-item-cover" data-cover-id="${item.id}" title="Ver capa" role="button" aria-label="Ver capa de ${item.titulo}">
           <div class="vote-item-info">
             <div class="vote-item-title">${item.titulo}</div>
             <div class="vote-item-author">${item.autor}</div>
@@ -1285,6 +1328,13 @@ function renderVotes() {
       votes[id] = (votes[id] || 0) + 1;
       userVoted = id;
       renderVotes();
+    });
+  });
+
+  container.querySelectorAll('.vote-item-cover[data-cover-id]').forEach(img => {
+    img.addEventListener('click', () => {
+      const item = UPCOMING.find(x => x.id === +img.dataset.coverId);
+      if (item) openCoverLightbox(item);
     });
   });
 }
