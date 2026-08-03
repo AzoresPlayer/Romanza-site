@@ -1963,15 +1963,11 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
     window.location.href = 'https://www.paypal.com/cgi-bin/webscr?' + params.toString();
   };
 
-  // Renderizar botões
-  Object.entries(CONTAINERS).forEach(([containerId, code]) => {
+  // Renderizar botões — PAGAMENTO TEMPORARIAMENTE DESATIVADO
+  Object.entries(CONTAINERS).forEach(([containerId]) => {
     const el = document.getElementById(containerId);
     if (!el) return;
-    const p = PRODUCTS[code];
-    el.innerHTML = `<button class="btn-paypal" onclick="window._rzPay('${code}')">
-      <span class="pp-logo"><span class="pp-logo-p">P</span><span class="pp-logo-ay">ay</span><span class="pp-logo-pal">Pal</span></span>
-      &nbsp;${p.btn}
-    </button>`;
+    el.innerHTML = `<div style="text-align:center;padding:11px 8px;border-radius:10px;background:#F5EEE8;color:#9C8090;font-size:13px;font-weight:600;border:1.5px dashed #DDD0D8">⏳ Em breve</div>`;
   });
 })();
 
