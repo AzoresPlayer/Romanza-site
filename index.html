@@ -254,9 +254,10 @@
     @media(max-width:640px){.loja-ganhar{grid-template-columns:1fr}.loja-marks{grid-template-columns:1fr}}
 
     /* Romanza Pass */
-    .rpass{background:linear-gradient(140deg,#140810 0%,#2A1020 55%,#1A0D14 100%);border-radius:22px;overflow:hidden;margin-bottom:36px;position:relative}
-    .rpass::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(245,197,24,.12) 0%,transparent 70%);pointer-events:none}
-    .rpass-head{padding:24px 24px 16px;position:relative;z-index:1}
+    .rpass{background:linear-gradient(140deg,#140810 0%,#2A1020 55%,#1A0D14 100%) center/cover no-repeat;background-image:url('images/passe-mensal.webp');border-radius:22px;overflow:hidden;margin-bottom:36px;position:relative}
+    .rpass::after{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(10,4,8,.72) 0%,rgba(20,8,16,.60) 50%,rgba(10,4,8,.78) 100%);pointer-events:none;z-index:0}
+    .rpass::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:radial-gradient(circle,rgba(245,197,24,.12) 0%,transparent 70%);pointer-events:none;z-index:1}
+    .rpass-head{padding:24px 24px 16px;position:relative;z-index:2}
     .rpass-eyebrow{font-size:9px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#F5C518;margin-bottom:6px}
     .rpass-name{font-family:'Playfair Display',serif;font-size:27px;font-weight:700;color:white;line-height:1;margin-bottom:3px}
     .rpass-season{font-size:11px;color:rgba(255,255,255,.38);margin-bottom:18px}
@@ -269,7 +270,7 @@
     .rpass-chip{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:4px 10px;font-size:10px;color:rgba(255,255,255,.5)}
     .rpass-chip b{color:#F5C518;font-weight:800}
     /* Levels track */
-    .rpass-track-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 24px 20px}
+    .rpass-track-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:4px 24px 20px;position:relative;z-index:2}
     .rpass-track-wrap::-webkit-scrollbar{display:none}
     .rpass-track{display:flex;gap:0;position:relative}
     .rpass-track::before{content:'';position:absolute;top:28px;left:28px;right:28px;height:2px;background:rgba(255,255,255,.08);z-index:0}
