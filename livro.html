@@ -87,7 +87,7 @@
     .btn-ler-app{flex:1;min-width:130px;background:white;color:#9B2335;padding:16px 20px;border-radius:100px;font-size:14px;font-weight:700;border:2px solid #E8C0C8;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
     .btn-ler-app:hover{border-color:#9B2335;transform:translateY(-1px);box-shadow:0 4px 16px rgba(155,35,53,.15)}
 
-    /* Reader modal */
+    /* Reader modal (amostra) */
     .reader-overlay{position:fixed;inset:0;z-index:500;background:rgba(8,4,6,.9);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
     .reader-modal{background:#FDFAF7;border-radius:20px;max-width:640px;width:100%;height:90vh;max-height:780px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6)}
     .reader-header{padding:16px 20px;border-bottom:1px solid #EFE4E8;display:flex;align-items:center;gap:12px;flex-shrink:0;background:white}
@@ -111,6 +111,65 @@
     .reader-cta{background:#9B2335;color:white;padding:10px 22px;border-radius:100px;font-size:13px;font-weight:700;border:none;cursor:pointer;transition:background .2s;white-space:nowrap}
     .reader-cta:hover{background:#7B1A28}
     @media(max-width:500px){.reader-body{padding:24px 22px 0}.reader-text{font-size:15px;line-height:1.85}}
+
+    /* ── Leitor Profissional ── */
+    .prd{position:fixed;inset:0;z-index:600;display:flex;flex-direction:column;transition:background .3s,color .3s}
+    .prd[data-theme="light"]{--rb:#FDFAF7;--rt:#1E0D12;--rh:#FFFFFF;--rbr:rgba(30,13,18,.1);--rs:#7C5060;--ra:#9B2335;--rc:#F5EEE8;--rbar:#EFE4E8}
+    .prd[data-theme="sepia"]{--rb:#F4ECD8;--rt:#3D2200;--rh:#E8DCC4;--rbr:rgba(61,34,0,.12);--rs:#7C5C30;--ra:#9B5200;--rc:#EAE0CC;--rbar:#D8CCB0}
+    .prd[data-theme="stone"]{--rb:#EFEFED;--rt:#1A1A1A;--rh:#E5E4E2;--rbr:rgba(0,0,0,.1);--rs:#666;--ra:#444;--rc:#E5E4E2;--rbar:#D8D8D8}
+    .prd[data-theme="dark"]{--rb:#1C1318;--rt:#E8D5C4;--rh:#261A20;--rbr:rgba(232,213,196,.08);--rs:#A08890;--ra:#E09090;--rc:#2E1E26;--rbar:#3A2830}
+    .prd[data-theme="night"]{--rb:#0E0A0C;--rt:#B8A090;--rh:#130E10;--rbr:rgba(184,160,144,.07);--rs:#7A6050;--ra:#C08878;--rc:#1A1214;--rbar:#1E1618}
+    .prd-inner{background:var(--rb);color:var(--rt);width:100%;height:100%;display:flex;flex-direction:column;transition:background .3s,color .3s;position:relative;overflow:hidden}
+    /* Header */
+    .prd-hdr{background:var(--rh);border-bottom:1px solid var(--rbr);padding:11px 18px;display:flex;align-items:center;gap:11px;flex-shrink:0;transition:background .3s,border-color .3s}
+    .prd-thumb{width:30px;height:42px;border-radius:5px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+    .prd-thumb-ph{width:30px;height:42px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700}
+    .prd-meta{flex:1;min-width:0}
+    .prd-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:#1A0800;color:#F5C518;padding:2px 9px;border-radius:100px;display:inline-flex;align-items:center;gap:4px;margin-bottom:3px;transition:background .3s}
+    .prd-badge.timed{background:#3A5A7A}
+    .prd-badge.urgent{background:#9B2335;animation:prd-pulse 1s ease-in-out infinite}
+    @keyframes prd-pulse{0%,100%{opacity:1}50%{opacity:.7}}
+    .prd-title{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--rt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s}
+    .prd-author{font-size:11px;color:var(--rs);margin-top:1px;transition:color .3s}
+    .prd-acts{display:flex;align-items:center;gap:5px;flex-shrink:0}
+    .prd-ibtn{width:34px;height:34px;border-radius:50%;background:var(--rc);color:var(--rs);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:background .2s,color .2s;flex-shrink:0}
+    .prd-ibtn:hover{background:var(--rbar);color:var(--rt)}
+    .prd-ibtn.active{background:var(--ra)!important;color:#fff!important}
+    .prd-ibtn-x{width:34px;height:34px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--rs);transition:color .2s;flex-shrink:0;line-height:1}
+    .prd-ibtn-x:hover{color:var(--rt)}
+    /* Settings panel */
+    .prd-settings{background:var(--rh);border-bottom:1px solid var(--rbr);padding:13px 18px;display:none;align-items:center;gap:28px;flex-wrap:wrap;flex-shrink:0;transition:background .3s,border-color .3s}
+    .prd-settings.open{display:flex}
+    .prd-slabel{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--rs);margin-bottom:7px}
+    .prd-swatches{display:flex;gap:8px}
+    .prd-swatch{width:26px;height:26px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;transition:border-color .15s,transform .1s;outline:none;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+    .prd-swatch:hover{transform:scale(1.12)}
+    .prd-swatch.sel{border-color:var(--ra)}
+    .prd-fctrls{display:flex;align-items:center;gap:8px}
+    .prd-fbtn{width:30px;height:30px;border-radius:8px;background:var(--rc);color:var(--rt);border:none;cursor:pointer;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .2s;line-height:1}
+    .prd-fbtn:hover{background:var(--rbar)}
+    .prd-fprev{font-size:13px;font-weight:700;color:var(--rt);min-width:32px;text-align:center}
+    /* Progress bar */
+    .prd-prog{height:2px;background:var(--rbar);flex-shrink:0;transition:background .3s}
+    .prd-prog-fill{height:100%;background:var(--ra);width:0%;transition:width .4s ease}
+    /* Body */
+    .prd-body{flex:1;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth}
+    .prd-content{max-width:660px;margin:0 auto;padding:40px 32px 80px}
+    .prd-bm-notice{background:var(--rc);border:1.5px solid var(--rbr);border-radius:12px;padding:10px 16px;margin-bottom:24px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--rt);transition:background .3s,border-color .3s}
+    .prd-bm-notice button{background:none;border:none;color:var(--ra);font-weight:700;cursor:pointer;text-decoration:underline;font-size:13px;padding:0;font-family:inherit}
+    .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:28px;transition:color .3s}
+    .prd-text{font-family:'Playfair Display',serif;line-height:1.95;color:var(--rt);transition:font-size .2s,color .3s}
+    .prd-text p{margin-bottom:20px}
+    .prd-text p:first-of-type::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
+    /* Footer */
+    .prd-foot{background:var(--rh);border-top:1px solid var(--rbr);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;transition:background .3s,border-color .3s}
+    .prd-pct{font-size:12px;font-weight:700;color:var(--rs)}
+    .prd-bmbtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--rbr);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--rs);cursor:pointer;transition:all .2s;font-family:inherit}
+    .prd-bmbtn:hover{border-color:var(--ra);color:var(--ra)}
+    .prd-bmbtn.set{background:var(--ra);border-color:var(--ra);color:#fff}
+    /* Expired overlay */
+    .prd-expire{position:absolute;inset:0;background:rgba(14,10,12,.93);display:none;align-items:center;justify-content:center;z-index:10;flex-direction:column;text-align:center;padding:32px 24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+    @media(max-width:520px){.prd-content{padding:28px 18px 60px}.prd-settings{gap:16px}.prd-hdr{padding:10px 14px}}
 
     /* Info card below buttons */
     .bp-info-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;padding-top:28px;border-top:1px solid #EFE3E7}
@@ -984,97 +1043,249 @@ function _showAccessDialog(book) {
   });
 }
 
-function _openFullReader(book) {
-  if (document.getElementById('reader-overlay')) return;
-  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
-  const ov = document.createElement('div');
-  ov.id = 'reader-overlay'; ov.className = 'reader-overlay';
-  ov.innerHTML = `
-    <div class="reader-modal" role="dialog" aria-modal="true">
-      <div class="reader-header">
-        ${book.cover?`<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`:`<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
-        <div class="reader-header-meta">
-          <div class="reader-tag" style="background:#9B2335">★ Premium · Acesso Ilimitado</div>
-          <div class="reader-header-title">${book.titulo}</div>
-        </div>
-        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
-      </div>
-      <div class="reader-progress-bar"><div class="reader-progress-fill" style="width:5%;background:#9B2335"></div></div>
-      <div class="reader-body">
-        <div class="reader-chapter">Capítulo 1 — Início</div>
-        <div class="reader-text">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
-      </div>
-    </div>`;
-  document.body.appendChild(ov);
-  document.body.style.overflow = 'hidden';
-  const close = () => { ov.remove(); document.body.style.overflow = ''; };
-  document.getElementById('reader-close').addEventListener('click', close);
-  ov.addEventListener('click', e => { if (e.target===ov) close(); });
-  document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',esc);}});
-}
+function _openFullReader(book)            { _openProReader(book, 'full',  0);      }
+function _openTimedReader(book, msLeft)   { _openProReader(book, 'timed', msLeft); }
 
-function _openTimedReader(book, msLeft) {
-  if (document.getElementById('reader-overlay')) return;
-  const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
-  const fmt = ms => { const s=Math.max(0,Math.floor(ms/1000)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
-  const ov = document.createElement('div');
-  ov.id = 'reader-overlay'; ov.className = 'reader-overlay';
-  ov.innerHTML = `
-    <div class="reader-modal" role="dialog" aria-modal="true" style="position:relative">
-      <div class="reader-header">
-        ${book.cover?`<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`:`<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
-        <div class="reader-header-meta">
-          <div class="reader-tag" style="background:#5C7A9B">⏱️ <span id="rd-timer">${fmt(msLeft)}</span> restantes</div>
-          <div class="reader-header-title">${book.titulo}</div>
+function _openProReader(book, mode, msLeft) {
+  if (document.getElementById('prd-root')) return;
+
+  const BM_KEY   = 'romanza-bm-'  + book.id;
+  const POS_KEY  = 'romanza-pos-' + book.id;
+  const PREF_KEY = 'romanza-reader-prefs';
+
+  let prefs = { theme:'light', fontSize:1 };
+  try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)) || {}); } catch {}
+
+  const FONT_PX    = [14, 16, 19, 22];
+  const FONT_LABEL = ['Aa−', 'Aa', 'Aa+', 'Aa++'];
+  const THEMES = [
+    { id:'light', bg:'#FDFAF7', label:'Claro'  },
+    { id:'sepia', bg:'#F4ECD8', label:'Sépia'  },
+    { id:'stone', bg:'#EFEFED', label:'Pedra'  },
+    { id:'dark',  bg:'#1C1318', label:'Escuro' },
+    { id:'night', bg:'#0E0A0C', label:'Noite'  },
+  ];
+
+  const cs      = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  const isTimed = mode === 'timed';
+  const fmt     = ms => { const s=Math.max(0,Math.floor(ms/1000)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
+
+  const savedBm  = (() => { try { const v=parseFloat(localStorage.getItem(BM_KEY));  return isNaN(v)?null:v; } catch { return null; } })();
+  const savedPos = (() => { try { const v=parseFloat(localStorage.getItem(POS_KEY)); return isNaN(v)?null:v; } catch { return null; } })();
+
+  const thumbHTML = book.cover
+    ? `<img class="prd-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
+    : `<div class="prd-thumb-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`;
+
+  const badgeHTML = isTimed
+    ? `<div class="prd-badge timed" id="prd-badge">⏱ <span id="prd-timer">${fmt(msLeft)}</span> restantes</div>`
+    : `<div class="prd-badge">★ Premium · Acesso Ilimitado</div>`;
+
+  const bmNoticeHTML = savedBm !== null
+    ? `<div class="prd-bm-notice" id="prd-bm-notice">🔖 <span>Tens um marcador guardado. <button id="prd-goto-bm">Ir para o marcador</button></span></div>`
+    : '';
+
+  const expireHTML = isTimed ? `
+    <div class="prd-expire" id="prd-expire">
+      <div style="font-size:52px;margin-bottom:18px">⏰</div>
+      <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px">Tempo Esgotado</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:28px">O teu tempo de leitura terminou.<br>Podes retomar de onde paraste.</div>
+      <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px">
+        <button id="prd-exp-more" style="background:#9B2335;color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎫 Comprar mais tempo</button>
+        <button id="prd-exp-premium" style="background:#F5C518;color:#1E0D12;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">★ Subscrever Premium</button>
+        <button id="prd-exp-close" style="background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+      </div>
+    </div>` : '';
+
+  const root = document.createElement('div');
+  root.id = 'prd-root';
+  root.className = 'prd';
+  root.setAttribute('data-theme', prefs.theme);
+  root.innerHTML = `
+    <div class="prd-inner">
+      <div class="prd-hdr">
+        ${thumbHTML}
+        <div class="prd-meta">
+          ${badgeHTML}
+          <div class="prd-title">${book.titulo}</div>
+          <div class="prd-author">${book.autor || 'B.A. Dutra'}</div>
         </div>
-        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
-      </div>
-      <div class="reader-progress-bar"><div id="rd-bar" class="reader-progress-fill" style="width:100%;background:#5C7A9B;transition:width 1s linear"></div></div>
-      <div class="reader-body">
-        <div class="reader-chapter">Capítulo 1 — Início</div>
-        <div class="reader-text">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
-      </div>
-      <div id="rd-expired" style="display:none;position:absolute;inset:0;background:rgba(30,13,18,.93);align-items:center;justify-content:center;z-index:20;border-radius:inherit;flex-direction:column;text-align:center;padding:32px 24px">
-        <div style="font-size:48px;margin-bottom:16px">⏰</div>
-        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px">Tempo Esgotado</div>
-        <div style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:28px">O teu tempo de leitura terminou.</div>
-        <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px">
-          <button id="exp-more" style="background:#9B2335;color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎫 Comprar mais tempo</button>
-          <button id="exp-premium" style="background:#F5C518;color:#1E0D12;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">★ Subscrever Premium</button>
-          <button id="exp-close" style="background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+        <div class="prd-acts">
+          <button class="prd-ibtn" id="prd-cfg-btn" title="Definições">⚙</button>
+          <button class="prd-ibtn" id="prd-bm-btn"  title="Marcador">🔖</button>
+          <button class="prd-ibtn-x" id="prd-close"  title="Fechar leitura">×</button>
         </div>
       </div>
+      <div class="prd-settings" id="prd-settings">
+        <div>
+          <div class="prd-slabel">Fundo</div>
+          <div class="prd-swatches" id="prd-swatches">
+            ${THEMES.map(t=>`<button class="prd-swatch${t.id===prefs.theme?' sel':''}" data-t="${t.id}" style="background:${t.bg}" title="${t.label}"></button>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="prd-slabel">Tamanho da letra</div>
+          <div class="prd-fctrls">
+            <button class="prd-fbtn" id="prd-fdown">−</button>
+            <span class="prd-fprev" id="prd-fprev">${FONT_LABEL[prefs.fontSize]}</span>
+            <button class="prd-fbtn" id="prd-fup">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="prd-prog"><div class="prd-prog-fill" id="prd-fill"></div></div>
+      <div class="prd-body" id="prd-body">
+        <div class="prd-content">
+          ${bmNoticeHTML}
+          <div class="prd-chapter">Capítulo 1 — Início</div>
+          <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px">${book.amostra || '<p>Conteúdo em breve.</p>'}</div>
+        </div>
+      </div>
+      <div class="prd-foot">
+        <span class="prd-pct" id="prd-pct">0% lido</span>
+        <button class="prd-bmbtn${savedBm!==null?' set':''}" id="prd-bm-foot">
+          🔖 ${savedBm!==null?'Marcador guardado':'Marcar página'}
+        </button>
+      </div>
+      ${expireHTML}
     </div>`;
-  document.body.appendChild(ov);
+
+  document.body.appendChild(root);
   document.body.style.overflow = 'hidden';
-  const total = msLeft;
-  const end = Date.now() + msLeft;
-  const timerEl = document.getElementById('rd-timer');
-  const barEl = document.getElementById('rd-bar');
-  const expEl = document.getElementById('rd-expired');
-  const tick = setInterval(() => {
-    const rem = end - Date.now();
-    if (timerEl) timerEl.textContent = fmt(rem);
-    if (barEl) barEl.style.width = Math.max(0, rem/total*100) + '%';
-    if (rem <= 0) {
-      clearInterval(tick);
-      M.clearSession();
-      expEl.style.display = 'flex';
+
+  // ── Elementos ──
+  const body     = document.getElementById('prd-body');
+  const textEl   = document.getElementById('prd-text');
+  const fillEl   = document.getElementById('prd-fill');
+  const pctEl    = document.getElementById('prd-pct');
+  const bmFoot   = document.getElementById('prd-bm-foot');
+  const bmHdrBtn = document.getElementById('prd-bm-btn');
+
+  // ── Progresso de leitura ──
+  const updateProgress = () => {
+    const max = body.scrollHeight - body.clientHeight;
+    const pct = max > 0 ? Math.round(body.scrollTop / max * 100) : 0;
+    fillEl.style.width = pct + '%';
+    pctEl.textContent  = pct + '% lido';
+  };
+
+  // ── Guardar posição automaticamente ──
+  let posTimer;
+  const savePos = () => {
+    const max = body.scrollHeight - body.clientHeight;
+    const ratio = max > 0 ? body.scrollTop / max : 0;
+    try { localStorage.setItem(POS_KEY, String(ratio)); } catch {}
+  };
+  body.addEventListener('scroll', () => {
+    updateProgress();
+    clearTimeout(posTimer);
+    posTimer = setTimeout(savePos, 1500);
+  });
+
+  // ── Restaurar última posição ──
+  setTimeout(() => {
+    if (savedPos !== null && savedPos > 0) {
+      body.scrollTop = savedPos * (body.scrollHeight - body.clientHeight);
     }
-  }, 1000);
+    updateProgress();
+  }, 150);
+
+  // ── Ir para marcador ──
+  document.getElementById('prd-goto-bm')?.addEventListener('click', () => {
+    const max = body.scrollHeight - body.clientHeight;
+    body.scrollTop = savedBm * max;
+    document.getElementById('prd-bm-notice')?.remove();
+  });
+
+  // ── Marcador ──
+  let bmActive = savedBm !== null;
+  const refreshBmUI = () => {
+    bmHdrBtn?.classList.toggle('active', bmActive);
+    bmFoot?.classList.toggle('set', bmActive);
+    if (bmFoot) bmFoot.innerHTML = `🔖 ${bmActive ? 'Marcador guardado' : 'Marcar página'}`;
+  };
+  const toggleBm = () => {
+    if (bmActive) {
+      try { localStorage.removeItem(BM_KEY); } catch {}
+      bmActive = false;
+      showToast('Marcador removido.', 'info');
+    } else {
+      const max = body.scrollHeight - body.clientHeight;
+      const ratio = max > 0 ? body.scrollTop / max : 0;
+      try { localStorage.setItem(BM_KEY, String(ratio)); } catch {}
+      bmActive = true;
+      showToast('🔖 Marcador guardado nesta página!', 'success');
+    }
+    refreshBmUI();
+  };
+  bmHdrBtn?.addEventListener('click', toggleBm);
+  bmFoot?.addEventListener('click', toggleBm);
+
+  // ── Painel de definições ──
+  document.getElementById('prd-cfg-btn').addEventListener('click', () => {
+    document.getElementById('prd-settings').classList.toggle('open');
+  });
+
+  // ── Temas ──
+  const setTheme = id => {
+    prefs.theme = id;
+    root.setAttribute('data-theme', id);
+    root.querySelectorAll('.prd-swatch').forEach(b => b.classList.toggle('sel', b.dataset.t === id));
+    try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch {}
+  };
+  document.getElementById('prd-swatches').addEventListener('click', e => {
+    const b = e.target.closest('.prd-swatch');
+    if (b) setTheme(b.dataset.t);
+  });
+
+  // ── Tamanho da letra ──
+  const setFont = idx => {
+    prefs.fontSize = Math.max(0, Math.min(3, idx));
+    textEl.style.fontSize = FONT_PX[prefs.fontSize] + 'px';
+    document.getElementById('prd-fprev').textContent = FONT_LABEL[prefs.fontSize];
+    try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch {}
+  };
+  document.getElementById('prd-fdown').addEventListener('click', () => setFont(prefs.fontSize - 1));
+  document.getElementById('prd-fup').addEventListener('click',   () => setFont(prefs.fontSize + 1));
+
+  // ── Timer (sessão com tempo) ──
+  let tick;
+  if (isTimed) {
+    const total    = msLeft;
+    const end      = Date.now() + msLeft;
+    const timerEl  = document.getElementById('prd-timer');
+    const badgeEl  = document.getElementById('prd-badge');
+    const expireEl = document.getElementById('prd-expire');
+
+    tick = setInterval(() => {
+      const rem = end - Date.now();
+      if (timerEl) timerEl.textContent = fmt(rem);
+      if (rem < 5 * 60000 && badgeEl) badgeEl.classList.add('urgent');
+      if (rem <= 0) {
+        clearInterval(tick);
+        M.clearSession();
+        savePos();
+        if (expireEl) expireEl.style.display = 'flex';
+      }
+    }, 1000);
+
+    document.getElementById('prd-exp-more')?.addEventListener('click',    () => { close(); _showAccessDialog(book); });
+    document.getElementById('prd-exp-premium')?.addEventListener('click', () => { close(); window.open('index.html#loja','_blank'); });
+    document.getElementById('prd-exp-close')?.addEventListener('click',   close);
+  }
+
+  // ── Fechar ──
   const close = () => {
-    clearInterval(tick);
-    ov.remove();
-    document.body.style.overflow='';
+    if (tick) clearInterval(tick);
+    savePos();
+    root.remove();
+    document.body.style.overflow = '';
     refreshMarcBar();
     updateNavUser();
   };
-  document.getElementById('reader-close').addEventListener('click', close);
-  ov.addEventListener('click', e => { if(e.target===ov) close(); });
-  document.addEventListener('keydown', function esc(e){if(e.key==='Escape'){close();document.removeEventListener('keydown',esc);}});
-  document.getElementById('exp-more').addEventListener('click', ()=>{ close(); _showAccessDialog(book); });
-  document.getElementById('exp-premium').addEventListener('click', ()=>{ close(); window.open('index.html#loja','_blank'); });
-  document.getElementById('exp-close').addEventListener('click', close);
+  document.getElementById('prd-close').addEventListener('click', close);
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
 }
 
 function openAmostra(book) {
