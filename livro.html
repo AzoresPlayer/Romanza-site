@@ -112,101 +112,61 @@
     .reader-cta:hover{background:#7B1A28}
     @media(max-width:500px){.reader-body{padding:24px 22px 0}.reader-text{font-size:15px;line-height:1.85}}
 
-    /* ── Leitor Profissional ── */
-    .prd{position:fixed;inset:0;z-index:600;display:flex;flex-direction:column;transition:background .3s,color .3s}
-    .prd[data-theme="light"]{--rb:#FDFAF7;--rt:#1E0D12;--rh:#FFFFFF;--rbr:rgba(30,13,18,.1);--rs:#7C5060;--ra:#9B2335;--rc:#F5EEE8;--rbar:#EFE4E8}
-    .prd[data-theme="sepia"]{--rb:#F4ECD8;--rt:#3D2200;--rh:#E8DCC4;--rbr:rgba(61,34,0,.12);--rs:#7C5C30;--ra:#9B5200;--rc:#EAE0CC;--rbar:#D8CCB0}
-    .prd[data-theme="stone"]{--rb:#EFEFED;--rt:#1A1A1A;--rh:#E5E4E2;--rbr:rgba(0,0,0,.1);--rs:#666;--ra:#444;--rc:#E5E4E2;--rbar:#D8D8D8}
-    .prd[data-theme="dark"]{--rb:#1C1318;--rt:#E8D5C4;--rh:#261A20;--rbr:rgba(232,213,196,.08);--rs:#A08890;--ra:#E09090;--rc:#2E1E26;--rbar:#3A2830}
-    .prd[data-theme="night"]{--rb:#0E0A0C;--rt:#B8A090;--rh:#130E10;--rbr:rgba(184,160,144,.07);--rs:#7A6050;--ra:#C08878;--rc:#1A1214;--rbar:#1E1618}
-    .prd-inner{background:var(--rb);color:var(--rt);width:100%;height:100%;display:flex;flex-direction:column;transition:background .3s,color .3s;position:relative;overflow:hidden}
-    /* Header */
-    .prd-hdr{background:var(--rh);border-bottom:1px solid var(--rbr);padding:11px 18px;display:flex;align-items:center;gap:11px;flex-shrink:0;transition:background .3s,border-color .3s}
-    .prd-thumb{width:30px;height:42px;border-radius:5px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-    .prd-thumb-ph{width:30px;height:42px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700}
-    .prd-meta{flex:1;min-width:0}
-    .prd-badge{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:#1A0800;color:#F5C518;padding:2px 9px;border-radius:100px;display:inline-flex;align-items:center;gap:4px;margin-bottom:3px;transition:background .3s}
-    .prd-badge.timed{background:#3A5A7A}
-    .prd-badge.urgent{background:#9B2335;animation:prd-pulse 1s ease-in-out infinite}
-    @keyframes prd-pulse{0%,100%{opacity:1}50%{opacity:.7}}
-    .prd-title{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--rt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .3s}
-    .prd-author{font-size:11px;color:var(--rs);margin-top:1px;transition:color .3s}
-    .prd-acts{display:flex;align-items:center;gap:5px;flex-shrink:0}
-    .prd-ibtn{width:34px;height:34px;border-radius:50%;background:var(--rc);color:var(--rs);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:background .2s,color .2s;flex-shrink:0}
-    .prd-ibtn:hover{background:var(--rbar);color:var(--rt)}
-    .prd-ibtn.active{background:var(--ra)!important;color:#fff!important}
-    .prd-ibtn-x{width:34px;height:34px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--rs);transition:color .2s;flex-shrink:0;line-height:1}
-    .prd-ibtn-x:hover{color:var(--rt)}
-    /* Settings panel */
-    .prd-settings{background:var(--rh);border-bottom:1px solid var(--rbr);padding:13px 18px;display:none;align-items:center;gap:28px;flex-wrap:wrap;flex-shrink:0;transition:background .3s,border-color .3s}
-    .prd-settings.open{display:flex}
-    .prd-slabel{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--rs);margin-bottom:7px}
-    .prd-swatches{display:flex;gap:8px}
-    .prd-swatch{width:26px;height:26px;border-radius:50%;border:2.5px solid transparent;cursor:pointer;transition:border-color .15s,transform .1s;outline:none;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-    .prd-swatch:hover{transform:scale(1.12)}
-    .prd-swatch.sel{border-color:var(--ra)}
-    .prd-fctrls{display:flex;align-items:center;gap:8px}
-    .prd-fbtn{width:30px;height:30px;border-radius:8px;background:var(--rc);color:var(--rt);border:none;cursor:pointer;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .2s;line-height:1}
-    .prd-fbtn:hover{background:var(--rbar)}
-    .prd-fprev{font-size:13px;font-weight:700;color:var(--rt);min-width:32px;text-align:center}
-    /* Progress bar */
-    .prd-prog{height:2px;background:var(--rbar);flex-shrink:0;transition:background .3s}
-    .prd-prog-fill{height:100%;background:var(--ra);width:0%;transition:width .4s ease}
-    /* Body */
-    .prd-body{flex:1;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth}
-    .prd-content{max-width:660px;margin:0 auto;padding:40px 32px 80px}
-    .prd-bm-notice{background:var(--rc);border:1.5px solid var(--rbr);border-radius:12px;padding:10px 16px;margin-bottom:24px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--rt);transition:background .3s,border-color .3s}
-    .prd-bm-notice button{background:none;border:none;color:var(--ra);font-weight:700;cursor:pointer;text-decoration:underline;font-size:13px;padding:0;font-family:inherit}
-    .prd-chapter{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--ra);margin-bottom:28px;transition:color .3s}
-    /* Copyright modal */
-    .cp-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,4,8,.72);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-    .cp-box{background:#FDFAF7;border-radius:20px;max-width:420px;width:100%;padding:32px 28px 28px;text-align:center;box-shadow:0 24px 64px rgba(10,4,8,.35);animation:cpIn .3s ease}
+    /* ── Audiobook Reader ── */
+    .ab{position:fixed;inset:0;z-index:600;display:flex;flex-direction:column;background:#0E0A0C;color:#F0E8EB}
+    .ab-inner{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative}
+    .ab-hdr{background:#130E10;border-bottom:1px solid #2A1520;padding:12px 18px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .ab-thumb{width:30px;height:44px;border-radius:5px;object-fit:cover;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+    .ab-thumb-ph{width:30px;height:44px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700}
+    .ab-meta{flex:1;min-width:0}
+    .ab-title{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:#F0E8EB;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ab-author{font-size:11px;color:#9B7A88;margin-top:1px}
+    .ab-hdr-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .ab-timer-badge{font-size:10px;font-weight:700;background:#1E3A5A;color:#7AB8E8;padding:3px 10px;border-radius:100px;white-space:nowrap}
+    .ab-timer-badge.urgent{background:#3A1520;color:#E08090;animation:abPulse 1s ease-in-out infinite}
+    .ab-close{width:34px;height:34px;border-radius:50%;background:transparent;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;color:#9B7A88;transition:color .2s;line-height:1;flex-shrink:0}
+    .ab-close:hover{color:#F0E8EB}
+    .ab-player{background:#0A0608;border-bottom:1px solid #2A1520;padding:18px 20px 16px;flex-shrink:0}
+    .ab-chapter-label{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#9B2335;margin-bottom:8px;min-height:14px}
+    .ab-now-text{font-family:'Playfair Display',serif;font-size:15px;line-height:1.55;color:#F0E8EB;min-height:50px;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;font-style:italic}
+    .ab-prog-wrap{height:4px;background:#2A1520;border-radius:3px;margin-bottom:4px;overflow:hidden}
+    .ab-prog-fill{height:100%;background:#9B2335;border-radius:3px;transition:width .5s linear;width:0%}
+    .ab-counter{font-size:10px;color:#9B7A88;margin-bottom:14px;text-align:right}
+    .ab-ctrl{display:flex;align-items:center;justify-content:center;gap:14px}
+    .ab-speed-btn{background:#2A1520;border:none;border-radius:100px;padding:7px 16px;font-size:12px;font-weight:700;color:#BBA8B0;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;min-width:52px;text-align:center}
+    .ab-speed-btn:hover{background:#3A2030;color:#F0E8EB}
+    .ab-skip-btn{width:38px;height:38px;border-radius:50%;background:#2A1520;border:none;color:#BBA8B0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+    .ab-skip-btn:hover{background:#3A2030;color:#F0E8EB}
+    .ab-play-btn{width:58px;height:58px;border-radius:50%;background:#9B2335;border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s;flex-shrink:0;box-shadow:0 4px 20px rgba(155,35,53,.4)}
+    .ab-play-btn:hover{transform:scale(1.07);background:#7B1A28}
+    .ab-play-btn.playing{animation:abPulse 1.8s ease-in-out infinite}
+    .ab-stop-btn{width:38px;height:38px;border-radius:50%;background:transparent;border:1.5px solid #3A2030;color:#9B7A88;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+    .ab-stop-btn:hover{border-color:#9B2335;color:#9B2335}
+    @keyframes abPulse{0%,100%{box-shadow:0 4px 20px rgba(155,35,53,.4)}50%{box-shadow:0 4px 32px rgba(155,35,53,.7),0 0 0 10px rgba(155,35,53,.1)}}
+    .ab-body{flex:1;overflow-y:auto;overscroll-behavior:contain;scroll-behavior:smooth;-webkit-user-select:none;user-select:none}
+    @media print{.ab{display:none!important}}
+    .ab-text-wrap{max-width:560px;margin:0 auto;padding:24px 24px 80px}
+    .ab-loading-txt{text-align:center;padding:60px 0;font-style:italic;color:#9B7A88;font-family:'Playfair Display',serif}
+    .ab-text{font-family:'Playfair Display',serif;font-size:16px;line-height:1.95;color:#B8A0B0}
+    .ab-text p{margin-bottom:20px;border-radius:6px;padding:1px 4px;margin-left:-4px;transition:background .3s,color .3s}
+    .ab-text h2{font-size:1.1em;font-weight:700;color:#9B2335;margin:40px 0 18px;letter-spacing:.3px}
+    .ab-text h2:first-child{margin-top:0}
+    .ab-text h3{font-size:1em;font-style:italic;color:#9B7A88;margin:26px 0 14px}
+    .ab-text p.active,.ab-text h2.active,.ab-text h3.active{background:rgba(155,35,53,.18);color:#F0E8EB}
+    .cp-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,4,8,.8);display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
+    .cp-box{background:#1A0D12;border:1px solid #3A2030;border-radius:20px;max-width:420px;width:100%;padding:32px 28px 28px;text-align:center;box-shadow:0 24px 64px rgba(10,4,8,.5);animation:cpIn .3s ease}
     @keyframes cpIn{from{transform:scale(.9) translateY(12px);opacity:0}to{transform:none;opacity:1}}
     .cp-icon{font-size:36px;margin-bottom:14px}
-    .cp-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#1E0D12;margin-bottom:6px}
+    .cp-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:#F0E8EB;margin-bottom:6px}
     .cp-author{font-size:13px;font-weight:600;color:#9B2335;margin-bottom:16px}
-    .cp-body{font-size:12px;color:#7C5060;line-height:1.7;margin-bottom:22px;border-top:1px solid #EDE4E8;border-bottom:1px solid #EDE4E8;padding:14px 0}
+    .cp-body{font-size:12px;color:#9B7A88;line-height:1.7;margin-bottom:22px;border-top:1px solid #2A1520;border-bottom:1px solid #2A1520;padding:14px 0}
     .cp-btn{background:#9B2335;color:white;border:none;border-radius:12px;padding:13px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;width:100%;transition:background .2s}
     .cp-btn:hover{background:#7a1c2a}
-    .cp-note{font-size:10px;color:#BBA8B0;margin-top:12px;line-height:1.5}
-    /* Protecção contra cópia */
-    .prd-body{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
-    @media print{.prd{display:none!important}}
-    .prd-text{font-family:'Playfair Display',serif;line-height:1.95;color:var(--rt);transition:font-size .2s,color .3s}
-    .prd-text p{margin-bottom:20px}
-    .prd-text>p:first-of-type::first-letter,.prd-text h2+p::first-letter,.prd-text h3+p::first-letter{font-size:3.4em;line-height:.82;float:left;margin:6px 10px 0 0;color:var(--ra);font-weight:700;transition:color .3s}
-    .prd-text h2{font-family:'Playfair Display',serif;font-size:1.15em;font-weight:700;color:var(--ra);margin:52px 0 22px;padding-top:40px;border-top:1px solid var(--rbr);letter-spacing:.5px;transition:color .3s,border-color .3s}
-    .prd-text h2:first-child{margin-top:0;padding-top:0;border-top:none}
-    .prd-text h3{font-family:'Playfair Display',serif;font-size:1em;font-style:italic;font-weight:600;color:var(--rs);margin:32px 0 16px;transition:color .3s}
-    /* Footer */
-    .prd-foot{background:var(--rh);border-top:1px solid var(--rbr);padding:10px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-shrink:0;transition:background .3s,border-color .3s}
-    .prd-pct{font-size:12px;font-weight:700;color:var(--rs)}
-    .prd-bmbtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--rbr);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--rs);cursor:pointer;transition:all .2s;font-family:inherit}
-    .prd-bmbtn:hover{border-color:var(--ra);color:var(--ra)}
-    .prd-bmbtn.set{background:var(--ra);border-color:var(--ra);color:#fff}
-    /* Audiobook */
-    .prd-audiobtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--rbr);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--rs);cursor:pointer;transition:all .2s;font-family:inherit}
-    .prd-audiobtn:hover{border-color:var(--ra);color:var(--ra)}
-    .prd-audiobtn.playing{background:var(--ra);border-color:var(--ra);color:#fff;animation:audioPluse 1.6s ease-in-out infinite}
-    @keyframes audioPluse{0%,100%{box-shadow:0 0 0 0 rgba(155,35,53,.4)}50%{box-shadow:0 0 0 6px rgba(155,35,53,0)}}
-    .prd-audio-bar{position:absolute;bottom:60px;left:0;right:0;background:var(--rh);border-top:1px solid var(--rbr);padding:10px 18px;display:flex;align-items:center;gap:10px;transition:all .3s;z-index:10}
-    .prd-audio-info{flex:1;overflow:hidden}
-    .prd-audio-title{font-size:11px;font-weight:700;color:var(--rt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .prd-audio-sub{font-size:10px;color:var(--rs);margin-top:1px}
-    .prd-audio-ctrl{display:flex;align-items:center;gap:6px;flex-shrink:0}
-    .prd-audio-play{width:34px;height:34px;border-radius:50%;background:var(--ra);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}
-    .prd-audio-play:hover{transform:scale(1.1)}
-    .prd-audio-stop{width:28px;height:28px;border-radius:50%;background:transparent;border:1.5px solid var(--rbr);color:var(--rs);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
-    .prd-audio-stop:hover{border-color:var(--ra);color:var(--ra)}
-    .prd-audio-progress{height:3px;background:var(--rbr);border-radius:2px;margin-top:6px;overflow:hidden}
-    .prd-audio-fill{height:100%;background:var(--ra);border-radius:2px;transition:width .5s linear}
-    .prd-reading-node{transition:background .3s,border-radius .2s;border-radius:4px;padding:0 2px}
-    .prd-reading-node.active{background:rgba(155,35,53,.13)}
-    /* Expired overlay */
-    .prd-expire{position:absolute;inset:0;background:rgba(14,10,12,.93);display:none;align-items:center;justify-content:center;z-index:10;flex-direction:column;text-align:center;padding:32px 24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
-    @media(max-width:520px){.prd-content{padding:28px 18px 60px}.prd-settings{gap:16px}.prd-hdr{padding:10px 14px}}
+    .cp-note{font-size:10px;color:#5A4050;margin-top:12px;line-height:1.5}
+    .ab-expire{position:absolute;inset:0;background:rgba(14,10,12,.93);display:none;align-items:center;justify-content:center;z-index:10;flex-direction:column;text-align:center;padding:32px 24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+    @media(max-width:520px){.ab-text-wrap{padding:16px 16px 60px}.ab-now-text{font-size:14px}.ab-play-btn{width:52px;height:52px}.ab-player{padding:14px 16px 12px}.ab-ctrl{gap:10px}}
 
-    /* Info card below buttons */
+        /* Info card below buttons */
     .bp-info-chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:32px;padding-top:28px;border-top:1px solid #EFE3E7}
     .bp-chip{display:flex;align-items:center;gap:6px;background:white;border:1px solid #EDE4E8;padding:8px 14px;border-radius:12px;font-size:13px;color:#5C4050}
     .bp-chip-icon{font-size:15px}
@@ -1094,124 +1054,74 @@ function _openFullReader(book)            { _openProReader(book, 'full',  0);   
 function _openTimedReader(book, msLeft)   { _openProReader(book, 'timed', msLeft); }
 
 function _openProReader(book, mode, msLeft) {
-  if (document.getElementById('prd-root')) return;
+  if (document.getElementById('ab-root')) return;
 
-  const BM_KEY   = 'romanza-bm-'  + book.id;
-  const POS_KEY  = 'romanza-pos-' + book.id;
-  const PREF_KEY = 'romanza-reader-prefs';
-
-  let prefs = { theme:'light', fontSize:1 };
-  try { Object.assign(prefs, JSON.parse(localStorage.getItem(PREF_KEY)) || {}); } catch {}
-
-  const FONT_PX    = [14, 16, 19, 22];
-  const FONT_LABEL = ['Aa−', 'Aa', 'Aa+', 'Aa++'];
-  const THEMES = [
-    { id:'light', bg:'#FDFAF7', label:'Claro'  },
-    { id:'sepia', bg:'#F4ECD8', label:'Sépia'  },
-    { id:'stone', bg:'#EFEFED', label:'Pedra'  },
-    { id:'dark',  bg:'#1C1318', label:'Escuro' },
-    { id:'night', bg:'#0E0A0C', label:'Noite'  },
-  ];
-
-  const cs      = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
   const isTimed = mode === 'timed';
   const fmt     = ms => { const s=Math.max(0,Math.floor(ms/1000)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
-
-  const savedBm  = (() => { try { const v=parseFloat(localStorage.getItem(BM_KEY));  return isNaN(v)?null:v; } catch { return null; } })();
-  const savedPos = (() => { try { const v=parseFloat(localStorage.getItem(POS_KEY)); return isNaN(v)?null:v; } catch { return null; } })();
+  const cs      = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
 
   const thumbHTML = book.cover
-    ? `<img class="prd-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
-    : `<div class="prd-thumb-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`;
+    ? `<img class="ab-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
+    : `<div class="ab-thumb-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`;
 
-  const badgeHTML = isTimed
-    ? `<div class="prd-badge timed" id="prd-badge">⏱ <span id="prd-timer">${fmt(msLeft)}</span> restantes</div>`
-    : `<div class="prd-badge">★ Premium · Acesso Ilimitado</div>`;
-
-  const bmNoticeHTML = savedBm !== null
-    ? `<div class="prd-bm-notice" id="prd-bm-notice">🔖 <span>Tens um marcador guardado. <button id="prd-goto-bm">Ir para o marcador</button></span></div>`
+  const timerHTML = isTimed
+    ? `<div class="ab-timer-badge" id="ab-timer-badge">⏱ <span id="ab-timer">${fmt(msLeft)}</span></div>`
     : '';
 
   const expireHTML = isTimed ? `
-    <div class="prd-expire" id="prd-expire">
+    <div class="ab-expire" id="ab-expire">
       <div style="font-size:52px;margin-bottom:18px">⏰</div>
       <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:white;margin-bottom:8px">Tempo Esgotado</div>
       <div style="font-size:14px;color:rgba(255,255,255,.55);margin-bottom:28px">O teu tempo de leitura terminou.<br>Podes retomar de onde paraste.</div>
       <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px">
-        <button id="prd-exp-more" style="background:#9B2335;color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎫 Comprar mais tempo</button>
-        <button id="prd-exp-premium" style="background:#F5C518;color:#1E0D12;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">★ Subscrever Premium</button>
-        <button id="prd-exp-close" style="background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
+        <button id="ab-exp-more" style="background:#9B2335;color:white;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🎟 Comprar mais tempo</button>
+        <button id="ab-exp-premium" style="background:#F5C518;color:#1E0D12;border:none;border-radius:12px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">★ Subscrever Premium</button>
+        <button id="ab-exp-close" style="background:transparent;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif">Fechar</button>
       </div>
     </div>` : '';
 
   const root = document.createElement('div');
-  root.id = 'prd-root';
-  root.className = 'prd';
-  root.setAttribute('data-theme', prefs.theme);
+  root.id    = 'ab-root';
+  root.className = 'ab';
   root.innerHTML = `
-    <div class="prd-inner">
-      <div class="prd-hdr">
+    <div class="ab-inner">
+      <div class="ab-hdr">
         ${thumbHTML}
-        <div class="prd-meta">
-          ${badgeHTML}
-          <div class="prd-title">${book.titulo}</div>
-          <div class="prd-author">${book.autor || 'B.A. Dutra'}</div>
+        <div class="ab-meta">
+          <div class="ab-title">${book.titulo}</div>
+          <div class="ab-author">${book.autor || 'B.A. Dutra'}</div>
         </div>
-        <div class="prd-acts">
-          <button class="prd-ibtn" id="prd-cfg-btn" title="Definições">⚙</button>
-          <button class="prd-ibtn" id="prd-bm-btn"  title="Marcador">🔖</button>
-          <button class="prd-ibtn-x" id="prd-close"  title="Fechar leitura">×</button>
+        <div class="ab-hdr-right">
+          ${timerHTML}
+          <button class="ab-close" id="ab-close" title="Fechar">×</button>
         </div>
       </div>
-      <div class="prd-settings" id="prd-settings">
-        <div>
-          <div class="prd-slabel">Fundo</div>
-          <div class="prd-swatches" id="prd-swatches">
-            ${THEMES.map(t=>`<button class="prd-swatch${t.id===prefs.theme?' sel':''}" data-t="${t.id}" style="background:${t.bg}" title="${t.label}"></button>`).join('')}
-          </div>
-        </div>
-        <div>
-          <div class="prd-slabel">Tamanho da letra</div>
-          <div class="prd-fctrls">
-            <button class="prd-fbtn" id="prd-fdown">−</button>
-            <span class="prd-fprev" id="prd-fprev">${FONT_LABEL[prefs.fontSize]}</span>
-            <button class="prd-fbtn" id="prd-fup">+</button>
-          </div>
-        </div>
-      </div>
-      <div class="prd-prog"><div class="prd-prog-fill" id="prd-fill"></div></div>
-      <div class="prd-body" id="prd-body">
-        <div class="prd-content">
-          ${bmNoticeHTML}
-          <div class="prd-chapter" id="prd-chapter">A carregar...</div>
-          <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px"><p style="color:var(--rs);font-style:italic;text-align:center;padding:40px 0">A carregar o livro...</p></div>
-        </div>
-      </div>
-      <div class="prd-audio-bar" id="prd-audio-bar" style="display:none">
-        <div class="prd-audio-info">
-          <div class="prd-audio-title" id="prd-audio-title">A ler…</div>
-          <div class="prd-audio-progress"><div class="prd-audio-fill" id="prd-audio-fill" style="width:0%"></div></div>
-          <div class="prd-audio-sub" id="prd-audio-sub">Audiobook</div>
-        </div>
-        <div class="prd-audio-ctrl">
-          <button class="prd-audio-stop" id="prd-audio-stop" title="Parar">
-            <svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="currentColor"/></svg>
+
+      <div class="ab-player">
+        <div class="ab-chapter-label" id="ab-chapter">Audiobook</div>
+        <div class="ab-now-text" id="ab-now">Clica ▶ para começar a ouvir</div>
+        <div class="ab-prog-wrap"><div class="ab-prog-fill" id="ab-fill"></div></div>
+        <div class="ab-counter" id="ab-counter">0 / 0</div>
+        <div class="ab-ctrl">
+          <button class="ab-speed-btn" id="ab-speed">1×</button>
+          <button class="ab-skip-btn" id="ab-bwd" title="Parágrafo anterior">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
           </button>
-          <button class="prd-audio-play" id="prd-audio-play" title="Pausa / Continuar">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" id="prd-audio-icon"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          <button class="ab-stop-btn" id="ab-stop" title="Parar">
+            <svg width="12" height="12" viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="currentColor"/></svg>
+          </button>
+          <button class="ab-play-btn" id="ab-play" title="Ouvir / Pausa">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" id="ab-play-icon"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <button class="ab-skip-btn" id="ab-fwd" title="Próximo parágrafo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6l5.5 4V8l-5.5 4zM16 6h2v12h-2z"/></svg>
           </button>
         </div>
       </div>
-      <div class="prd-foot">
-        <span class="prd-pct" id="prd-pct">0% lido</span>
-        <div style="display:flex;align-items:center;gap:8px">
-          <button class="prd-audiobtn" id="prd-audio-btn" title="Audiobook">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
-            Ouvir
-          </button>
-          <button class="prd-bmbtn${savedBm!==null?' set':''}" id="prd-bm-foot">
-            🔖 ${savedBm!==null?'Marcador guardado':'Marcar página'}
-          </button>
+
+      <div class="ab-body" id="ab-body">
+        <div class="ab-text-wrap">
+          <div class="ab-text" id="ab-text"><p class="ab-loading-txt">A carregar o livro…</p></div>
         </div>
       </div>
       ${expireHTML}
@@ -1220,14 +1130,14 @@ function _openProReader(book, mode, msLeft) {
   document.body.appendChild(root);
   document.body.style.overflow = 'hidden';
 
-  // ── Elementos ──
-  const body      = document.getElementById('prd-body');
-  const textEl    = document.getElementById('prd-text');
-  const chapterEl = document.getElementById('prd-chapter');
-  const fillEl    = document.getElementById('prd-fill');
-  const pctEl     = document.getElementById('prd-pct');
+  const abBody    = document.getElementById('ab-body');
+  const textEl    = document.getElementById('ab-text');
+  const nowEl     = document.getElementById('ab-now');
+  const chapterEl = document.getElementById('ab-chapter');
+  const fillEl    = document.getElementById('ab-fill');
+  const counterEl = document.getElementById('ab-counter');
 
-  // ── Modal de direitos autorais ──
+  // ── Copyright modal ──
   function _showCopyrightModal(onAccept) {
     const year = new Date().getFullYear();
     const overlay = document.createElement('div');
@@ -1242,7 +1152,7 @@ function _openProReader(book, mode, msLeft) {
           É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>
           A leitura nesta plataforma é estritamente pessoal e intransmissível.
         </div>
-        <button class="cp-btn" id="cp-accept-btn">Entendi — Começar a Ler</button>
+        <button class="cp-btn" id="cp-accept-btn">Entendi — Começar a Ouvir</button>
         <div class="cp-note">© ${year} ${book.autor} · Todos os direitos reservados</div>
       </div>`;
     document.body.appendChild(overlay);
@@ -1252,136 +1162,45 @@ function _openProReader(book, mode, msLeft) {
     });
   }
 
-  // ── Carregar conteúdo do livro ──
+  // ── Carregar conteudo ──
   async function _loadBookContent() {
     try {
       const resp = await fetch(`books/livro-${book.id}.html`);
       if (resp.ok) {
         const html = await resp.text();
-        // Mantém h2/h3 no conteúdo — mostra todos os capítulos
         textEl.innerHTML = html;
-        // Capítulo inicial = primeiro h2/h3
         const firstH = textEl.querySelector('h2,h3');
-        chapterEl.textContent = firstH ? firstH.textContent.trim() : book.titulo;
-        // Actualiza barra de capítulo conforme o utilizador rola
+        if (firstH) chapterEl.textContent = firstH.textContent.trim();
         const headings = Array.from(textEl.querySelectorAll('h2,h3'));
         if (headings.length > 1) {
           const obs = new IntersectionObserver(entries => {
             entries.forEach(e => {
               if (e.isIntersecting) chapterEl.textContent = e.target.textContent.trim();
             });
-          }, { root: body, rootMargin: '0px 0px -80% 0px', threshold: 0 });
+          }, { root: abBody, rootMargin: '0px 0px -80% 0px', threshold: 0 });
           headings.forEach(h => obs.observe(h));
         }
       } else {
-        chapterEl.textContent = book.titulo || 'Capítulo 1';
         textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
       }
     } catch {
-      chapterEl.textContent = book.titulo || 'Capítulo 1';
       textEl.innerHTML = book.amostra || '<p>Conteúdo em breve.</p>';
     }
-    // Restaurar posição após conteúdo carregado
-    if (savedPos !== null && savedPos > 0) {
-      body.scrollTop = savedPos * (body.scrollHeight - body.clientHeight);
-    }
-    updateProgress();
+    const all = [...textEl.querySelectorAll('p, h2, h3')].filter(n => n.textContent.trim());
+    counterEl.textContent = '0 / ' + all.length;
   }
 
   _showCopyrightModal(() => {
     _loadBookContent();
   });
-  const bmFoot   = document.getElementById('prd-bm-foot');
-  const bmHdrBtn = document.getElementById('prd-bm-btn');
 
-  // ── Progresso de leitura ──
-  const updateProgress = () => {
-    const max = body.scrollHeight - body.clientHeight;
-    const pct = max > 0 ? Math.round(body.scrollTop / max * 100) : 0;
-    fillEl.style.width = pct + '%';
-    pctEl.textContent  = pct + '% lido';
-  };
-
-  // ── Guardar posição automaticamente ──
-  let posTimer;
-  const savePos = () => {
-    const max = body.scrollHeight - body.clientHeight;
-    const ratio = max > 0 ? body.scrollTop / max : 0;
-    try { localStorage.setItem(POS_KEY, String(ratio)); } catch {}
-  };
-  body.addEventListener('scroll', () => {
-    updateProgress();
-    clearTimeout(posTimer);
-    posTimer = setTimeout(savePos, 1500);
-  });
-
-
-  // ── Ir para marcador ──
-  document.getElementById('prd-goto-bm')?.addEventListener('click', () => {
-    const max = body.scrollHeight - body.clientHeight;
-    body.scrollTop = savedBm * max;
-    document.getElementById('prd-bm-notice')?.remove();
-  });
-
-  // ── Marcador ──
-  let bmActive = savedBm !== null;
-  const refreshBmUI = () => {
-    bmHdrBtn?.classList.toggle('active', bmActive);
-    bmFoot?.classList.toggle('set', bmActive);
-    if (bmFoot) bmFoot.innerHTML = `🔖 ${bmActive ? 'Marcador guardado' : 'Marcar página'}`;
-  };
-  const toggleBm = () => {
-    if (bmActive) {
-      try { localStorage.removeItem(BM_KEY); } catch {}
-      bmActive = false;
-      showToast('Marcador removido.', 'info');
-    } else {
-      const max = body.scrollHeight - body.clientHeight;
-      const ratio = max > 0 ? body.scrollTop / max : 0;
-      try { localStorage.setItem(BM_KEY, String(ratio)); } catch {}
-      bmActive = true;
-      showToast('🔖 Marcador guardado nesta página!', 'success');
-    }
-    refreshBmUI();
-  };
-  bmHdrBtn?.addEventListener('click', toggleBm);
-  bmFoot?.addEventListener('click', toggleBm);
-
-  // ── Painel de definições ──
-  document.getElementById('prd-cfg-btn').addEventListener('click', () => {
-    document.getElementById('prd-settings').classList.toggle('open');
-  });
-
-  // ── Temas ──
-  const setTheme = id => {
-    prefs.theme = id;
-    root.setAttribute('data-theme', id);
-    root.querySelectorAll('.prd-swatch').forEach(b => b.classList.toggle('sel', b.dataset.t === id));
-    try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch {}
-  };
-  document.getElementById('prd-swatches').addEventListener('click', e => {
-    const b = e.target.closest('.prd-swatch');
-    if (b) setTheme(b.dataset.t);
-  });
-
-  // ── Tamanho da letra ──
-  const setFont = idx => {
-    prefs.fontSize = Math.max(0, Math.min(3, idx));
-    textEl.style.fontSize = FONT_PX[prefs.fontSize] + 'px';
-    document.getElementById('prd-fprev').textContent = FONT_LABEL[prefs.fontSize];
-    try { localStorage.setItem(PREF_KEY, JSON.stringify(prefs)); } catch {}
-  };
-  document.getElementById('prd-fdown').addEventListener('click', () => setFont(prefs.fontSize - 1));
-  document.getElementById('prd-fup').addEventListener('click',   () => setFont(prefs.fontSize + 1));
-
-  // ── Timer (sessão com tempo) ──
+  // ── Timer (sessao com tempo) ──
   let tick;
   if (isTimed) {
-    const total    = msLeft;
     const end      = Date.now() + msLeft;
-    const timerEl  = document.getElementById('prd-timer');
-    const badgeEl  = document.getElementById('prd-badge');
-    const expireEl = document.getElementById('prd-expire');
+    const timerEl  = document.getElementById('ab-timer');
+    const badgeEl  = document.getElementById('ab-timer-badge');
+    const expireEl = document.getElementById('ab-expire');
 
     tick = setInterval(() => {
       const rem = end - Date.now();
@@ -1390,18 +1209,19 @@ function _openProReader(book, mode, msLeft) {
       if (rem <= 0) {
         clearInterval(tick);
         M.clearSession();
-        savePos();
         if (expireEl) expireEl.style.display = 'flex';
       }
     }, 1000);
 
-    document.getElementById('prd-exp-more')?.addEventListener('click',    () => { close(); _showAccessDialog(book); });
-    document.getElementById('prd-exp-premium')?.addEventListener('click', () => { close(); window.location.href='index.html#loja-planos'; });
-    document.getElementById('prd-exp-close')?.addEventListener('click',   close);
+    document.getElementById('ab-exp-more')?.addEventListener('click',    () => { close(); _showAccessDialog(book); });
+    document.getElementById('ab-exp-premium')?.addEventListener('click', () => { close(); window.location.href='index.html#loja-planos'; });
+    document.getElementById('ab-exp-close')?.addEventListener('click',   close);
   }
 
   // ── Audiobook TTS ──
   let ttsList = [], ttsIdx = 0, ttsOn = false, ttsPaused = false, ttsTimer;
+  const SPEEDS = [0.75, 1, 1.25, 1.5, 2];
+  let speedIdx = 1;
 
   const SS = window.speechSynthesis;
 
@@ -1411,10 +1231,7 @@ function _openProReader(book, mode, msLeft) {
     if (v.length) { window._romanzaVoices = v; }
     return v;
   }
-
-  SS.addEventListener('voiceschanged', () => {
-    window._romanzaVoices = SS.getVoices();
-  });
+  SS.addEventListener('voiceschanged', () => { window._romanzaVoices = SS.getVoices(); });
 
   function _pickVoice() {
     const voices = _getVoices();
@@ -1425,18 +1242,29 @@ function _openProReader(book, mode, msLeft) {
         || null;
   }
 
-  function ttsSetUI(on) {
-    audioBtn.classList.toggle('playing', on);
-    audioIcon.innerHTML = on ? PAUSE_ICON : PLAY_ICON;
+  function _setPlayUI(playing) {
+    const playBtn = document.getElementById('ab-play');
+    const icon    = document.getElementById('ab-play-icon');
+    playBtn?.classList.toggle('playing', playing);
+    if (icon) icon.innerHTML = playing
+      ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+      : '<path d="M8 5v14l11-7z"/>';
   }
 
   function ttsUpdate(i) {
     ttsList.forEach((n, j) => n.classList.toggle('active', j === i));
     if (ttsList[i]) ttsList[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-    audioFill.style.width = (ttsList.length > 1 ? Math.round(i / (ttsList.length - 1) * 100) : 0) + '%';
+    fillEl.style.width = (ttsList.length > 1 ? Math.round(i / (ttsList.length - 1) * 100) : 0) + '%';
+    counterEl.textContent = (i + 1) + ' / ' + ttsList.length;
     const t = ttsList[i]?.textContent?.trim() || '';
-    audioTitle.textContent = t.length > 65 ? t.slice(0, 62) + '\u2026' : t;
-    audioSub.textContent = '\u25b6 ' + (i + 1) + ' / ' + ttsList.length;
+    nowEl.textContent = t;
+    const nearestH = (() => {
+      for (let k = i; k >= 0; k--) {
+        if (ttsList[k]?.tagName === 'H2' || ttsList[k]?.tagName === 'H3') return ttsList[k].textContent.trim();
+      }
+      return null;
+    })();
+    if (nearestH) chapterEl.textContent = nearestH;
   }
 
   function ttsStop() {
@@ -1444,12 +1272,12 @@ function _openProReader(book, mode, msLeft) {
     clearInterval(ttsTimer);
     SS.cancel();
     ttsIdx = 0;
-    ttsList.forEach(n => n.classList.remove('active', 'prd-reading-node'));
-    audioBar.style.display = 'none';
-    ttsSetUI(false);
-    audioFill.style.width = '0%';
-    audioTitle.textContent = '';
-    audioSub.textContent = '';
+    ttsList.forEach(n => n.classList.remove('active'));
+    fillEl.style.width = '0%';
+    nowEl.textContent = 'Clica ▶ para começar a ouvir';
+    const all = [...textEl.querySelectorAll('p, h2, h3')].filter(n => n.textContent.trim());
+    counterEl.textContent = '0 / ' + all.length;
+    _setPlayUI(false);
   }
 
   function ttsPlayAt(i) {
@@ -1459,7 +1287,7 @@ function _openProReader(book, mode, msLeft) {
     if (!text) { ttsPlayAt(i + 1); return; }
 
     const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.9; u.volume = 1; u.pitch = 1;
+    u.rate = SPEEDS[speedIdx]; u.volume = 1; u.pitch = 1;
     const voice = _pickVoice();
     if (voice) { u.voice = voice; u.lang = voice.lang; }
 
@@ -1473,82 +1301,86 @@ function _openProReader(book, mode, msLeft) {
     };
     u.onerror = (e) => {
       if (e.error === 'canceled') return;
-      audioSub.textContent = 'Erro: ' + e.error + ' (#' + (i + 1) + ')';
+      nowEl.textContent = 'Erro: ' + e.error;
       if (ttsOn) setTimeout(() => { if (ttsOn) ttsPlayAt(i + 1); }, 500);
     };
 
     SS.speak(u);
   }
 
-  audioBtn.addEventListener('click', () => {
+  function ttsStart(fromIdx) {
     if (!SS) { alert('O teu browser nao suporta audiobook.'); return; }
-
-    if (ttsOn && !ttsPaused) { SS.pause();  ttsPaused = true;  ttsSetUI(false); return; }
-    if (ttsPaused)           { SS.resume(); ttsPaused = false; ttsSetUI(true);  return; }
-
     ttsList = [...textEl.querySelectorAll('p, h2, h3')].filter(n => n.textContent.trim());
     if (!ttsList.length) {
-      audioBar.style.display = 'flex';
-      audioTitle.textContent = 'Sem conteudo';
-      audioSub.textContent = 'Aguarda o livro carregar';
+      nowEl.textContent = 'Aguarda o livro carregar…';
       return;
     }
-
-    const voices = _getVoices();
-    const voice  = _pickVoice();
-
-    ttsList.forEach(n => n.classList.add('prd-reading-node'));
-    audioBar.style.display = 'flex';
-    ttsSetUI(true);
-    ttsOn = true; ttsPaused = false; ttsIdx = 0;
-
-    audioSub.textContent = ttsList.length + ' par. | ' + voices.length + ' vozes'
-                         + (voice ? ' | ' + voice.lang : ' | voz sistema');
-
-    // Chrome 15s keepalive
+    SS.cancel();
+    ttsOn = true; ttsPaused = false; ttsIdx = fromIdx;
+    _setPlayUI(true);
+    clearInterval(ttsTimer);
     ttsTimer = setInterval(() => {
       if (ttsOn && !ttsPaused && SS.speaking) { SS.pause(); SS.resume(); }
     }, 10000);
+    ttsPlayAt(fromIdx);
+  }
 
-    ttsPlayAt(0);
-  });
-
-  audioPlay.addEventListener('click', () => {
+  document.getElementById('ab-play').addEventListener('click', () => {
     if (!SS) return;
-    if (ttsPaused)  { SS.resume(); ttsPaused = false; ttsSetUI(true);  }
-    else if (ttsOn) { SS.pause();  ttsPaused = true;  ttsSetUI(false); }
+    if (ttsOn && !ttsPaused) { SS.pause(); ttsPaused = true; _setPlayUI(false); return; }
+    if (ttsPaused) { SS.resume(); ttsPaused = false; _setPlayUI(true); return; }
+    ttsStart(0);
   });
 
-  audioStop.addEventListener('click', ttsStop);
+  document.getElementById('ab-stop').addEventListener('click', ttsStop);
+
+  document.getElementById('ab-bwd').addEventListener('click', () => {
+    const target = Math.max(0, ttsIdx - 1);
+    if (ttsOn || ttsPaused) ttsStart(target);
+  });
+
+  document.getElementById('ab-fwd').addEventListener('click', () => {
+    const target = ttsIdx + 1;
+    if (ttsOn || ttsPaused) ttsStart(target);
+  });
+
+  document.getElementById('ab-speed').addEventListener('click', () => {
+    speedIdx = (speedIdx + 1) % SPEEDS.length;
+    const lbl = SPEEDS[speedIdx] + '×';
+    document.getElementById('ab-speed').textContent = lbl;
+    if (ttsOn) {
+      const cur = ttsIdx;
+      ttsStart(cur);
+    }
+  });
 
   // ── Fechar ──
   const close = () => {
     if (tick) clearInterval(tick);
+    clearInterval(ttsTimer);
     speechSynthesis.cancel();
-    savePos();
     root.remove();
     document.body.style.overflow = '';
     refreshMarcBar();
     updateNavUser();
   };
-  document.getElementById('prd-close').addEventListener('click', close);
+  document.getElementById('ab-close').addEventListener('click', close);
   document.addEventListener('keydown', function esc(e) {
     if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
   });
 
-  // ── Protecção contra cópia ──
-  const prdBody = document.getElementById('prd-body');
-  prdBody.addEventListener('copy',        e => e.preventDefault());
-  prdBody.addEventListener('cut',         e => e.preventDefault());
-  prdBody.addEventListener('contextmenu', e => e.preventDefault());
-  prdBody.addEventListener('dragstart',   e => e.preventDefault());
-  prdBody.addEventListener('keydown', e => {
+  // ── Proteccao contra copia ──
+  abBody.addEventListener('copy',        e => e.preventDefault());
+  abBody.addEventListener('cut',         e => e.preventDefault());
+  abBody.addEventListener('contextmenu', e => e.preventDefault());
+  abBody.addEventListener('dragstart',   e => e.preventDefault());
+  abBody.addEventListener('keydown', e => {
     const ctrl = e.ctrlKey || e.metaKey;
-    // Bloqueia Ctrl+C, Ctrl+A, Ctrl+P, Ctrl+S, PrintScreen
     if (ctrl && ['c','a','p','s','u'].includes(e.key.toLowerCase())) e.preventDefault();
     if (e.key === 'PrintScreen') e.preventDefault();
   });
 }
+
 
 function openAmostra(book) {
   if (document.getElementById('reader-overlay')) return;
