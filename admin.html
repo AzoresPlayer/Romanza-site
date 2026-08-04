@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Romanza — Painel Admin</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:#0F0609;color:#F0E8EB;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+  .card{background:#1A0D12;border:1px solid #3A2030;border-radius:20px;padding:36px 32px;max-width:480px;width:100%}
+  h1{font-size:22px;font-weight:700;color:#F0E8EB;margin-bottom:6px}
+  .subtitle{font-size:13px;color:#9B7A88;margin-bottom:28px}
+  label{display:block;font-size:12px;font-weight:600;color:#BBA8B0;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+  input,select{width:100%;background:#0F0609;border:1.5px solid #3A2030;border-radius:10px;padding:12px 14px;color:#F0E8EB;font-size:14px;outline:none;margin-bottom:16px;transition:border-color .2s}
+  input:focus,select:focus{border-color:#9B2335}
+  .row{display:flex;gap:10px;margin-bottom:16px}
+  .row input{margin-bottom:0;flex:1}
+  .btn{width:100%;background:#9B2335;color:#fff;border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s;margin-bottom:10px}
+  .btn:hover{background:#7B1A28}
+  .btn-sec{background:#2A1520;border:1.5px solid #3A2030;color:#F0E8EB}
+  .btn-sec:hover{background:#3A2030}
+  .result{background:#0F0609;border:1px solid #3A2030;border-radius:10px;padding:16px;font-size:13px;color:#BBA8B0;min-height:60px;white-space:pre-wrap;word-break:break-all;line-height:1.6;display:none}
+  .result.show{display:block}
+  .ok{color:#4CAF7D}
+  .err{color:#E05050}
+  .sep{border:none;border-top:1px solid #2A1520;margin:20px 0}
+  .gate{position:fixed;inset:0;background:#0F0609;display:flex;align-items:center;justify-content:center;z-index:999}
+  .gate-box{background:#1A0D12;border:1px solid #3A2030;border-radius:16px;padding:32px;text-align:center;width:320px}
+  .gate-box h2{margin-bottom:16px;font-size:18px}
+  .gate-box input{margin-bottom:12px}
+  .gate-box .btn{margin-bottom:0}
+  .warn{font-size:11px;color:#9B7A88;text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+
+<!-- Gate de acesso -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <h2>🔒 Acesso Admin</h2>
+    <input type="password" id="gate-pw" placeholder="Palavra-passe" onkeydown="if(event.key==='Enter')gateCheck()">
+    <button class="btn" onclick="gateCheck()">Entrar</button>
+    <p class="warn" id="gate-err"></p>
+  </div>
+</div>
+
+<!-- Painel principal -->
+<div class="card" id="panel" style="display:none">
+  <h1>⚙️ Painel Admin — Romanza</h1>
+  <p class="subtitle">Gestão de utilizadores e marcadores</p>
+
+  <!-- Ver utilizador -->
+  <label>Email do utilizador</label>
+  <input type="email" id="email" placeholder="dutraferreira1@gmail.com" value="dutraferreira1@gmail.com">
+
+  <button class="btn btn-sec" onclick="verUtilizador()">Ver dados do utilizador</button>
+
+  <hr class="sep">
+
+  <!-- Gerir marcadores -->
+  <label>Marcadores — adicionar / definir</label>
+  <div class="row">
+    <input type="number" id="qty" value="1000" min="0">
+    <select id="op">
+      <option value="add">Adicionar</option>
+      <option value="set">Definir (substituir)</option>
+      <option value="sub">Subtrair</option>
+    </select>
+  </div>
+  <button class="btn" onclick="gerirMarcadores()">Aplicar marcadores</button>
+
+  <hr class="sep">
+
+  <!-- Premium -->
+  <label>Atribuir Premium</label>
+  <select id="plano" style="margin-bottom:16px">
+    <option value="">Sem premium</option>
+    <option value="mensal">Mensal (30 dias)</option>
+    <option value="semestral">Semestral (180 dias)</option>
+    <option value="anual">Anual (365 dias)</option>
+  </select>
+  <button class="btn" onclick="gerirPremium()">Aplicar premium</button>
+
+  <hr class="sep">
+
+  <!-- Resultado -->
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  const GATE_KEY = 'romanza-user-v1';
+  // Palavra-passe de acesso ao painel (simples, client-side)
+  const ADMIN_PW = 'Romanza@Admin2025';
+
+  function gateCheck() {
+    const pw = document.getElementById('gate-pw').value;
+    if (pw === ADMIN_PW) {
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('panel').style.display = 'block';
+    } else {
+      document.getElementById('gate-err').textContent = 'Palavra-passe incorreta.';
+      document.getElementById('gate-err').style.color = '#E05050';
+    }
+  }
+
+  function getUser(email) {
+    // Procura utilizador no localStorage do browser atual
+    const raw = localStorage.getItem(GATE_KEY);
+    if (!raw) return null;
+    try {
+      const u = JSON.parse(raw);
+      if (!email || u.email?.toLowerCase() === email.toLowerCase()) return u;
+      return null;
+    } catch { return null; }
+  }
+
+  function saveUser(u) {
+    localStorage.setItem(GATE_KEY, JSON.stringify(u));
+  }
+
+  function log(msg, isErr) {
+    const el = document.getElementById('result');
+    el.className = 'result show ' + (isErr ? 'err' : 'ok');
+    el.textContent = msg;
+  }
+
+  function verUtilizador() {
+    const email = document.getElementById('email').value.trim();
+    const u = getUser(email);
+    if (!u) {
+      log('Nenhum utilizador autenticado neste browser com esse email.\n\nNota: dados em localStorage — cada browser tem os seus próprios dados.', true);
+      return;
+    }
+    const exp = u.premium?.expiraEm ? new Date(u.premium.expiraEm).toLocaleString('pt-PT') : '—';
+    log(
+      'Email: ' + u.email + '\n' +
+      'Marcadores: ' + (u.marcadores || 0) + '\n' +
+      'Premium: ' + (u.premium?.tipo || 'Sem premium') + '\n' +
+      'Expira: ' + exp + '\n' +
+      'Registado: ' + (u.createdAt ? new Date(u.createdAt).toLocaleString('pt-PT') : '—')
+    );
+  }
+
+  function gerirMarcadores() {
+    const email = document.getElementById('email').value.trim();
+    const qty   = parseInt(document.getElementById('qty').value) || 0;
+    const op    = document.getElementById('op').value;
+
+    const u = getUser(email);
+    if (!u) { log('Utilizador não encontrado neste browser.', true); return; }
+
+    const antes = u.marcadores || 0;
+    if (op === 'add') u.marcadores = antes + qty;
+    else if (op === 'sub') u.marcadores = Math.max(0, antes - qty);
+    else u.marcadores = qty;
+
+    saveUser(u);
+    log('✅ Marcadores atualizados!\n\nAntes: ' + antes + '\nDepois: ' + u.marcadores + '\n\nFaz refresh à página principal para ver o valor atualizado.');
+  }
+
+  function gerirPremium() {
+    const email = document.getElementById('email').value.trim();
+    const plano = document.getElementById('plano').value;
+
+    const u = getUser(email);
+    if (!u) { log('Utilizador não encontrado neste browser.', true); return; }
+
+    if (!plano) {
+      u.premium = null;
+      saveUser(u);
+      log('✅ Premium removido de ' + u.email);
+      return;
+    }
+
+    const dias = { mensal: 30, semestral: 180, anual: 365 }[plano];
+    const expira = new Date();
+    expira.setDate(expira.getDate() + dias);
+    u.premium = { tipo: plano, expiraEm: expira.toISOString() };
+    saveUser(u);
+    log('✅ Premium ' + plano + ' atribuído!\n\nExpira: ' + expira.toLocaleString('pt-PT'));
+  }
+</script>
+</body>
+</html>
