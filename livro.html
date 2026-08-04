@@ -1415,27 +1415,32 @@ function _openProReader(book, mode, msLeft) {
     audioFill.style.width = (ttsList.length > 1 ? Math.round(i / (ttsList.length - 1) * 100) : 0) + '%';
     const t = ttsList[i]?.textContent?.trim() || '';
     audioTitle.textContent = t.length > 65 ? t.slice(0, 62) + '…' : t;
-    audioSub.textContent = `${i + 1} / ${ttsList.length} · Audiobook`;
   }
 
   function ttsNext(i) {
     if (!ttsOn || i >= ttsList.length) { ttsStop(); return; }
     ttsIdx = i;
     ttsUpdate(i);
-    const text = ttsList[i].textContent.trim();
+    const text = ttsList[i].textContent.trim().replace(/\s+/g, ' ');
     if (!text) { ttsNext(i + 1); return; }
-
-    const voices = SS.getVoices();
-    const v = voices.find(x => x.lang === 'pt-PT')
-           || voices.find(x => x.lang === 'pt-BR')
-           || voices.find(x => x.lang.startsWith('pt'))
-           || voices[0] || null;
 
     const u = new SpeechSynthesisUtterance(text);
     u.rate = 0.9; u.volume = 1; u.pitch = 1;
-    if (v) { u.voice = v; u.lang = v.lang; }
+
+    // Pick Portuguese voice if available; otherwise rely on browser default (no lang/voice set)
+    const voices = SS.getVoices();
+    const ptVoice = voices.find(v => v.lang === 'pt-PT')
+                 || voices.find(v => v.lang === 'pt-BR')
+                 || voices.find(v => v.lang.startsWith('pt'));
+    if (ptVoice) { u.voice = ptVoice; u.lang = ptVoice.lang; }
+
+    u.onstart = () => { audioSub.textContent = '▶ ' + (i + 1) + ' / ' + ttsList.length; };
     u.onend   = () => { if (ttsOn && !ttsPaused) ttsNext(i + 1); };
-    u.onerror = (e) => { if (ttsOn && e.error !== 'canceled') ttsNext(i + 1); };
+    u.onerror = (e) => {
+      if (e.error === 'canceled') return;
+      audioSub.textContent = 'Erro: ' + e.error + ' (#' + i + ')';
+      if (ttsOn) ttsNext(i + 1);
+    };
     SS.speak(u);
   }
 
@@ -1454,19 +1459,25 @@ function _openProReader(book, mode, msLeft) {
 
   function ttsStart() {
     ttsList = [...textEl.querySelectorAll('p, h2, h3')].filter(n => n.textContent.trim());
-    if (!ttsList.length) return;
+    if (!ttsList.length) {
+      audioBar.style.display = 'flex';
+      audioTitle.textContent = 'Sem texto carregado';
+      audioSub.textContent = 'Aguarde o livro carregar';
+      return;
+    }
     ttsList.forEach(n => n.classList.add('prd-reading-node'));
     audioBar.style.display = 'flex';
+    audioSub.textContent = ttsList.length + ' parágrafos · ' + SS.getVoices().length + ' vozes';
     ttsSetUI(true);
     ttsPaused = false;
     ttsOn = true;
-    // Chrome 15s bug workaround
+    // Chrome 15s keepalive workaround
     ttsTimer = setInterval(() => {
       if (ttsOn && !ttsPaused && SS.speaking) { SS.pause(); SS.resume(); }
     }, 10000);
-    const go = () => ttsNext(ttsIdx);
-    if (SS.speaking || SS.pending) { SS.cancel(); requestAnimationFrame(() => requestAnimationFrame(go)); }
-    else { go(); }
+    // Cancel any stuck state, then speak immediately (same tick = user gesture preserved)
+    if (SS.speaking || SS.pending) SS.cancel();
+    ttsNext(0);
   }
 
   audioBtn.addEventListener('click', () => {
