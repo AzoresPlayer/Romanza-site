@@ -2126,17 +2126,34 @@ initCookieBanner();
       const dd = document.createElement('div');
       dd.className = 'nav-user-dd'; dd.id = 'nav-user-dd';
       const marc = (user.marcadores || 0);
+      const isAdmin = user.email && user.email.toLowerCase() === 'dutraferreira1@gmail.com';
       dd.innerHTML = `
         <div class="nav-user-info">
           <div class="nav-user-info-name">${user.nome || 'Utilizador'}</div>
           <div class="nav-user-info-email">${user.email}</div>
           <div style="margin-top:6px;font-size:12px;font-weight:700;color:#9B2335">🎫 ${marc} Marcadores</div>
         </div>
+        ${isAdmin ? `<button class="nav-dd-action" id="nav-admin-marcadores" style="color:#2563EB;border-top:1px solid #F0E8E2">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          +1000 Marcadores (Admin)
+        </button>` : ''}
         <button class="nav-dd-action" id="nav-logout">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Terminar sessão
         </button>`;
       wrap.appendChild(dd);
+      if (isAdmin) {
+        document.getElementById('nav-admin-marcadores').addEventListener('click', () => {
+          const d = JSON.parse(localStorage.getItem(GATE_KEY) || '{}');
+          d.marcadores = (d.marcadores || 0) + 1000;
+          localStorage.setItem(GATE_KEY, JSON.stringify(d));
+          closeNavDd();
+          updateNavUser();
+          const pill = document.querySelector('.nav-marc-pill');
+          if (pill) { pill.style.transition = 'transform .2s'; pill.style.transform = 'scale(1.3)'; setTimeout(() => pill.style.transform = '', 300); }
+          alert('✅ +1000 marcadores adicionados! Total: ' + d.marcadores);
+        });
+      }
       document.getElementById('nav-logout').addEventListener('click', () => {
         try {
           const d = JSON.parse(localStorage.getItem(GATE_KEY)) || {};
