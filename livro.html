@@ -1435,11 +1435,11 @@ function _openProReader(book, mode, msLeft) {
     if (!text) { setTimeout(() => ttsSpeak(idx + 1), 30); return; }
 
     const utt = new SpeechSynthesisUtterance(text);
-    utt.lang = 'pt-PT';
     utt.rate = 0.93;
     utt.pitch = 1;
     const v = getVoice();
-    if (v) utt.voice = v;
+    if (v) { utt.voice = v; utt.lang = v.lang; }
+    else { utt.lang = 'pt-PT'; } // hint sem forçar voz
 
     utt.onend   = () => { if (ttsActive && !ttsPaused) setTimeout(() => ttsSpeak(idx + 1), 80); };
     utt.onerror = (e) => { if (e.error !== 'canceled') setTimeout(() => ttsSpeak(idx + 1), 120); };
@@ -1478,6 +1478,10 @@ function _openProReader(book, mode, msLeft) {
   audioBtn.addEventListener('click', () => {
     if (typeof speechSynthesis === 'undefined') {
       alert('O teu browser não suporta leitura em voz alta.'); return;
+    }
+    if (!ttsActive && !ttsPaused && ttsVoices.length === 0) {
+      // Tentar carregar vozes uma última vez
+      ttsVoices = speechSynthesis.getVoices();
     }
     if (ttsActive && !ttsPaused) {
       speechSynthesis.pause();
