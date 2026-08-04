@@ -184,6 +184,24 @@
     .prd-bmbtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--rbr);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--rs);cursor:pointer;transition:all .2s;font-family:inherit}
     .prd-bmbtn:hover{border-color:var(--ra);color:var(--ra)}
     .prd-bmbtn.set{background:var(--ra);border-color:var(--ra);color:#fff}
+    /* Audiobook */
+    .prd-audiobtn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1.5px solid var(--rbr);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;color:var(--rs);cursor:pointer;transition:all .2s;font-family:inherit}
+    .prd-audiobtn:hover{border-color:var(--ra);color:var(--ra)}
+    .prd-audiobtn.playing{background:var(--ra);border-color:var(--ra);color:#fff;animation:audioPluse 1.6s ease-in-out infinite}
+    @keyframes audioPluse{0%,100%{box-shadow:0 0 0 0 rgba(155,35,53,.4)}50%{box-shadow:0 0 0 6px rgba(155,35,53,0)}}
+    .prd-audio-bar{position:absolute;bottom:60px;left:0;right:0;background:var(--rh);border-top:1px solid var(--rbr);padding:10px 18px;display:flex;align-items:center;gap:10px;transition:all .3s;z-index:10}
+    .prd-audio-info{flex:1;overflow:hidden}
+    .prd-audio-title{font-size:11px;font-weight:700;color:var(--rt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .prd-audio-sub{font-size:10px;color:var(--rs);margin-top:1px}
+    .prd-audio-ctrl{display:flex;align-items:center;gap:6px;flex-shrink:0}
+    .prd-audio-play{width:34px;height:34px;border-radius:50%;background:var(--ra);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+    .prd-audio-play:hover{transform:scale(1.1)}
+    .prd-audio-stop{width:28px;height:28px;border-radius:50%;background:transparent;border:1.5px solid var(--rbr);color:var(--rs);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .prd-audio-stop:hover{border-color:var(--ra);color:var(--ra)}
+    .prd-audio-progress{height:3px;background:var(--rbr);border-radius:2px;margin-top:6px;overflow:hidden}
+    .prd-audio-fill{height:100%;background:var(--ra);border-radius:2px;transition:width .5s linear}
+    .prd-reading-node{transition:background .3s,border-radius .2s;border-radius:4px;padding:0 2px}
+    .prd-reading-node.active{background:rgba(155,35,53,.13)}
     /* Expired overlay */
     .prd-expire{position:absolute;inset:0;background:rgba(14,10,12,.93);display:none;align-items:center;justify-content:center;z-index:10;flex-direction:column;text-align:center;padding:32px 24px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
     @media(max-width:520px){.prd-content{padding:28px 18px 60px}.prd-settings{gap:16px}.prd-hdr{padding:10px 14px}}
@@ -1157,11 +1175,32 @@ function _openProReader(book, mode, msLeft) {
           <div class="prd-text" id="prd-text" style="font-size:${FONT_PX[prefs.fontSize]}px"><p style="color:var(--rs);font-style:italic;text-align:center;padding:40px 0">A carregar o livro...</p></div>
         </div>
       </div>
+      <div class="prd-audio-bar" id="prd-audio-bar" style="display:none">
+        <div class="prd-audio-info">
+          <div class="prd-audio-title" id="prd-audio-title">A ler…</div>
+          <div class="prd-audio-progress"><div class="prd-audio-fill" id="prd-audio-fill" style="width:0%"></div></div>
+          <div class="prd-audio-sub" id="prd-audio-sub">Audiobook</div>
+        </div>
+        <div class="prd-audio-ctrl">
+          <button class="prd-audio-stop" id="prd-audio-stop" title="Parar">
+            <svg width="10" height="10" viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="currentColor"/></svg>
+          </button>
+          <button class="prd-audio-play" id="prd-audio-play" title="Pausa / Continuar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" id="prd-audio-icon"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+          </button>
+        </div>
+      </div>
       <div class="prd-foot">
         <span class="prd-pct" id="prd-pct">0% lido</span>
-        <button class="prd-bmbtn${savedBm!==null?' set':''}" id="prd-bm-foot">
-          🔖 ${savedBm!==null?'Marcador guardado':'Marcar página'}
-        </button>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="prd-audiobtn" id="prd-audio-btn" title="Audiobook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+            Ouvir
+          </button>
+          <button class="prd-bmbtn${savedBm!==null?' set':''}" id="prd-bm-foot">
+            🔖 ${savedBm!==null?'Marcador guardado':'Marcar página'}
+          </button>
+        </div>
       </div>
       ${expireHTML}
     </div>`;
@@ -1349,9 +1388,115 @@ function _openProReader(book, mode, msLeft) {
     document.getElementById('prd-exp-close')?.addEventListener('click',   close);
   }
 
+  // ── Audiobook TTS ──
+  let ttsNodes = [], ttsCur = -1, ttsPaused = false;
+  const audioBtn  = document.getElementById('prd-audio-btn');
+  const audioBar  = document.getElementById('prd-audio-bar');
+  const audioPlay = document.getElementById('prd-audio-play');
+  const audioIcon = document.getElementById('prd-audio-icon');
+  const audioStop = document.getElementById('prd-audio-stop');
+  const audioTitle= document.getElementById('prd-audio-title');
+  const audioSub  = document.getElementById('prd-audio-sub');
+  const audioFill = document.getElementById('prd-audio-fill');
+
+  const PLAY_ICON = '<path d="M8 5v14l11-7z"/>';
+  const PAUSE_ICON= '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+
+  function ttsHighlight(idx) {
+    ttsNodes.forEach((n,i) => n.classList.toggle('active', i === idx));
+    if (ttsNodes[idx]) {
+      ttsNodes[idx].scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+    const pct = ttsNodes.length > 1 ? Math.round(idx / (ttsNodes.length - 1) * 100) : 0;
+    audioFill.style.width = pct + '%';
+    const txt = ttsNodes[idx]?.textContent?.trim() || '';
+    audioTitle.textContent = txt.length > 60 ? txt.slice(0,57)+'…' : txt;
+    audioSub.textContent = `${idx+1} / ${ttsNodes.length} · Audiobook`;
+  }
+
+  function ttsSpeak(idx) {
+    if (idx >= ttsNodes.length) { ttsStop(); return; }
+    ttsCur = idx;
+    ttsHighlight(idx);
+    const text = ttsNodes[idx].textContent.trim();
+    if (!text) { ttsSpeak(idx + 1); return; }
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'pt-PT';
+    utt.rate = 0.95;
+    utt.pitch = 1;
+    // Preferir voz portuguesa se disponível
+    const voices = speechSynthesis.getVoices();
+    const ptVoice = voices.find(v => v.lang.startsWith('pt')) || null;
+    if (ptVoice) utt.voice = ptVoice;
+    utt.onend = () => { if (!ttsPaused) ttsSpeak(idx + 1); };
+    utt.onerror = () => ttsSpeak(idx + 1);
+    speechSynthesis.speak(utt);
+  }
+
+  function ttsStop() {
+    speechSynthesis.cancel();
+    ttsCur = -1; ttsPaused = false;
+    ttsNodes.forEach(n => n.classList.remove('active'));
+    audioBar.style.display = 'none';
+    audioBtn.classList.remove('playing');
+    audioIcon.innerHTML = PLAY_ICON;
+    audioFill.style.width = '0%';
+  }
+
+  function ttsStart() {
+    speechSynthesis.cancel();
+    // Recolhe todos os parágrafos e títulos do livro
+    ttsNodes = Array.from(textEl.querySelectorAll('p, h2, h3'))
+      .filter(n => n.textContent.trim().length > 0);
+    ttsNodes.forEach(n => n.classList.add('prd-reading-node'));
+    audioBar.style.display = 'flex';
+    audioBtn.classList.add('playing');
+    audioIcon.innerHTML = PAUSE_ICON;
+    ttsPaused = false;
+    ttsSpeak(ttsCur > 0 ? ttsCur : 0);
+  }
+
+  audioBtn.addEventListener('click', () => {
+    if (!speechSynthesis) return;
+    if (audioBtn.classList.contains('playing') && !ttsPaused) {
+      // Pausar
+      speechSynthesis.pause();
+      ttsPaused = true;
+      audioIcon.innerHTML = PLAY_ICON;
+    } else if (ttsPaused) {
+      // Retomar
+      speechSynthesis.resume();
+      ttsPaused = false;
+      audioIcon.innerHTML = PAUSE_ICON;
+    } else {
+      ttsStart();
+    }
+  });
+
+  audioPlay.addEventListener('click', () => {
+    if (ttsPaused) {
+      speechSynthesis.resume();
+      ttsPaused = false;
+      audioIcon.innerHTML = PAUSE_ICON;
+      audioBtn.classList.add('playing');
+    } else {
+      speechSynthesis.pause();
+      ttsPaused = true;
+      audioIcon.innerHTML = PLAY_ICON;
+    }
+  });
+
+  audioStop.addEventListener('click', ttsStop);
+
+  // Vozes carregam de forma assíncrona em alguns browsers
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = () => {};
+  }
+
   // ── Fechar ──
   const close = () => {
     if (tick) clearInterval(tick);
+    speechSynthesis.cancel();
     savePos();
     root.remove();
     document.body.style.overflow = '';
