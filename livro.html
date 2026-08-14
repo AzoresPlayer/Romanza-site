@@ -1350,7 +1350,7 @@ function _openProReader(book, mode, msLeft) {
 
     document.getElementById('prd-exp-more')?.addEventListener('click',    () => { close(); _showAccessDialog(book); });
     document.getElementById('prd-exp-premium')?.addEventListener('click', () => { close(); window.location.href='index.html#loja-planos'; });
-    document.getElementById('prd-exp-close')?.addEventListener('click',   close);
+    document.getElementById('prd-exp-close')?.addEventListener('click',   () => close());
   }
 
 
