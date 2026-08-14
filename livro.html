@@ -901,7 +901,7 @@ function refreshMarcBar() {
     const u = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)); } catch { return null; } })();
     if (!u || !u.email) return;
     const code = btoa(u.email).replace(/[^A-Z0-9]/gi,'').toUpperCase().slice(0,8);
-    const text = `Junta-te à Romanza com o meu código ${code} e ganha 60 marcadores grátis! 📖 romanza.live`;
+    const text = `Junta-te à Romanza com o meu código ${code} e ganha 60 marcadores grátis! 📖 romanza.site`;
     if (navigator.share) navigator.share({ title:'Romanza', text }).catch(()=>{});
     else if (navigator.clipboard) navigator.clipboard.writeText(text).then(()=>showToast('Código copiado! Partilha com amigos 🎫','success')).catch(()=>showToast('Código: '+code,'info'));
     else showToast('O teu código: '+code,'info');

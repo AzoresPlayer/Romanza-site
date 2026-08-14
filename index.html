@@ -1695,7 +1695,7 @@ document.querySelectorAll('.btn-gplay').forEach(btn => {
     const u = getU();
     if (!u || !u.verified) { showToast('Regista-te primeiro!', 'info'); return; }
     const code = genRef(u.email);
-    const text = `Junta-te à Romanza com o meu código ${code} e ganha 60 marcadores grátis! 📖 romanza.live`;
+    const text = `Junta-te à Romanza com o meu código ${code} e ganha 60 marcadores grátis! 📖 romanza.site`;
     if (navigator.share) {
       navigator.share({ title: 'Romanza', text }).catch(() => {});
     } else if (navigator.clipboard) {
