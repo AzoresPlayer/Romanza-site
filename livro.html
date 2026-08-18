@@ -879,7 +879,7 @@ function refreshMarcBar() {
   const countEl = document.getElementById('marc-bar-count');
   const u = (() => { try { return JSON.parse(localStorage.getItem(GATE_KEY)); } catch { return null; } })();
   if (!u || !u.verified) { if (bar) bar.style.display = 'none'; return; }
-  if (bar) bar.style.display = 'block';
+  if (bar) bar.style.display = 'none';
   if (countEl) countEl.textContent = u.marcadores || 0;
 }
 
@@ -930,7 +930,6 @@ function updateNavUser() {
       <button class="nav-user-btn" id="nav-user-btn" aria-expanded="false" aria-haspopup="true">
         <div class="nav-user-avatar">${initial}</div>
         <span class="nav-user-label">${firstName}</span>
-        <span class="nav-marc-pill">🎫 ${marc}</span>
         <svg class="nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
       </button>`;
     document.getElementById('nav-user-btn').addEventListener('click', function(e) {
@@ -941,12 +940,10 @@ function updateNavUser() {
       this.querySelector('.nav-chevron').style.transform = 'rotate(180deg)';
       const dd = document.createElement('div');
       dd.className = 'nav-user-dd'; dd.id = 'nav-user-dd';
-      const marc = user.marcadores || 0;
       dd.innerHTML = `
         <div class="nav-user-info">
           <div class="nav-user-info-name">${user.nome || 'Utilizador'}</div>
           <div class="nav-user-info-email">${user.email}</div>
-          <div style="margin-top:6px;font-size:12px;font-weight:700;color:#9B2335">🎫 ${marc} Marcadores</div>
         </div>
         <button class="nav-dd-action" id="nav-logout">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
