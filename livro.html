@@ -302,10 +302,13 @@
       </div>
     </a>
     <div class="nav-right">
+      <button id="lang-btn" onclick="toggleLang()" title="Switch language" style="display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:6px 11px;font-size:13px;font-weight:600;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:border-color .2s">
+        <span id="lang-flag">🇬🇧</span><span id="lang-label" style="line-height:1">EN</span>
+      </button>
       <div class="nav-user" id="nav-user"></div>
       <a href="index.html#app" class="btn-primary">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
-        Baixar App
+        <span data-i18n="nav_baixar">Baixar App</span>
       </a>
     </div>
   </div>
@@ -388,54 +391,128 @@
 <div id="toast-container"></div>
 
 <script>
+// ── Language system ──
+window.LANG = localStorage.getItem('romanza-lang') || 'pt';
+window._I18N_L = {
+  pt:{
+    logo_sub:'Romances para devorar', nav_baixar:'Baixar App',
+    bp_back:'← Voltar ao catálogo', btn_amostra:'Ler Amostra Gratuita', bp_baixar:'Baixar App',
+    badge_novo:'NOVO', badge_adult:'+18',
+    am_loading:'A carregar amostra…',
+    am_wall_title:'Gostaste da amostra?',
+    am_wall_desc_post:'.\nDescarrega a App Romanza para continuares a ler.',
+    am_wall_btn:'Baixar a App Romanza',
+    am_footer_pct:'5% · Amostra gratuita', am_footer_app:'📱 Baixar App',
+    genre_suspense:'Suspense', genre_historico:'Histórico', genre_fantasy:'Fantasia',
+    genre_erotico:'Erótico +18', genre_scifi:'Ficção Científica',
+  },
+  en:{
+    logo_sub:'Romances to devour', nav_baixar:'Download App',
+    bp_back:'← Back to catalogue', btn_amostra:'Read Free Sample', bp_baixar:'Download App',
+    badge_novo:'NEW', badge_adult:'+18',
+    am_loading:'Loading sample…',
+    am_wall_title:'Did you enjoy the sample?',
+    am_wall_desc_post:'.\nDownload the Romanza App to keep reading.',
+    am_wall_btn:'Download Romanza App',
+    am_footer_pct:'5% · Free sample', am_footer_app:'📱 Download App',
+    genre_suspense:'Suspense', genre_historico:'Historical', genre_fantasy:'Fantasy',
+    genre_erotico:'Erotic +18', genre_scifi:'Science Fiction',
+  }
+};
+window.tL = k => (window._I18N_L[window.LANG]||window._I18N_L.pt)[k] || k;
+window.toggleLang = function() {
+  window.LANG = window.LANG === 'pt' ? 'en' : 'pt';
+  localStorage.setItem('romanza-lang', window.LANG);
+  applyLangL();
+};
+window.applyLangL = function() {
+  document.documentElement.lang = window.LANG;
+  const btn = document.getElementById('lang-btn');
+  if (btn) {
+    const flag = btn.querySelector('#lang-flag');
+    const lbl  = btn.querySelector('#lang-label');
+    if (flag) flag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
+    if (lbl)  lbl.textContent  = window.LANG === 'pt' ? 'EN'   : 'PT';
+  }
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = window.tL(el.dataset.i18n);
+    if (v !== el.dataset.i18n) el.textContent = v;
+  });
+  if (typeof render === 'function') render();
+};
+
 const BOOKS = [
   {
     id:1, titulo:'A Chave do Castelo Antigo', autor:'B.A. Dutra', genero:'suspense', rating:4.8, novo:true,
     cover:'covers/a-chave-do-castelo-antigo.jpg',
     descricao:'Durante uma visita de estudo a Guimarães, Miguel encontra uma antiga chave medieval com a inscrição latina "Qui quaerit invenit" — Quem procura, encontra. Com os amigos Tomás, Flora e Patrícia, inicia uma investigação que combina análise histórica, trabalho de arquivo e observação científica, conduzindo-os a uma câmara oculta junto ao Castelo de Guimarães e a um legado preservado há mais de oito séculos.',
+    titulo_en:'The Key of the Ancient Castle',
+    descricao_en:'During a school trip to Guimarães, Miguel finds a medieval key inscribed with the Latin phrase "Qui quaerit invenit" — He who seeks, finds. With friends Tomás, Flora and Patrícia, he begins an investigation combining historical analysis, archival research and scientific observation, leading them to a hidden chamber near Guimarães Castle and a legacy preserved for over eight centuries.',
     amostra:`<p>A manhã caía sobre Guimarães com uma luz dourada e hesitante, como se o sol próprio respeitasse os séculos de história que aquelas pedras guardavam. Miguel Ferreira ajustou a mochila às costas e respirou fundo o ar fresco de outubro — um ar que cheirava a musgo, a granito molhado, e àquele indefinível aroma de tempo acumulado que só as cidades muito antigas sabem guardar.</p><p>«Qui quaerit invenit», murmurou ele, repetindo as palavras que tinha lido na pequena chave de ferro que encontrara, havia menos de uma hora, entre as raízes de uma oliveira centenária junto ao muro norte do castelo.</p><p>Quem procura, enconta.</p><p>Tomás aproximou-se, franzindo o sobrolho por baixo dos óculos redondos que insistia em usar apesar das gozações dos colegas. «Onde é que achaste mesmo isso, Miguel?»</p><p>«Junto ao muro do castelo, como já te disse.» Miguel abriu a palma da mão e deixou a chave à vista. Era pequena, escura, pesada para o seu tamanho, com a pátina de quem passou décadas enterrada. Na argola, quase imperceptível sem a luz do telemóvel, uma inscrição circular que corria toda a volta. «Alguém escondeu isto aqui de propósito.»</p><p>Flora e Patrícia chegaram a correr, ofegantes, com os cadernos de campo ainda abertos. A visita de estudo ao centro histórico de Guimarães tinha começado há menos de duas horas, mas Miguel sentia nos ossos — com aquela certeza irracional que os historiadores aprendem a temer e a respeitar em simultâneo — que o verdadeiro trabalho ainda estava a começar.</p><p>«Chave medieval», disse Flora, inclinando-se para examinar o objeto sem o tocar. «Provavelmente século XII ou XIII. Olhem para a forma do arco — é gótico primitivo.»</p><p>«Achas que abre alguma coisa aqui perto?» perguntou Patrícia, olhando para os muros do castelo como se esperasse que uma porta secreta aparecesse de repente.</p><p>Miguel fechou a mão à volta da chave. A inscrição latina pesava-lhe na memória como uma promessa ou um aviso. <em>Qui quaerit invenit.</em> Não era uma afirmação inocente. Era um convite.</p><p>«Só há uma maneira de descobrir», disse ele.</p>`,
+    amostra_en:`<p>The morning fell over Guimarães with a golden, hesitant light, as if the sun itself respected the centuries of history those stones held. Miguel Ferreira adjusted the backpack on his shoulders and breathed deeply the cool October air — an air that smelled of moss, wet granite, and that indefinable scent of accumulated time that only very ancient cities know how to preserve.</p><p>"Qui quaerit invenit," he murmured, repeating the words he had read on the small iron key he had found, less than an hour ago, among the roots of a century-old olive tree near the castle's north wall.</p><p>He who seeks, finds.</p><p>Tomás approached, frowning beneath the round glasses he insisted on wearing despite his classmates' teasing. "Where did you actually find that, Miguel?"</p><p>"Near the castle wall, as I already told you." Miguel opened his palm and let the key show. It was small, dark, heavy for its size, with the patina of something that had spent decades buried. On the ring, barely visible without the phone's torch, a circular inscription that ran all the way around. "Someone hid this here on purpose."</p><p>Flora and Patrícia came running, breathless, with their field notebooks still open. The school trip to Guimarães' historic centre had begun less than two hours ago, but Miguel felt in his bones — with that irrational certainty that historians learn to both fear and respect — that the real work was only just beginning.</p><p>"Medieval key," said Flora, leaning in to examine the object without touching it. "Probably twelfth or thirteenth century. Look at the arch shape — it's early Gothic."</p><p>"Do you think it opens something nearby?" asked Patrícia, looking at the castle walls as if expecting a secret door to appear at any moment.</p><p>Miguel closed his hand around the key. The Latin inscription weighed on his memory like a promise or a warning. <em>Qui quaerit invenit.</em> It was not an innocent statement. It was an invitation.</p><p>"There's only one way to find out," he said.</p>`,
   },
   {
     id:2, titulo:'As Filhas do Nilo — A Sacerdotisa Proibida', autor:'B.A. Dutra', genero:'historico', rating:4.9, novo:true,
     cover:'covers/as-filhas-do-nilo.jpg',
     descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino. Juntos descobrem o lendário Papiro das Filhas do Nilo — e um segredo que pode custar a vida de Nefertari.',
+    titulo_en:'Daughters of the Nile — The Forbidden Priestess',
+    descricao_en:'Ancient Egypt, Karnak temple. When a priestess is found murdered on the banks of the Sacred Lake, Nefertari, First Priestess of Isis, joins forces with General Kha\'em-uaset to unravel a conspiracy threatening the kingdom\'s spiritual balance. Together they discover the legendary Papyrus of the Daughters of the Nile — and a secret that may cost Nefertari her life.',
     amostra:`<p>O sangue misturava-se com a água do Lago Sagrado e colorava o alvorecer de vermelho.</p><p>Nefertari viu-o antes de qualquer outra sacerdotisa. Acordara antes de Rá abrir os olhos — um hábito de trinta anos que nenhuma circunstância conseguira quebrar — e descera sozinha às margens do lago para as orações da madrugada. Ali estava o corpo de Meritaten, Terceira Sacerdotisa do Templo de Ísis, deitada de bruços sobre as pedras polidas, com o véu branco tingido de carmesim até à cintura.</p><p>Nefertari não gritou. As Primeiras Sacerdotisas não gritam.</p><p>Ajoelhou-se lentamente, com o cerimonial de quem sabe que cada gesto tem significado, e tocou o pulso frio de Meritaten. Depois levantou os olhos para as estrelas que ainda piscavam sobre os pilões de Karnak, indiferentes ao crime que acabara de ser cometido na sua sombra.</p><p>Alguém matara uma serva de Ísis. Alguém que conhecia o templo por dentro. Alguém que sabia que, àquela hora de silêncio anterior ao alvorecer, Meritaten seria a única alma acordada nas margens do lago.</p><p>«Que Ísis me guie», sussurrou Nefertari para o espelho imóvel da água, «porque a justiça não pode esperar por Rá.»</p><p>Quando o general Kha'em-uaset chegou ao templo três horas mais tarde, encontrou a Primeira Sacerdotisa de pé junto ao corpo, imóvel como uma estátua, com os olhos secos e o olhar do qual o medo tinha sido completamente varrido. O que ficara em seu lugar era pior: determinação.</p><p>«Quem deu entrada no templo esta noite?» perguntou ele, sem cumprimento nem cerimónia.</p><p>«Ninguém que não devia estar aqui», respondeu ela. «O que significa que quem matou Meritaten já cá estava.»</p>`,
+    amostra_en:`<p>The blood mixed with the water of the Sacred Lake and coloured the dawn red.</p><p>Nefertari saw it before any other priestess. She had woken before Ra opened his eyes — a thirty-year habit that no circumstance had managed to break — and had gone down alone to the lake's shore for the pre-dawn prayers. There lay the body of Meritaten, Third Priestess of the Temple of Isis, face down on the polished stones, with her white veil stained crimson to the waist.</p><p>Nefertari did not scream. First Priestesses do not scream.</p><p>She knelt slowly, with the ceremony of one who knows that every gesture carries meaning, and touched Meritaten's cold wrist. Then she raised her eyes to the stars still blinking above the pylons of Karnak, indifferent to the crime that had just been committed in their shadow.</p><p>Someone had killed a servant of Isis. Someone who knew the temple from within. Someone who knew that at this hour of silence before dawn, Meritaten would be the only soul awake on the lake's banks.</p><p>"May Isis guide me," Nefertari whispered to the still mirror of the water, "for justice cannot wait for Ra."</p><p>When General Kha'em-uaset arrived at the temple three hours later, he found the First Priestess standing beside the body, motionless as a statue, with dry eyes and a gaze from which fear had been entirely swept away. What remained in its place was worse: determination.</p><p>"Who entered the temple last night?" he asked, without greeting or ceremony.</p><p>"No one who shouldn't have been here," she replied. "Which means whoever killed Meritaten was already inside."</p>`,
   },
   {
     id:3, titulo:'Kael: Senhor das Chamas Perpétuas', autor:'B.A. Dutra', genero:'fantasy', rating:4.7, adulto:true,
     cover:'covers/kael-senhor-das-chamas-perpetuas.jpg',
     descricao:'Na Amazónia, a arqueóloga Isabel rompe acidentalmente um selo ancestral e desperta Kael — um ser demoníaco aprisionado há oito mil anos. Em vez de fugir, ela enfrenta o desconhecido com curiosidade. O que começa com desconfiança transforma-se numa ligação profunda baseada em diálogos, confiança e descoberta mútua — entre o humano e o sobrenatural.',
+    titulo_en:'Kael: Lord of Eternal Flames',
+    descricao_en:'In the Amazon, archaeologist Isabel accidentally breaks an ancient seal and awakens Kael — a demonic being imprisoned for eight thousand years. Rather than fleeing, she faces the unknown with curiosity. What begins with distrust transforms into a deep connection built on dialogue, trust and mutual discovery — between the human and the supernatural.',
     amostra:`<p>O último capítulo que Isabel Mendes escreveu na sua tese chamava-se «Mitos de Aprisionamento na Cultura Indígena Amazónica: Uma Análise Comparativa». Era um título seco, académico, perfeitamente adequado para uma arqueóloga de trinta e dois anos com quatro prémios científicos, zero aventuras registadas na vida, e uma convicção inabalável de que o mundo se explicava através de evidências mensuráveis.</p><p>Isso foi antes do selo.</p><p>A descoberta aconteceu num sítio arqueológico a duzentos quilómetros de Manaus, num terreno que nenhum investigador tinha sequer catalogado. Isabel encontrou-o por acidente — tropeçou numa raiz, caiu com as duas palmas espalmadas contra uma pedra negra e lisa que não devia estar ali, enterrada apenas a meio metro de profundidade na floresta primária.</p><p>A pedra era redonda. Coberta de símbolos que ela não reconhecia em nenhum sistema de escrita que tinha estudado. E quando as suas palmas tocaram a superfície polida e estranhamente quente, sentiu algo que nenhum relatório científico conseguiria descrever: o solo tremeu por baixo dela, um calor intenso subiu pelos seus braços, e a pedra partiu-se ao meio com um som como de trovão contido.</p><p>Isabel ficou imóvel durante trinta segundos. Depois, como a boa cientista que era, tirou o caderno do bolso e começou a tomar notas.</p><p>Não viu a sombra que se formava atrás dela. Só sentiu o calor — intenso, consciente, diferente do calor do sol — e levantou lentamente a cabeça do caderno.</p><p>O ser que a observava não era humano. Isso ficou imediatamente claro. Mas havia naqueles olhos de brasa qualquer coisa que Isabel reconheceu, contra toda a lógica: curiosidade.</p><p>«Tu», disse a voz, grave como pedra partida, «não deves ter medo de mim.»</p><p>Isabel baixou os olhos para o caderno e escreveu: <em>Sujeito comunica em português. Investigar origem linguística.</em></p>`,
+    amostra_en:`<p>The last chapter Isabel Mendes had written in her thesis was called "Imprisonment Myths in Amazonian Indigenous Culture: A Comparative Analysis." It was a dry, academic title, perfectly suited to a thirty-two-year-old archaeologist with four scientific awards, zero recorded adventures in her life, and an unshakeable conviction that the world explained itself through measurable evidence.</p><p>That was before the seal.</p><p>The discovery happened at an archaeological site two hundred kilometres from Manaus, on terrain that no researcher had even catalogued. Isabel found it by accident — she tripped on a root, fell with both palms flat against a black, smooth stone that shouldn't have been there, buried just half a metre deep in the primary forest.</p><p>The stone was round. Covered in symbols she didn't recognise from any writing system she had studied. And when her palms touched the polished and strangely warm surface, she felt something no scientific report could describe: the ground trembled beneath her, an intense heat rose up her arms, and the stone split in two with a sound like contained thunder.</p><p>Isabel remained still for thirty seconds. Then, as the good scientist she was, she took the notebook from her pocket and began taking notes.</p><p>She didn't see the shadow forming behind her. She only felt the heat — intense, conscious, different from the sun's heat — and slowly raised her head from the notebook.</p><p>The being watching her was not human. That became immediately clear. But there was something in those ember eyes that Isabel recognised, against all logic: curiosity.</p><p>"You," said the voice, deep as broken stone, "should not be afraid of me."</p><p>Isabel lowered her eyes to the notebook and wrote: <em>Subject communicates in Portuguese. Investigate linguistic origin.</em></p>`,
   },
   {
     id:4, titulo:'Magia Sexual', autor:'B.A. Dutra', genero:'erotico', rating:4.6, adulto:true,
     cover:'covers/magia-sexual.jpg',
     descricao:'Dorian Blackwood, um poderoso bruxo imortal de cinco séculos, e Isabella Ferreira, editora de Lisboa cuja vida comum esconde um extraordinário potencial mágico. Guiado por uma antiga profecia no Grimório das Chamas Eternas, Dorian descobre que Isabella é a Portadora destinada a despertar um poder capaz de transformar o equilíbrio entre os mundos mágico e humano. À medida que ela descobre a sua verdadeira natureza, ambos desenvolvem uma intensa ligação emocional e espiritual — mas a poderosa Ordem dos Bruxos Sombrios pretende controlar essa energia a qualquer custo, obrigando-os a decidir entre o destino imposto e um novo caminho guiado pelo amor.',
+    titulo_en:'Sexual Magic',
+    descricao_en:'Dorian Blackwood, a powerful five-century-old immortal warlock, and Isabella Ferreira, a Lisbon editor whose ordinary life conceals extraordinary magical potential. Guided by an ancient prophecy in the Grimoire of the Eternal Flames, Dorian discovers that Isabella is the Carrier destined to awaken a power capable of transforming the balance between the magical and human worlds. As she discovers her true nature, both develop an intense emotional and spiritual bond — but the powerful Order of the Shadow Warlocks intends to control that energy at any cost, forcing them to choose between an imposed destiny and a new path guided by love.',
     amostra:`<p>Há coisas que uma editora de Lisboa aprende a reconhecer ao fim de dez anos de profissão: o cheiro de um manuscrito promissor, o silêncio específico de um prazo que já passou, e o momento exacto em que um autor começa a acreditar mais no seu ego do que no seu talento.</p><p>Isabella Ferreira era boa no seu trabalho. Muito boa. E por isso quando o manuscrito chegou — sem nome de autor, sem carta de apresentação, apenas um envelope preto com o seu nome escrito à mão em tinta dourada — a primeira coisa que fez foi colocá-lo na pilha de espera.</p><p>Foi a terceira noite que a convenceu a abri-lo.</p><p>A terceira noite em que sonhou com aquele livro. Não com o conteúdo — ela ainda não sabia o que estava lá dentro — mas com a capa de couro escuro, com o símbolo gravado que reconhecia sem saber de onde, com a sensação de que aquelas páginas a chamavam de uma forma que não tinha nome em nenhuma língua que ela conhecesse.</p><p>Abriu o manuscrito numa terça-feira de novembro, às onze da noite, com uma chávena de chá que esfriou sem ser tocada. Eram as primeiras páginas do Grimório das Chamas Eternas, embora ela ainda não soubesse isso. Leu durante horas sem perceber que as palavras faziam algo aos seus dedos — um formigueiro suave, um reconhecimento que vinha de muito mais fundo do que a memória.</p><p>Só quando chegou ao último parágrafo da primeira parte é que levantou os olhos.</p><p>Um homem estava sentado na cadeira em frente à sua secretária. Alto, de cabelo escuro, com uma expressão que não era exactamente benigna mas também não era ameaça. Era avaliação.</p><p>«Demoraste menos do que os outros», disse ele, em português perfeito com uma entoação que não pertencia a nenhuma região do mundo que Isabella soubesse identificar. «É um bom sinal.»</p><p>Isabella deveria ter gritado. Em vez disso, disse: «Quem é "os outros"?»</p>`,
+    amostra_en:`<p>There are things a Lisbon editor learns to recognise after ten years in the profession: the smell of a promising manuscript, the specific silence of a deadline that has already passed, and the exact moment when an author begins to believe more in their ego than in their talent.</p><p>Isabella Ferreira was good at her job. Very good. And so when the manuscript arrived — without an author's name, without a cover letter, just a black envelope with her name written by hand in golden ink — the first thing she did was put it in the waiting pile.</p><p>It was the third night that convinced her to open it.</p><p>The third night she dreamed of that book. Not of the content — she still didn't know what was inside — but of the dark leather cover, of the engraved symbol she recognised without knowing from where, of the feeling that those pages were calling her in a way that had no name in any language she knew.</p><p>She opened the manuscript on a Tuesday in November, at eleven at night, with a cup of tea that went cold untouched. These were the first pages of the Grimoire of the Eternal Flames, though she didn't know that yet. She read for hours without realising the words were doing something to her fingers — a soft tingling, a recognition that came from somewhere much deeper than memory.</p><p>Only when she reached the last paragraph of the first part did she raise her eyes.</p><p>A man was sitting in the chair across from her desk. Tall, dark-haired, with an expression that was not exactly benign but was not a threat either. It was assessment.</p><p>"You took less time than the others," he said, in perfect Portuguese with an intonation that belonged to no region of the world Isabella could identify. "That's a good sign."</p><p>Isabella should have screamed. Instead she said: "Who are 'the others'?"</p>`,
   },
   {
     id:5, titulo:'Marte: O Último Exílio', autor:'B.A. Dutra', genero:'scifi', rating:4.8, novo:true,
     cover:'covers/marte-o-ultimo-exilio.jpg',
     descricao:'Após o colapso de Marte, Lyra transporta os cristais biotecnológicos Soru\'than que preservam a memória do seu povo. Ao chegar ao Sistema Solar, começa a ter visões de Caio, um oceanógrafo terrestre que sonha com ela. Enquanto o Protocolo Prometeu ameaça os refugiados marcianos, os dois descobrem uma ligação psíquica que transcende o espaço e o tempo.',
+    titulo_en:'Mars: The Last Exile',
+    descricao_en:'After the collapse of Mars, Lyra carries the Soru\'than biotechnological crystals that preserve her people\'s memory. Upon reaching the Solar System, she begins having visions of Caio, a terrestrial oceanographer who dreams of her. While the Prometheus Protocol threatens the Martian refugees, the two discover a psychic connection transcending space and time.',
     amostra:`<p>A última memória colectiva de Marte que Lyra carregava nos cristais era a cor do céu a mudar.</p><p>Não o vermelho que os humanos sempre imaginaram — esse era o Marte antigo, o Marte de antes das cúpulas, de antes da terraformação parcial que durara dois séculos antes de falhar. O Marte que Lyra conheceu tinha um céu de azul acinzentado às horas de ponta de radiação, e um laranja quase dourado no crepúsculo. Era esse céu que ela transportava nos Soru'than: o crepúsculo marciano dos últimos dias, gravado com uma fidelidade que a tecnologia terrestre ainda não conseguia replicar.</p><p>A nave cruzava agora a órbita de Júpiter. Mais vinte e dois dias de viagem até à Terra.</p><p>Lyra fechou os dedos à volta dos dois cristais que usava sempre junto ao corpo — não os de arquivo, guardados em câmaras pressurizadas, mas os pessoais, os que tinham captado as memórias da sua família. A superfície dos Soru'than era morna ao toque, iridescente, e pulsava com um ritmo que os cientistas terráqueos descreveram como «perturbadoramente próximo de um batimento cardíaco».</p><p>Os sobreviventes chamavam-lhe simplesmente: <em>o lembrar.</em></p><p>Foi durante a terceira noite de navegação solitária que Lyra sonhou com ele pela primeira vez. Um homem que ela nunca tinha visto, num mundo que ela reconhecia apenas de imagens das sondas de reconhecimento: oceano. Azul profundo e infinito. O homem estava de pé à beira de qualquer coisa, com os olhos fechados e a expressão de quem está a ouvir algo que mais ninguém consegue ouvir.</p><p>Quando acordou, os Soru'than ardiam com uma luz que nunca tinham tido antes. E havia uma palavra em português que permanecia no ar entre o sonho e a vigília como um eco:</p><p><em>Lyra.</em></p>`,
+    amostra_en:`<p>The last collective memory of Mars that Lyra carried in the crystals was the colour of the sky changing.</p><p>Not the red that humans had always imagined — that was the ancient Mars, the Mars from before the domes, before the partial terraforming that lasted two centuries before failing. The Mars Lyra knew had a greyish-blue sky at peak radiation hours, and an almost golden orange at dusk. It was that sky she carried in the Soru'than: the Martian twilight of the last days, recorded with a fidelity that Earth's technology still couldn't replicate.</p><p>The ship was now crossing Jupiter's orbit. Twenty-two more days of travel to Earth.</p><p>Lyra closed her fingers around the two crystals she always wore close to her body — not the archive ones, stored in pressurised chambers, but the personal ones, those that had captured her family's memories. The Soru'than's surface was warm to the touch, iridescent, and pulsed with a rhythm that Earth scientists had described as "disturbingly close to a heartbeat."</p><p>The survivors called it simply: <em>the remembering.</em></p><p>It was during the third night of solitary navigation that Lyra dreamed of him for the first time. A man she had never seen, in a world she recognised only from reconnaissance probe images: ocean. Deep and infinite blue. The man was standing at the edge of something, with eyes closed and the expression of one listening to something no one else could hear.</p><p>When she woke, the Soru'than burned with a light they had never carried before. And there was a word that lingered in the air between dream and waking like an echo:</p><p><em>Lyra.</em></p>`,
   },
   {
     id:6, titulo:'O Livro das Sombras', autor:'B.A. Dutra', genero:'fantasy', rating:4.8, novo:true,
     cover:'covers/o-livro-das-sombras.jpg',
     descricao:'Isabela, restauradora de manuscritos, recebe um misterioso códice medieval que parece estar vivo — reage ao toque e altera o seu conteúdo. O livro concede desejos autênticos, mas sempre a um preço equivalente. A sua ativação desperta Damian, um Guardião imortal de setecentos anos cuja regra inviolável é nunca apaixonar-se pela guardiã escolhida. Em Lisboa, entre páginas que mudam sozinhas e símbolos que emergem na pele de Isabela, ambos enfrentam o dilema entre preservar um equilíbrio secular ou desafiá-lo pelo amor.',
+    titulo_en:'The Book of Shadows',
+    descricao_en:'Isabela, a manuscript restorer, receives a mysterious medieval codex that seems alive — it reacts to touch and alters its content. The book grants authentic wishes, but always at an equivalent price. Its activation awakens Damian, a seven-hundred-year-old immortal Guardian whose inviolable rule is never to fall in love with the chosen guardian. In Lisbon, between pages that change on their own and symbols that emerge on Isabela\'s skin, both face the dilemma between preserving a centuries-old balance or defying it for love.',
     amostra:`<p>O livro chegou numa segunda-feira.</p><p>Isabela Torres tinha aprendido a desconfiar das segundas-feiras — não por superstição, mas por experiência: era nesse dia que chegavam os processos urgentes, os manuscritos em estado deplorável, as peças com restauros catastróficos feitos nos anos setenta. A segunda-feira era o dia em que o passado resolvia aparecer à porta da sua oficina no Chiado com exigências que a semana inteira não chegava para cumprir.</p><p>Mas este livro era diferente.</p><p>A encomenda chegara sem remetente identificável — apenas um endereço de recolha no Porto e uma nota manuscrita: <em>Urgente. Mãos experientes. Discreção absoluta.</em> O pagamento adiantado tinha sido generoso demais para recusar.</p><p>Isabela colocou o códice sobre a mesa de trabalho, debaixo da luz fria do examinador, e começou a avaliação inicial. Couro de vitela. Séculos XV ou XVI, talvez anterior. Fechos de prata com oxidação característica. Páginas de pergaminho com uma qualidade de conservação que não fazia sentido para a idade aparente do objeto.</p><p>Então tocou a capa com os dedos nus — um descuido, devia ter usado luvas, mas a curiosidade foi mais rápida que o protocolo — e o livro abriu-se.</p><p>Não foi um vento. Não foi um mecanismo. O livro abriu-se como se tivesse estado à espera.</p><p>E nas páginas que ficaram visíveis, escritas com uma tinta que mudava de cor consoante o ângulo da luz, estava o nome de Isabela Torres. O nome completo, incluindo o segundo nome que ela nunca usava e que praticamente ninguém conhecia.</p><p>Levou três respirações profundas a perceber que as suas mãos não estavam a tremer. E mais duas a perceber que algures atrás dela, no espaço da oficina que tinha trancado por dentro antes de começar o trabalho, alguém estava de pé.</p>`,
+    amostra_en:`<p>The book arrived on a Monday.</p><p>Isabela Torres had learned to distrust Mondays — not out of superstition, but out of experience: it was on that day that urgent cases arrived, manuscripts in deplorable condition, pieces with catastrophic restorations done in the seventies. Monday was the day when the past decided to show up at her Chiado workshop with demands that the whole week was not enough to meet.</p><p>But this book was different.</p><p>The package had arrived without an identifiable sender — just a collection address in Porto and a handwritten note: <em>Urgent. Experienced hands. Absolute discretion.</em> The advance payment had been generous enough not to refuse.</p><p>Isabela placed the codex on the work table, under the cold light of the examiner, and began the initial assessment. Vellum leather. Fifteenth or sixteenth century, perhaps earlier. Silver clasps with characteristic oxidation. Parchment pages with a quality of conservation that made no sense for the object's apparent age.</p><p>Then she touched the cover with bare fingers — a lapse; she should have worn gloves, but curiosity was faster than protocol — and the book opened.</p><p>It was not the wind. It was not a mechanism. The book opened as if it had been waiting.</p><p>And on the pages that became visible, written in an ink that changed colour depending on the angle of the light, was the name of Isabela Torres. The full name, including the middle name she never used and that practically no one knew.</p><p>It took three deep breaths to realise her hands were not trembling. And two more to realise that somewhere behind her, in the workshop space she had locked from the inside before beginning the work, someone was standing.</p>`,
   },
   {
     id:7, titulo:'O Tempo da Vontade', autor:'B.A. Dutra', genero:'scifi', rating:4.7, novo:true,
     cover:'covers/o-tempo-da-vontade.jpg',
     descricao:'Em 2047, Lyra, agente da Agência de Inteligência Estratégica, viaja ao passado para infiltrar uma organização tecnológica cujo projeto causará centenas de milhões de mortes no futuro. Em Lisboa, conhece Dante Ferreiro, um arqueólogo com uma capacidade única de interpretar padrões invisíveis. Enquanto a operação revela infiltrações e lealdades divididas, a ligação entre os dois aprofunda-se — e Lyra questiona se o destino pode realmente ser alterado. Livro 1 da Trilogia Cronos Partido.',
+    titulo_en:'The Will of Time',
+    descricao_en:'In 2047, Lyra, an agent of the Strategic Intelligence Agency, travels to the past to infiltrate a technology organisation whose project will cause hundreds of millions of deaths in the future. In Lisbon, she meets Dante Ferreiro, an archaeologist with a unique ability to interpret invisible patterns. As the operation reveals infiltrations and divided loyalties, the bond between the two deepens — and Lyra questions whether fate can really be changed. Book 1 of the Broken Chronos Trilogy.',
     amostra:`<p>O briefing para a Operação Cronos Partido foi entregue a Lyra Vasconcelos numa sala sem janelas, dois andares abaixo do nível da rua, numa quinta-feira que em 2047 ainda era uma quinta-feira normal para toda a gente que não trabalhava para a AIS.</p><p>«A missão é simples», disse o Director Matos, com aquele tom que os agentes da Agência de Inteligência Estratégica aprendiam a reconhecer como o tom de «nada nisto é simples». «Viajas para 2019. Infiltras a Prometheus Technologies. Identificas o ponto de origem do protocolo antes que seja implementado. Voltas.»</p><p>Lyra olhou para a fotografia na pasta — um edifício de vidro em Lisboa, num Lisboa de vinte e oito anos atrás que ela conhecia apenas de arquivo. «E se não conseguir identificar o ponto de origem?»</p><p>«Então em 2031, duzentos e quarenta e três milhões de pessoas morrem de uma forma que os nossos modelos preditivos associam directamente à Prometheus com uma margem de erro de 0,3%.» O Director fechou a sua própria pasta. «Simples, pois.»</p><p>A viagem no tempo não era o que os filmes do século XX tinham prometido. Não havia luz brilhante, não havia sensação de movimento. Era mais parecido com adormecer e acordar com uma memória diferente do último sítio onde tinhas estado. Em dois segundos subjectivos, Lyra passou de uma sala de briefing em 2047 para um passeio de Lisboa em outubro de 2019.</p><p>O cheiro era o que mais a desorientava sempre. 2019 cheirava diferente: mais escape, menos filtros atmosféricos, uma qualidade do ar que os pulmões de Lyra, habituados a vinte e sete anos de regulações pós-crise climática, registavam como surpreendentemente pesado.</p><p>Ela ajustou o casaco e verificou o telemóvel de época que a AIS lhe fornecera. Uma aplicação de transporte. Uma morada. E o nome do primeiro contacto: Dante Ferreiro, arqueólogo, sem qualquer registo de envolvimento político ou tecnológico.</p><p>Às vezes as peças mais importantes são as que ninguém nota.</p>`,
+    amostra_en:`<p>The briefing for Operation Broken Chronos was delivered to Lyra Vasconcelos in a windowless room, two floors below street level, on a Thursday that in 2047 was still a normal Thursday for everyone who didn't work for the SIA.</p><p>"The mission is simple," said Director Matos, in that tone that agents of the Strategic Intelligence Agency had learned to recognise as the tone for "none of this is simple." "You travel to 2019. You infiltrate Prometheus Technologies. You identify the origin point of the protocol before it is implemented. You come back."</p><p>Lyra looked at the photograph in the folder — a glass building in Lisbon, a Lisbon from twenty-eight years ago that she knew only from archive. "And if I can't identify the origin point?"</p><p>"Then in 2031, two hundred and forty-three million people die in a way that our predictive models associate directly with Prometheus with a margin of error of 0.3%." The Director closed his own folder. "Simple, then."</p><p>Time travel was not what twentieth-century films had promised. There was no bright light, no sensation of movement. It was more like falling asleep and waking up with a different memory of the last place you had been. In two subjective seconds, Lyra moved from a 2047 briefing room to a Lisbon walkway in October 2019.</p><p>The smell was what always disoriented her most. 2019 smelled different: more exhaust, fewer atmospheric filters, an air quality that Lyra's lungs, accustomed to twenty-seven years of post-climate-crisis regulations, registered as surprisingly heavy.</p><p>She adjusted her coat and checked the period-appropriate phone the SIA had provided. A transport application. An address. And the name of the first contact: Dante Ferreiro, archaeologist, with no record of political or technological involvement.</p><p>Sometimes the most important pieces are the ones nobody notices.</p>`,
   },
   {
     id:8, titulo:'Triângulo do Desejo', autor:'B.A. Dutra', genero:'erotico', rating:4.6, adulto:true,
     cover:'covers/triangulo-do-desejo.jpg',
     descricao:'Helena Duarte, jornalista investigativa, parte em busca do irmão desaparecido no Triângulo das Bermudas. A expedição leva-a ao encontro de Dante Valente, um experiente capitão, e de Serena, uma mergulhadora com uma ligação inexplicável a uma ilha secreta onde existiu uma civilização antiga que amplificava emoções e memórias. Enquanto resgata o irmão, Helena desenvolve um intenso vínculo com Dante e Serena — um triângulo nascido de confiança, vulnerabilidade e desejo.',
+    titulo_en:'Triangle of Desire',
+    descricao_en:'Helena Duarte, an investigative journalist, sets out to find her brother who disappeared in the Bermuda Triangle. The expedition leads her to Dante Valente, an experienced captain, and to Serena, a diver with an inexplicable connection to a secret island where an ancient civilisation once amplified emotions and memories. While rescuing her brother, Helena develops an intense bond with Dante and Serena — a triangle born of trust, vulnerability and desire.',
     amostra:`<p>O desaparecimento do seu irmão chegou a Helena Duarte numa mensagem de texto às 3h47 da manhã, enviada pela coordenadora da expedição científica com um laconismo que só podia significar pânico controlado: <em>Rui não apareceu para o regresso. Contacte-nos com urgência.</em></p><p>Helena estava acordada. Tinha estado acordada durante a maior parte daquela semana, como estava acordada durante a maior parte de qualquer semana em que tinha um prazo de investigação — e no jornalismo investigativo os prazos eram sempre para ontem. Mas quando leu a mensagem, o artigo sobre corrupção em contratos públicos tornou-se de repente completamente irrelevante.</p><p>Rui era o mais novo dos dois. Biólogo marinho, especializado em correntes abissais, apaixonado por esses lugares do oceano onde a pressão mata qualquer coisa que não tenha evoluído especificamente para sobreviver ali. Tinha embarcado numa expedição independente para o Atlântico central há três semanas, para uma zona que os mapas oficiais marcavam como «anomalia magnética não classificada» e que a comunidade científica não-oficial chamava, sem cerimónia, o Triângulo.</p><p>Helena reservou o primeiro voo disponível para as Bermudas ainda antes do amanhecer.</p><p>O capitão Dante Valente estava no cais quando ela chegou, de pé ao lado do único barco disponível para a zona que ela precisava de alcançar. Era mais alto do que ela esperava. Tinha o tipo de calma que ou se nasce com ela ou se aprende da pior maneira possível. Olhou para a mochila dela e para o equipamento de gravação e disse, sem entoação de julgamento: «É jornalista.»</p><p>«E o meu irmão está lá», disse Helena. «Isso importa mais.»</p><p>Dante Valente estudou-a durante um momento longo o suficiente para ser desconfortável. Depois acenou com a cabeça na direcção do barco.</p><p>«Embarca.»</p>`,
+    amostra_en:`<p>The disappearance of her brother reached Helena Duarte in a text message at 3:47 in the morning, sent by the scientific expedition coordinator with a terseness that could only mean controlled panic: <em>Rui didn't show up for the return. Contact us urgently.</em></p><p>Helena was awake. She had been awake for most of that week, as she was awake for most of any week in which she had an investigative deadline — and in investigative journalism the deadlines were always for yesterday. But when she read the message, the article about corruption in public contracts suddenly became completely irrelevant.</p><p>Rui was the younger of the two. Marine biologist, specialising in abyssal currents, passionate about those places in the ocean where pressure kills anything that hasn't evolved specifically to survive there. He had boarded an independent expedition to the central Atlantic three weeks ago, to an area that official maps marked as "unclassified magnetic anomaly" and that the unofficial scientific community called, without ceremony, the Triangle.</p><p>Helena booked the first available flight to Bermuda before dawn.</p><p>Captain Dante Valente was on the dock when she arrived, standing beside the only boat available for the area she needed to reach. He was taller than she expected. He had the kind of calm that either you are born with or you learn the hardest possible way. He looked at her backpack and her recording equipment and said, without any judgement in his tone: "You're a journalist."</p><p>"And my brother is out there," said Helena. "That matters more."</p><p>Dante Valente studied her for a moment long enough to be uncomfortable. Then he nodded in the direction of the boat.</p><p>"Get on board."</p>`,
   },
 ];
 
@@ -1381,43 +1458,56 @@ function _openProReader(book, mode, msLeft) {
 
 function openAmostra(book) {
   if (document.getElementById('reader-overlay')) return;
+  const isEn = window.LANG === 'en';
+  const tit  = isEn && book.titulo_en ? book.titulo_en : book.titulo;
   const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
   const ov = document.createElement('div');
   ov.id = 'reader-overlay';
   ov.className = 'reader-overlay';
+  const amTag   = isEn ? 'Free sample · 5%' : 'Amostra gratuita · 5%';
+  const amClose = isEn ? 'Close' : 'Fechar';
+  const amLoad  = isEn ? 'Loading sample…' : 'A carregar amostra…';
+  const amLoadP = isEn ? 'Loading…' : 'A carregar…';
+  const wallTitle = isEn ? 'Did you enjoy the sample?' : 'Gostaste da amostra?';
+  const wallDesc  = isEn
+    ? `You've reached the end of your free 5% of <em>${tit}</em>.<br>Download the Romanza App to keep reading.`
+    : `Chegaste ao fim dos teus 5% gratuitos de <em>${tit}</em>.<br>Descarrega a App Romanza para continuares a ler.`;
+  const wallBtn  = isEn ? 'Download Romanza App' : 'Baixar a App Romanza';
+  const footPct  = isEn ? '5% · Free sample' : '5% · Amostra gratuita';
+  const footApp  = isEn ? '📱 Download App' : '📱 Baixar App';
   ov.innerHTML = `
-    <div class="reader-modal" role="dialog" aria-modal="true" aria-label="Amostra de ${book.titulo}" style="position:relative">
+    <div class="reader-modal" role="dialog" aria-modal="true" aria-label="${amTag}" style="position:relative">
       <div class="reader-header">
         ${book.cover
           ? `<img class="reader-cover-thumb" src="${book.cover}" alt="" onerror="this.style.display='none'">`
-          : `<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${book.titulo.charAt(0)}</div>`}
+          : `<div class="reader-cover-ph" style="background:${cs.bg};color:${cs.color}">${tit.charAt(0)}</div>`}
         <div class="reader-header-meta">
-          <div class="reader-tag">Amostra gratuita · 5%</div>
-          <div class="reader-header-title">${book.titulo}</div>
+          <div class="reader-tag">${amTag}</div>
+          <div class="reader-header-title">${tit}</div>
         </div>
-        <button class="reader-close" id="reader-close" aria-label="Fechar">&times;</button>
+        <button class="reader-close" id="reader-close" aria-label="${amClose}">&times;</button>
       </div>
       <div class="reader-progress-bar"><div class="reader-progress-fill" style="width:5%"></div></div>
       <div class="reader-body" id="am-body">
-        <div class="reader-chapter" id="am-chapter">A carregar amostra…</div>
+        <div class="reader-chapter" id="am-chapter">${amLoad}</div>
         <div class="reader-text" id="am-text" style="min-height:200px">
-          <p style="color:#9C8090;text-align:center;padding:40px 0;font-style:italic">A carregar…</p>
+          <p style="color:#9C8090;text-align:center;padding:40px 0;font-style:italic">${amLoadP}</p>
         </div>
         <div id="am-wall" style="display:none;background:linear-gradient(transparent,#FDFAF7 28%);padding:120px 20px 32px;text-align:center;margin-top:-100px;position:relative;z-index:3">
           <div style="background:white;border:1.5px solid #EDE4E8;border-radius:18px;padding:28px 20px;max-width:380px;margin:0 auto;box-shadow:0 8px 32px rgba(30,13,18,.1)">
             <div style="font-size:36px;margin-bottom:12px">📱</div>
-            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#1E0D12;margin-bottom:8px">Gostaste da amostra?</div>
-            <div style="font-size:13px;color:#9C8090;margin-bottom:22px;line-height:1.65">Chegaste ao fim dos teus 5% gratuitos de <em>${book.titulo}</em>.<br>Descarrega a App Romanza para continuares a ler.</div>
+            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:#1E0D12;margin-bottom:8px">${wallTitle}</div>
+            <div style="font-size:13px;color:#9C8090;margin-bottom:22px;line-height:1.65">${wallDesc}</div>
             <a href="index.html#app" id="am-btn-app" style="display:flex;align-items:center;justify-content:center;gap:9px;background:#9B2335;color:white;border:none;border-radius:12px;padding:15px 20px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
-              Baixar a App Romanza
+              ${wallBtn}
             </a>
           </div>
         </div>
       </div>
       <div class="reader-footer" id="am-footer">
-        <div class="reader-pct">5% · Amostra gratuita</div>
-        <a href="index.html#app" class="reader-cta" id="am-foot-app" style="font-size:12px;padding:9px 16px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">📱 Baixar App</a>
+        <div class="reader-pct">${footPct}</div>
+        <a href="index.html#app" class="reader-cta" id="am-foot-app" style="font-size:12px;padding:9px 16px;text-decoration:none;display:inline-flex;align-items:center;gap:6px">${footApp}</a>
       </div>
     </div>
   `;
@@ -1463,12 +1553,16 @@ function openAmostra(book) {
         const limit = Math.min(60, Math.max(12, Math.floor(nodes.length * 0.05)));
         document.getElementById('am-text').innerHTML = nodes.slice(0, limit).join('');
       } else {
-        document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
-        document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
+        const isEnA = window.LANG === 'en';
+        const amostraText = isEnA && book.amostra_en ? book.amostra_en : book.amostra;
+        document.getElementById('am-chapter').textContent = isEnA ? 'Chapter 1 — Beginning' : 'Capítulo 1 — Início';
+        document.getElementById('am-text').innerHTML = amostraText || (isEnA ? '<p>Sample not available.</p>' : '<p>Amostra não disponível.</p>');
       }
     } catch {
-      document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
-      document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
+      const isEnA = window.LANG === 'en';
+      const amostraText = isEnA && book.amostra_en ? book.amostra_en : book.amostra;
+      document.getElementById('am-chapter').textContent = isEnA ? 'Chapter 1 — Beginning' : 'Capítulo 1 — Início';
+      document.getElementById('am-text').innerHTML = amostraText || (isEnA ? '<p>Sample not available.</p>' : '<p>Amostra não disponível.</p>');
     }
     document.getElementById('am-wall').style.display = 'block';
   }
@@ -1514,47 +1608,51 @@ function render() {
     return;
   }
 
-  document.title = `${book.titulo} — Romanza`;
+  const isEn = window.LANG === 'en';
+  const tit  = isEn && book.titulo_en   ? book.titulo_en   : book.titulo;
+  const desc = isEn && book.descricao_en ? book.descricao_en : book.descricao;
+  document.title = `${tit} — Romanza`;
 
   const gi = GENEROS_MAP[book.genero] || GENEROS_MAP.suspense;
   const cs = COVER_STYLES[book.genero] || COVER_STYLES.suspense;
+  const genreLabel = isEn ? window.tL('genre_' + book.genero) : gi.label;
 
   content.innerHTML = `
     <div class="bp-layout">
       <div class="bp-cover-wrap">
         <div class="bp-cover" id="bp-cover-box" style="background:${cs.bg}">
-          ${book.cover ? `<img src="${book.cover}" alt="${book.titulo}" onerror="this.style.display='none'">` : ''}
-          <div class="bp-cover-letter" style="color:${cs.color}">${book.titulo.charAt(0)}</div>
+          ${book.cover ? `<img src="${book.cover}" alt="${tit}" onerror="this.style.display='none'">` : ''}
+          <div class="bp-cover-letter" style="color:${cs.color}">${tit.charAt(0)}</div>
           ${book.adulto ? `<span class="bp-adulto-badge">+18</span>` : ''}
         </div>
       </div>
       <div class="bp-info">
-        <span class="bp-genre-badge" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
-        <h1 class="bp-title">${book.titulo}</h1>
-        <div class="bp-author">por ${book.autor}</div>
+        <span class="bp-genre-badge" style="background:${gi.bg};color:${gi.color}">${genreLabel}</span>
+        <h1 class="bp-title">${tit}</h1>
+        <div class="bp-author">${isEn?'by':'por'} ${book.autor}</div>
         <div class="bp-rating">
           <span class="bp-stars">${stars(book.rating)}</span>
           <span class="bp-rating-num">${book.rating.toFixed(1)}</span>
           <span class="bp-rating-label">/ 5.0</span>
         </div>
-        <div class="bp-resume-label">Resumo</div>
-        <p class="bp-desc">${book.descricao}</p>
+        <div class="bp-resume-label">${isEn?'Synopsis':'Resumo'}</div>
+        <p class="bp-desc">${desc}</p>
         <div class="bp-actions">
           <button class="btn-amostra" id="btn-amostra">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
-            Ler Amostra Gratuita
+            ${isEn?'Read Free Sample':'Ler Amostra Gratuita'}
           </button>
           <div class="bp-actions-row">
             <a class="btn-ler-app" href="index.html#app" style="text-decoration:none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
-              Baixar App
+              ${isEn?'Download App':'Baixar App'}
             </a>
           </div>
         </div>
         <div class="bp-info-chips">
-          ${book.novo ? `<div class="bp-chip"><span class="bp-chip-icon">✨</span> Novo no catálogo</div>` : ''}
-          ${book.adulto ? `<div class="bp-chip"><span class="bp-chip-icon">🔞</span> Conteúdo para adultos</div>` : ''}
-          <div class="bp-chip"><span class="bp-chip-icon">🇵🇹</span> Em português</div>
+          ${book.novo ? `<div class="bp-chip"><span class="bp-chip-icon">✨</span> ${isEn?'New in catalogue':'Novo no catálogo'}</div>` : ''}
+          ${book.adulto ? `<div class="bp-chip"><span class="bp-chip-icon">🔞</span> ${isEn?'Adult content':'Conteúdo para adultos'}</div>` : ''}
+          <div class="bp-chip"><span class="bp-chip-icon">🇵🇹</span> ${isEn?'In Portuguese':'Em português'}</div>
           <div class="bp-chip"><span class="bp-chip-icon">📖</span> eBook & Audiobook</div>
         </div>
       </div>
@@ -1590,9 +1688,11 @@ if (isRegistered()) {
     }
   } catch {}
   render();
+  applyLangL();
   updateNavUser();
 } else {
   showGateForm();
+  applyLangL();
   updateNavUser();
 }
 </script>

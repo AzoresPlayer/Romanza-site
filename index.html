@@ -548,17 +548,20 @@
       </div>
     </a>
     <div class="nav-links">
-      <a href="#catalogo">Catálogo</a>
+      <a href="#catalogo" data-i18n="nav_catalogo">Catálogo</a>
       <a href="#reviews">Reviews</a>
-      <a href="#comunidade">Comunidade</a>
-      <a href="#pedidos">Votação</a>
+      <a href="#comunidade" data-i18n="nav_comunidade">Comunidade</a>
+      <a href="#pedidos" data-i18n="nav_votacao">Votação</a>
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-right">
+      <button id="lang-btn" onclick="toggleLang()" title="Switch language" style="display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:6px 11px;font-size:13px;font-weight:600;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:border-color .2s">
+        <span id="lang-flag">🇬🇧</span><span id="lang-label" style="line-height:1">EN</span>
+      </button>
       <div class="nav-user" id="nav-user"></div>
       <a href="#app" class="btn-primary">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5v-13c0-.83.92-1.3 1.6-.8l10 6.5c.6.4.6 1.2 0 1.6l-10 6.5c-.68.5-1.6.03-1.6-.8z"/></svg>
-        Baixar App
+        <span data-i18n="nav_baixar">Baixar App</span>
       </a>
     </div>
   </div>
@@ -570,15 +573,15 @@
     <div class="hero-content">
       <div class="hero-badge">
         <span class="hero-badge-dot pulse"></span>
-        Em breve na Google Play Store
+        <span data-i18n="hero_badge">Em breve na Google Play Store</span>
       </div>
-      <h1 class="hero-title">
+      <h1 class="hero-title" data-i18n-html="hero_title">
         Romances para <em>devorar</em> — onde quer que estejas.
       </h1>
-      <p class="hero-sub">Catálogo exclusivo de romances em português. Lê offline, comenta, descobre novos títulos. Subscrição mensal ou anual.</p>
+      <p class="hero-sub" data-i18n="hero_sub">Catálogo exclusivo de romances em português. Lê offline, comenta, descobre novos títulos. Subscrição mensal ou anual.</p>
       <div class="hero-ctas">
-        <a href="#catalogo" class="hero-cta-main">Explorar Catálogo</a>
-        <a href="#app" class="hero-cta-sec">Baixar App →</a>
+        <a href="#catalogo" class="hero-cta-main" data-i18n="hero_cta_main">Explorar Catálogo</a>
+        <a href="#app" class="hero-cta-sec" data-i18n="hero_cta_sec">Baixar App →</a>
       </div>
       <div class="hero-social">
         <div class="hero-avatars">
@@ -590,7 +593,7 @@
         </div>
         <div>
           <div class="hero-stars">★★★★★</div>
-          <div class="hero-rating-label">+1.200 leitoras apaixonadas</div>
+          <div class="hero-rating-label" data-i18n="hero_rating">+1.200 leitoras apaixonadas</div>
         </div>
       </div>
     </div>
@@ -603,14 +606,14 @@
             <img src="logo.png" alt="Romanza" class="phone-logo">
             <div>
               <div class="phone-app-name">Romanza</div>
-              <div class="phone-app-sub">Romances para devorar —<br>onde quer que estejas.</div>
+              <div class="phone-app-sub" data-i18n-html="phone_sub">Romances para devorar —<br>onde quer que estejas.</div>
             </div>
             <div style="width:100%;display:flex;flex-direction:column;gap:10px;margin-top:12px">
-              <div class="phone-btn-start">Começar agora</div>
-              <div class="phone-btn-login">Já tenho conta</div>
+              <div class="phone-btn-start" data-i18n="phone_start">Começar agora</div>
+              <div class="phone-btn-login" data-i18n="phone_login">Já tenho conta</div>
             </div>
           </div>
-          <div class="phone-footer">Subscrição mensal ou anual · Bloqueado a 1 dispositivo</div>
+          <div class="phone-footer" data-i18n="phone_footer">Subscrição mensal ou anual · Bloqueado a 1 dispositivo</div>
         </div>
       </div>
     </div>
@@ -622,19 +625,19 @@
   <div class="stats-inner">
     <div class="stat">
       <div class="stat-num">8</div>
-      <div class="stat-label">Livros disponíveis</div>
+      <div class="stat-label" data-i18n="stat_books">Livros disponíveis</div>
     </div>
     <div class="stat">
       <div class="stat-num">5</div>
-      <div class="stat-label">Géneros literários</div>
+      <div class="stat-label" data-i18n="stat_genres">Géneros literários</div>
     </div>
     <div class="stat">
       <div class="stat-num">4.7<span style="font-size:16px;font-weight:400;color:#C0A0A8">/5</span></div>
-      <div class="stat-label">Avaliação média</div>
+      <div class="stat-label" data-i18n="stat_rating">Avaliação média</div>
     </div>
     <div class="stat">
-      <div class="stat-num" style="font-size:20px;line-height:1.2">Google Play<br><span style="font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;color:#E8736A">Em breve</span></div>
-      <div class="stat-label">Subscrição disponível</div>
+      <div class="stat-num" style="font-size:20px;line-height:1.2">Google Play<br><span style="font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;color:#E8736A" data-i18n="stat_soon">Em breve</span></div>
+      <div class="stat-label" data-i18n="stat_sub">Subscrição disponível</div>
     </div>
   </div>
 </div>
@@ -642,9 +645,9 @@
 <!-- CATALOG -->
 <section id="catalogo">
   <div class="catalog-header">
-    <div class="section-tag">CATÁLOGO</div>
-    <h2 class="section-title">Os nossos romances</h2>
-    <p class="section-sub">Do dark romance ao romantasy, sempre o teu próximo romance favorito.</p>
+    <div class="section-tag" data-i18n="sec_catalogo">CATÁLOGO</div>
+    <h2 class="section-title" data-i18n="sec_cat_title">Os nossos romances</h2>
+    <p class="section-sub" data-i18n="sec_cat_sub">Do dark romance ao romantasy, sempre o teu próximo romance favorito.</p>
   </div>
   <div class="genre-tabs" id="genre-tabs"></div>
   <div class="books-grid" id="books-grid"></div>
@@ -657,8 +660,8 @@
 <section id="reviews">
   <div class="reviews-inner">
     <div class="reviews-header">
-      <div class="section-tag">REVIEWS</div>
-      <h2 class="section-title">O que dizem as leitoras</h2>
+      <div class="section-tag" data-i18n="sec_reviews">REVIEWS</div>
+      <h2 class="section-title" data-i18n="sec_rev_title">O que dizem as leitoras</h2>
     </div>
     <div class="reviews-layout">
       <div>
@@ -706,10 +709,10 @@
   <div class="community-inner">
     <div class="community-header">
       <div>
-        <div class="section-tag">COMUNIDADE</div>
-        <h2 class="section-title">Debates &amp; conversas</h2>
+        <div class="section-tag" data-i18n="sec_comunidade">COMUNIDADE</div>
+        <h2 class="section-title" data-i18n="sec_com_title">Debates &amp; conversas</h2>
       </div>
-      <button class="btn-new-topic">+ Novo tópico</button>
+      <button class="btn-new-topic" data-i18n="btn_new_topic">+ Novo tópico</button>
     </div>
     <div class="threads-list" id="threads-list"></div>
     <div class="community-cta">
@@ -830,9 +833,9 @@
 <section id="pedidos">
   <div class="requests-inner">
     <div class="requests-header">
-      <div class="section-tag">VOTAÇÃO</div>
-      <h2 class="section-title">Próximos lançamentos</h2>
-      <p class="section-sub">Vota no livro que queres ver a seguir na app. A comunidade decide!</p>
+      <div class="section-tag" data-i18n="sec_votacao">VOTAÇÃO</div>
+      <h2 class="section-title" data-i18n="sec_vot_title">Próximos lançamentos</h2>
+      <p class="section-sub" data-i18n="sec_vot_sub">Vota no livro que queres ver a seguir na app. A comunidade decide!</p>
     </div>
     <div class="vote-items" id="vote-items" style="max-width:640px;margin:0 auto"></div>
   </div>
@@ -866,7 +869,7 @@
   <div class="faq-inner">
     <div class="faq-header">
       <div class="section-tag">FAQ</div>
-      <h2 class="section-title">Perguntas frequentes</h2>
+      <h2 class="section-title" data-i18n="sec_faq_title">Perguntas frequentes</h2>
     </div>
     <div class="faq-list" id="faq-list"></div>
   </div>
@@ -968,56 +971,142 @@
 </div>
 
 <script>
+// ── Language system ──
+window.LANG = localStorage.getItem('romanza-lang') || 'pt';
+window._I18N = {
+  pt:{
+    logo_sub:'Romances para devorar',
+    nav_catalogo:'Catálogo', nav_comunidade:'Comunidade', nav_votacao:'Votação', nav_baixar:'Baixar App',
+    hero_badge:'Em breve na Google Play Store',
+    hero_title:'Romances para <em>devorar</em> — onde quer que estejas.',
+    hero_sub:'Catálogo exclusivo de romances em português. Lê offline, comenta, descobre novos títulos. Subscrição mensal ou anual.',
+    hero_cta_main:'Explorar Catálogo', hero_cta_sec:'Baixar App →',
+    hero_rating:'+1.200 leitoras apaixonadas',
+    phone_sub:'Romances para devorar —<br>onde quer que estejas.',
+    phone_start:'Começar agora', phone_login:'Já tenho conta',
+    phone_footer:'Subscrição mensal ou anual · Bloqueado a 1 dispositivo',
+    stat_books:'Livros disponíveis', stat_genres:'Géneros literários', stat_rating:'Avaliação média',
+    stat_sub:'Subscrição disponível', stat_soon:'Em breve',
+    sec_catalogo:'CATÁLOGO', sec_cat_title:'Os nossos romances', sec_cat_sub:'Do dark romance ao romantasy, sempre o teu próximo romance favorito.',
+    sec_reviews:'REVIEWS', sec_rev_title:'O que dizem as leitoras',
+    sec_comunidade:'COMUNIDADE', sec_com_title:'Debates & conversas', btn_new_topic:'+ Novo tópico',
+    sec_votacao:'VOTAÇÃO', sec_vot_title:'Próximos lançamentos', sec_vot_sub:'Vota no livro que queres ver a seguir na app. A comunidade decide!',
+    sec_faq_title:'Perguntas frequentes',
+  },
+  en:{
+    logo_sub:'Romances to devour',
+    nav_catalogo:'Catalogue', nav_comunidade:'Community', nav_votacao:'Vote', nav_baixar:'Download App',
+    hero_badge:'Coming soon to Google Play Store',
+    hero_title:'Romances to <em>devour</em> — wherever you are.',
+    hero_sub:'Exclusive catalogue of Portuguese romances. Read offline, comment, discover new titles. Monthly or annual subscription.',
+    hero_cta_main:'Explore Catalogue', hero_cta_sec:'Download App →',
+    hero_rating:'+1,200 passionate readers',
+    phone_sub:'Romances to devour —<br>wherever you are.',
+    phone_start:'Get started', phone_login:'I already have an account',
+    phone_footer:'Monthly or annual subscription · Locked to 1 device',
+    stat_books:'Books available', stat_genres:'Literary genres', stat_rating:'Average rating',
+    stat_sub:'Subscription available', stat_soon:'Coming soon',
+    sec_catalogo:'CATALOGUE', sec_cat_title:'Our romances', sec_cat_sub:'From dark romance to romantasy — always your next favourite read.',
+    sec_reviews:'REVIEWS', sec_rev_title:'What readers are saying',
+    sec_comunidade:'COMMUNITY', sec_com_title:'Debates & conversations', btn_new_topic:'+ New topic',
+    sec_votacao:'VOTE', sec_vot_title:'Upcoming releases', sec_vot_sub:'Vote for the book you want to see next in the app. The community decides!',
+    sec_faq_title:'Frequently asked questions',
+  }
+};
+window.t = k => (window._I18N[window.LANG]||window._I18N.pt)[k] || k;
+window.toggleLang = function() {
+  window.LANG = window.LANG === 'pt' ? 'en' : 'pt';
+  localStorage.setItem('romanza-lang', window.LANG);
+  applyLang();
+};
+window.applyLang = function() {
+  document.documentElement.lang = window.LANG;
+  const btn = document.getElementById('lang-btn');
+  if (btn) {
+    const flag = btn.querySelector('#lang-flag');
+    const lbl  = btn.querySelector('#lang-label');
+    if (flag) flag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
+    if (lbl)  lbl.textContent  = window.LANG === 'pt' ? 'EN'   : 'PT';
+  }
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = window.t(el.dataset.i18n);
+    if (v !== el.dataset.i18n) el.textContent = v;
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const v = window.t(el.dataset.i18nHtml);
+    if (v !== el.dataset.i18nHtml) el.innerHTML = v;
+  });
+  if (typeof renderGenreTabs === 'function') renderGenreTabs();
+  if (typeof renderBooks === 'function') renderBooks();
+  if (typeof renderFaq === 'function') renderFaq();
+};
+
 const BOOKS = [
   {
     id:1, titulo:'A Chave do Castelo Antigo', autor:'B.A. Dutra', genero:'suspense', rating:4.8, numReviews:0, novo:true,
     cover:'covers/a-chave-do-castelo-antigo.jpg',
     descricao:'Durante uma visita de estudo a Guimarães, Miguel encontra uma antiga chave medieval com a inscrição latina "Qui quaerit invenit" — Quem procura, encontra. Com os amigos Tomás, Flora e Patrícia, inicia uma investigação que combina análise histórica, trabalho de arquivo e observação científica, conduzindo-os a uma câmara oculta junto ao Castelo de Guimarães e a um legado preservado há mais de oito séculos.',
+    titulo_en:'The Key of the Ancient Castle',
+    descricao_en:'During a school trip to Guimarães, Miguel finds a medieval key inscribed with the Latin phrase "Qui quaerit invenit" — He who seeks, finds. With friends Tomás, Flora and Patrícia, he begins an investigation combining historical analysis, archival research and scientific observation, leading them to a hidden chamber near Guimarães Castle and a legacy preserved for over eight centuries.',
   },
   {
     id:2, titulo:'As Filhas do Nilo — A Sacerdotisa Proibida', autor:'B.A. Dutra', genero:'historico', rating:4.9, numReviews:0, novo:true,
     cover:'covers/as-filhas-do-nilo.jpg',
     descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino. Juntos descobrem o lendário Papiro das Filhas do Nilo — e um segredo que pode custar a vida de Nefertari.',
+    titulo_en:'Daughters of the Nile — The Forbidden Priestess',
+    descricao_en:'Ancient Egypt, Karnak temple. When a priestess is found murdered on the banks of the Sacred Lake, Nefertari, First Priestess of Isis, joins forces with General Kha\'em-uaset to unravel a conspiracy threatening the kingdom\'s spiritual balance. Together they discover the legendary Papyrus of the Daughters of the Nile — and a secret that may cost Nefertari her life.',
   },
   {
     id:3, titulo:'Kael: Senhor das Chamas Perpétuas', autor:'B.A. Dutra', genero:'fantasy', rating:4.7, numReviews:0, adulto:true,
     cover:'covers/kael-senhor-das-chamas-perpetuas.jpg',
     descricao:'Na Amazónia, a arqueóloga Isabel rompe acidentalmente um selo ancestral e desperta Kael — um ser demoníaco aprisionado há oito mil anos. Em vez de fugir, ela enfrenta o desconhecido com curiosidade. O que começa com desconfiança transforma-se numa ligação profunda baseada em diálogos, confiança e descoberta mútua — entre o humano e o sobrenatural.',
+    titulo_en:'Kael: Lord of Eternal Flames',
+    descricao_en:'In the Amazon, archaeologist Isabel accidentally breaks an ancient seal and awakens Kael — a demonic being imprisoned for eight thousand years. Rather than fleeing, she faces the unknown with curiosity. What begins with distrust transforms into a deep connection built on dialogue, trust and mutual discovery — between the human and the supernatural.',
   },
   {
     id:4, titulo:'Magia Sexual', autor:'B.A. Dutra', genero:'erotico', rating:4.6, numReviews:0, adulto:true,
     cover:'covers/magia-sexual.jpg',
     descricao:'Dorian Blackwood, um poderoso bruxo imortal de cinco séculos, e Isabella Ferreira, editora de Lisboa cuja vida comum esconde um extraordinário potencial mágico. Guiado por uma antiga profecia no Grimório das Chamas Eternas, Dorian descobre que Isabella é a Portadora destinada a despertar um poder capaz de transformar o equilíbrio entre os mundos mágico e humano. À medida que ela descobre a sua verdadeira natureza, ambos desenvolvem uma intensa ligação emocional e espiritual — mas a poderosa Ordem dos Bruxos Sombrios pretende controlar essa energia a qualquer custo, obrigando-os a decidir entre o destino imposto e um novo caminho guiado pelo amor.',
+    titulo_en:'Sexual Magic',
+    descricao_en:'Dorian Blackwood, a powerful five-century-old immortal warlock, and Isabella Ferreira, a Lisbon editor whose ordinary life conceals extraordinary magical potential. Guided by an ancient prophecy in the Grimoire of the Eternal Flames, Dorian discovers that Isabella is the Carrier destined to awaken a power capable of transforming the balance between the magical and human worlds. As she discovers her true nature, both develop an intense emotional and spiritual bond — but the powerful Order of the Shadow Warlocks intends to control that energy at any cost, forcing them to choose between an imposed destiny and a new path guided by love.',
   },
   {
     id:5, titulo:'Marte: O Último Exílio', autor:'B.A. Dutra', genero:'scifi', rating:4.8, numReviews:0, novo:true,
     cover:'covers/marte-o-ultimo-exilio.jpg',
     descricao:'Após o colapso de Marte, Lyra transporta os cristais biotecnológicos Soru\'than que preservam a memória do seu povo. Ao chegar ao Sistema Solar, começa a ter visões de Caio, um oceanógrafo terrestre que sonha com ela. Enquanto o Protocolo Prometeu ameaça os refugiados marcianos, os dois descobrem uma ligação psíquica que transcende o espaço e o tempo.',
+    titulo_en:'Mars: The Last Exile',
+    descricao_en:'After the collapse of Mars, Lyra carries the Soru\'than biotechnological crystals that preserve her people\'s memory. Upon reaching the Solar System, she begins having visions of Caio, a terrestrial oceanographer who dreams of her. While the Prometheus Protocol threatens the Martian refugees, the two discover a psychic connection transcending space and time.',
   },
   {
     id:6, titulo:'O Livro das Sombras', autor:'B.A. Dutra', genero:'fantasy', rating:4.8, numReviews:0, novo:true,
     cover:'covers/o-livro-das-sombras.jpg',
     descricao:'Isabela, restauradora de manuscritos, recebe um misterioso códice medieval que parece estar vivo — reage ao toque e altera o seu conteúdo. O livro concede desejos autênticos, mas sempre a um preço equivalente. A sua ativação desperta Damian, um Guardião imortal de setecentos anos cuja regra inviolável é nunca apaixonar-se pela guardiã escolhida. Em Lisboa, entre páginas que mudam sozinhas e símbolos que emergem na pele de Isabela, ambos enfrentam o dilema entre preservar um equilíbrio secular ou desafiá-lo pelo amor.',
+    titulo_en:'The Book of Shadows',
+    descricao_en:'Isabela, a manuscript restorer, receives a mysterious medieval codex that seems alive — it reacts to touch and alters its content. The book grants authentic wishes, but always at an equivalent price. Its activation awakens Damian, a seven-hundred-year-old immortal Guardian whose inviolable rule is never to fall in love with the chosen guardian. In Lisbon, between pages that change on their own and symbols that emerge on Isabela\'s skin, both face the dilemma between preserving a centuries-old balance or defying it for love.',
   },
   {
     id:7, titulo:'O Tempo da Vontade', autor:'B.A. Dutra', genero:'scifi', rating:4.7, numReviews:0, novo:true,
     cover:'covers/o-tempo-da-vontade.jpg',
     descricao:'Em 2047, Lyra, agente da Agência de Inteligência Estratégica, viaja ao passado para infiltrar uma organização tecnológica cujo projeto causará centenas de milhões de mortes no futuro. Em Lisboa, conhece Dante Ferreiro, um arqueólogo com uma capacidade única de interpretar padrões invisíveis. Enquanto a operação revela infiltrações e lealdades divididas, a ligação entre os dois aprofunda-se — e Lyra questiona se o destino pode realmente ser alterado. Livro 1 da Trilogia Cronos Partido.',
+    titulo_en:'The Will of Time',
+    descricao_en:'In 2047, Lyra, an agent of the Strategic Intelligence Agency, travels to the past to infiltrate a technology organisation whose project will cause hundreds of millions of deaths in the future. In Lisbon, she meets Dante Ferreiro, an archaeologist with a unique ability to interpret invisible patterns. As the operation reveals infiltrations and divided loyalties, the bond between the two deepens — and Lyra questions whether fate can really be changed. Book 1 of the Broken Chronos Trilogy.',
   },
   {
     id:8, titulo:'Triângulo do Desejo', autor:'B.A. Dutra', genero:'erotico', rating:4.6, numReviews:0, adulto:true,
     cover:'covers/triangulo-do-desejo.jpg',
     descricao:'Helena Duarte, jornalista investigativa, parte em busca do irmão desaparecido no Triângulo das Bermudas. A expedição leva-a ao encontro de Dante Valente, um experiente capitão, e de Serena, uma mergulhadora com uma ligação inexplicável a uma ilha secreta onde existiu uma civilização antiga que amplificava emoções e memórias. Enquanto resgata o irmão, Helena desenvolve um intenso vínculo com Dante e Serena — um triângulo nascido de confiança, vulnerabilidade e desejo.',
+    titulo_en:'Triangle of Desire',
+    descricao_en:'Helena Duarte, an investigative journalist, sets out to find her brother who disappeared in the Bermuda Triangle. The expedition leads her to Dante Valente, an experienced captain, and to Serena, a diver with an inexplicable connection to a secret island where an ancient civilisation once amplified emotions and memories. While rescuing her brother, Helena develops an intense bond with Dante and Serena — a triangle born of trust, vulnerability and desire.',
   },
 ];
 
 const GENEROS = [
-  { id:'todos', label:'Todos' },
-  { id:'suspense', label:'Suspense', bg:'#DCF0F4', color:'#1A5A6A' },
-  { id:'historico', label:'Histórico', bg:'#FDF3DC', color:'#8B6914' },
-  { id:'fantasy', label:'Fantasia', bg:'#EDE0F8', color:'#6B3A8A' },
-  { id:'erotico', label:'Erótico +18', bg:'#F8DCE4', color:'#7A1A30' },
-  { id:'scifi', label:'Ficção Científica', bg:'#DCE8F8', color:'#1A3A6A' },
+  { id:'todos',    label:'Todos',            label_en:'All' },
+  { id:'suspense', label:'Suspense',          label_en:'Suspense',         bg:'#DCF0F4', color:'#1A5A6A' },
+  { id:'historico',label:'Histórico',         label_en:'Historical',       bg:'#FDF3DC', color:'#8B6914' },
+  { id:'fantasy',  label:'Fantasia',          label_en:'Fantasy',          bg:'#EDE0F8', color:'#6B3A8A' },
+  { id:'erotico',  label:'Erótico +18',       label_en:'Erotic +18',       bg:'#F8DCE4', color:'#7A1A30' },
+  { id:'scifi',    label:'Ficção Científica', label_en:'Science Fiction',  bg:'#DCE8F8', color:'#1A3A6A' },
 ];
 
 const COVER_STYLES = {
@@ -1066,6 +1155,17 @@ const FAQS = [
   { q:'Existe app para iOS?', r:'Neste momento, a Romanza está disponível para Android e através do nosso website. Estamos a avaliar o lançamento de uma versão para iOS no futuro. Acompanhe as nossas novidades para ficar a par de futuras atualizações.' },
 ];
 
+const FAQS_EN = [
+  { q:'Is Romanza free?', r:'Yes. Romanza can be used free of charge on our website and Android app. Read a free 5% sample of each book. Download the app to continue reading with a monthly or annual subscription.' },
+  { q:'How does reading work?', r:'On each book\'s detail page, click "Read Free Sample" to read the first 5% in your browser. To access the full book, download the Romanza app and subscribe monthly or annually.' },
+  { q:'Can I read offline?', r:'Not yet. Reading on Romanza currently requires an internet connection to sync reading progress, manage your account, and access the library. Offline reading may be available in future updates.' },
+  { q:'How many books are available?', r:'The Romanza library is constantly growing. New titles are added regularly to offer an increasingly rich and diverse reading experience.' },
+  { q:'Are the books in Portuguese?', r:'Yes. All books on Romanza are written in Portuguese. English translations of synopses and samples are available via the language switch at the top of the page.' },
+  { q:'Can I use the app on multiple devices?', r:'Yes. Sign in with the same account on different devices. Your reading progress and library stay synced so you can continue reading where you left off.' },
+  { q:'How can I vote for a book?', r:'Readers can vote for upcoming titles on the Vote page. Votes help determine which books join the Romanza library next — titles with the most votes are prioritised for publication.' },
+  { q:'Is there an iOS app?', r:'Romanza is currently available for Android and through our website. We are evaluating an iOS release in the future. Follow our updates to stay informed.' },
+];
+
 // State
 let activeGenre = 'todos';
 let showAllBooks = false;
@@ -1086,7 +1186,7 @@ function stars(rating, filled = true) {
 function renderGenreTabs() {
   const container = document.getElementById('genre-tabs');
   container.innerHTML = GENEROS.map(g => `
-    <button class="genre-tab ${g.id === activeGenre ? 'active' : ''}" data-genre="${g.id}">${g.label}</button>
+    <button class="genre-tab ${g.id === activeGenre ? 'active' : ''}" data-genre="${g.id}">${window.LANG==='en'&&g.label_en ? g.label_en : g.label}</button>
   `).join('');
   container.querySelectorAll('.genre-tab').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1108,15 +1208,18 @@ function renderBooks() {
   grid.innerHTML = display.map(book => {
     const cs = cs_map[book.genero] || cs_map.suspense;
     const gi = generoInfo(book.genero);
+    const isEn = window.LANG === 'en';
+    const tit = isEn && book.titulo_en ? book.titulo_en : book.titulo;
     const badge = book.novo
-      ? `<div class="book-badge book-badge-new">NOVO</div>`
+      ? `<div class="book-badge book-badge-new">${isEn?'NEW':'NOVO'}</div>`
       : book.adulto
         ? `<div class="book-badge book-badge-adult">+18</div>`
         : '';
     const coverImg = book.cover
-      ? `<img src="${book.cover}" alt="${book.titulo}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none'">`
+      ? `<img src="${book.cover}" alt="${tit}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;" onerror="this.style.display='none'">`
       : '';
-    const letterEl = book.cover ? '' : `<div class="book-cover-letter" style="color:${cs.color}">${book.titulo.charAt(0)}</div>`;
+    const letterEl = book.cover ? '' : `<div class="book-cover-letter" style="color:${cs.color}">${tit.charAt(0)}</div>`;
+    const genreLabel = isEn && gi.label_en ? gi.label_en : gi.label;
     return `
       <div class="book-card" data-id="${book.id}">
         <div class="book-cover" style="background:${cs.bg}">
@@ -1124,18 +1227,18 @@ function renderBooks() {
           ${letterEl}
           ${badge}
           <div class="book-cover-info">
-            <div class="book-cover-title">${book.titulo}</div>
+            <div class="book-cover-title">${tit}</div>
             <div class="book-cover-author">${book.autor}</div>
           </div>
         </div>
         <div class="book-meta">
-          <span class="genre-badge" style="background:${gi.bg};color:${gi.color}">${gi.label}</span>
+          <span class="genre-badge" style="background:${gi.bg};color:${gi.color}">${genreLabel}</span>
           <div class="book-rating">
             <span class="stars" style="font-size:13px">${stars(book.rating)}</span>
             <span class="rating-num">${book.rating.toFixed(1)}</span>
             <span class="rating-count">(${book.numReviews})</span>
           </div>
-          <button class="btn-ver" data-id="${book.id}">Ver livro</button>
+          <button class="btn-ver" data-id="${book.id}">${isEn?'View book':'Ver livro'}</button>
         </div>
       </div>
     `;
@@ -1444,7 +1547,8 @@ function renderVotes() {
 // ── FAQ ──
 function renderFaq() {
   const list = document.getElementById('faq-list');
-  list.innerHTML = FAQS.map((item, i) => `
+  const faqData = window.LANG === 'en' ? FAQS_EN : FAQS;
+  list.innerHTML = faqData.map((item, i) => `
     <div class="faq-item">
       <button class="faq-q" data-faq="${i}">
         <span class="faq-q-text">${item.q}</span>
@@ -1488,6 +1592,7 @@ renderReviews();
 renderThreads();
 renderVotes();
 renderFaq();
+applyLang();
 
 // ── TOAST ──
 function showToast(msg, type = 'info') {
