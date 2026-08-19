@@ -302,8 +302,11 @@
       </div>
     </a>
     <div class="nav-right">
-      <button id="lang-btn" onclick="toggleLang()" title="Switch language" style="display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:6px 11px;font-size:13px;font-weight:600;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:border-color .2s">
-        <span id="lang-flag">🇬🇧</span><span id="lang-label" style="line-height:1">EN</span>
+      <button id="lang-btn" onclick="toggleLang()" title="Mudar idioma / Switch language" style="display:flex;align-items:center;gap:5px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:7px 13px;font-size:13px;font-weight:700;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='#9B2335'" onmouseout="this.style.borderColor='#EDE4E8'">
+        <span id="lang-cur-flag" style="font-size:17px;line-height:1">🇵🇹</span>
+        <span id="lang-cur-code" style="font-size:12px;letter-spacing:.3px">PT</span>
+        <span style="color:#BBA8B0;font-size:12px;font-weight:400">⇄</span>
+        <span id="lang-tgt-flag" style="font-size:13px;line-height:1;opacity:.5">🇬🇧</span>
       </button>
       <div class="nav-user" id="nav-user"></div>
       <a href="index.html#app" class="btn-primary">
@@ -429,10 +432,12 @@ window.applyLangL = function() {
   document.documentElement.lang = window.LANG;
   const btn = document.getElementById('lang-btn');
   if (btn) {
-    const flag = btn.querySelector('#lang-flag');
-    const lbl  = btn.querySelector('#lang-label');
-    if (flag) flag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
-    if (lbl)  lbl.textContent  = window.LANG === 'pt' ? 'EN'   : 'PT';
+    const curFlag = btn.querySelector('#lang-cur-flag');
+    const curCode = btn.querySelector('#lang-cur-code');
+    const tgtFlag = btn.querySelector('#lang-tgt-flag');
+    if (curFlag) curFlag.textContent = window.LANG === 'pt' ? '🇵🇹' : '🇬🇧';
+    if (curCode) curCode.textContent = window.LANG === 'pt' ? 'PT'   : 'EN';
+    if (tgtFlag) tgtFlag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
   }
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const v = window.tL(el.dataset.i18n);

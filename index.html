@@ -555,8 +555,11 @@
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-right">
-      <button id="lang-btn" onclick="toggleLang()" title="Switch language" style="display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:6px 11px;font-size:13px;font-weight:600;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:border-color .2s">
-        <span id="lang-flag">🇬🇧</span><span id="lang-label" style="line-height:1">EN</span>
+      <button id="lang-btn" onclick="toggleLang()" title="Mudar idioma / Switch language" style="display:flex;align-items:center;gap:5px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:7px 13px;font-size:13px;font-weight:700;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='#9B2335'" onmouseout="this.style.borderColor='#EDE4E8'">
+        <span id="lang-cur-flag" style="font-size:17px;line-height:1">🇵🇹</span>
+        <span id="lang-cur-code" style="font-size:12px;letter-spacing:.3px">PT</span>
+        <span style="color:#BBA8B0;font-size:12px;font-weight:400">⇄</span>
+        <span id="lang-tgt-flag" style="font-size:13px;line-height:1;opacity:.5">🇬🇧</span>
       </button>
       <div class="nav-user" id="nav-user"></div>
       <a href="#app" class="btn-primary">
@@ -992,6 +995,17 @@ window._I18N = {
     sec_comunidade:'COMUNIDADE', sec_com_title:'Debates & conversas', btn_new_topic:'+ Novo tópico',
     sec_votacao:'VOTAÇÃO', sec_vot_title:'Próximos lançamentos', sec_vot_sub:'Vota no livro que queres ver a seguir na app. A comunidade decide!',
     sec_faq_title:'Perguntas frequentes',
+    ck_fab_title:'Definições de Cookies',
+    ck_banner_title:'Este website utiliza cookies',
+    ck_banner_text:'Utilizamos cookies próprios e de terceiros, incluindo o Google AdSense, para melhorar a experiência e apresentar publicidade relevante.',
+    ck_banner_policy:'Política de Cookies',
+    ck_reject:'Rejeitar não essenciais', ck_customize:'Personalizar', ck_accept:'Aceitar todos',
+    ck_set_title:'Definições de Cookies',
+    ck_set_sub:'Gere as tuas preferências de cookies. Podes alterar as tuas escolhas a qualquer momento.',
+    ck_essential:'Cookies Essenciais', ck_essential_desc:'Necessários para o funcionamento do site. Não podem ser desativados.',
+    ck_perf:'Desempenho & Estatísticas', ck_perf_desc:'Ajudam-nos a perceber como os visitantes utilizam o site.',
+    ck_ads:'Publicidade (Google AdSense)', ck_ads_desc:'Permitem apresentar anúncios personalizados. Geridos pelo Google.',
+    ck_save:'Guardar preferências', ck_policy:'Política de Cookies', ck_toast:'Preferências de cookies guardadas.',
   },
   en:{
     logo_sub:'Romances to devour',
@@ -1011,6 +1025,17 @@ window._I18N = {
     sec_comunidade:'COMMUNITY', sec_com_title:'Debates & conversations', btn_new_topic:'+ New topic',
     sec_votacao:'VOTE', sec_vot_title:'Upcoming releases', sec_vot_sub:'Vote for the book you want to see next in the app. The community decides!',
     sec_faq_title:'Frequently asked questions',
+    ck_fab_title:'Cookie Settings',
+    ck_banner_title:'This website uses cookies',
+    ck_banner_text:'We use our own and third-party cookies, including Google AdSense, to improve your experience and show relevant ads.',
+    ck_banner_policy:'Cookie Policy',
+    ck_reject:'Reject non-essential', ck_customize:'Customize', ck_accept:'Accept all',
+    ck_set_title:'Cookie Settings',
+    ck_set_sub:'Manage your cookie preferences. You can change your choices at any time.',
+    ck_essential:'Essential Cookies', ck_essential_desc:'Required for the site to function. Cannot be disabled.',
+    ck_perf:'Performance & Statistics', ck_perf_desc:'Help us understand how visitors use the site.',
+    ck_ads:'Advertising (Google AdSense)', ck_ads_desc:'Allow displaying personalised ads. Managed by Google.',
+    ck_save:'Save preferences', ck_policy:'Cookie Policy', ck_toast:'Cookie preferences saved.',
   }
 };
 window.t = k => (window._I18N[window.LANG]||window._I18N.pt)[k] || k;
@@ -1023,10 +1048,12 @@ window.applyLang = function() {
   document.documentElement.lang = window.LANG;
   const btn = document.getElementById('lang-btn');
   if (btn) {
-    const flag = btn.querySelector('#lang-flag');
-    const lbl  = btn.querySelector('#lang-label');
-    if (flag) flag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
-    if (lbl)  lbl.textContent  = window.LANG === 'pt' ? 'EN'   : 'PT';
+    const curFlag = btn.querySelector('#lang-cur-flag');
+    const curCode = btn.querySelector('#lang-cur-code');
+    const tgtFlag = btn.querySelector('#lang-tgt-flag');
+    if (curFlag) curFlag.textContent = window.LANG === 'pt' ? '🇵🇹' : '🇬🇧';
+    if (curCode) curCode.textContent = window.LANG === 'pt' ? 'PT'   : 'EN';
+    if (tgtFlag) tgtFlag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
   }
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const v = window.t(el.dataset.i18n);
@@ -2116,7 +2143,7 @@ function showCookieFab() {
   if (document.getElementById('cookie-fab')) return;
   const fab = document.createElement('button');
   fab.id = 'cookie-fab';
-  fab.title = 'Definições de Cookies';
+  fab.title = window.t('ck_fab_title');
   fab.innerHTML = '🍪';
   fab.addEventListener('click', openCookieSettings);
   document.body.appendChild(fab);
@@ -2127,24 +2154,24 @@ function openCookieSettings() {
   showPopup(`
     <button class="popup-close">×</button>
     <div class="popup-icon">🍪</div>
-    <h3 class="popup-title">Definições de Cookies</h3>
-    <p class="popup-sub" style="margin-bottom:20px">Gere as tuas preferências de cookies. Podes alterar as tuas escolhas a qualquer momento.</p>
+    <h3 class="popup-title">${window.t('ck_set_title')}</h3>
+    <p class="popup-sub" style="margin-bottom:20px">${window.t('ck_set_sub')}</p>
     <div style="text-align:left">
       <div class="cookie-toggle-row">
-        <div><div class="cookie-toggle-label">Cookies Essenciais</div><div class="cookie-toggle-desc">Necessários para o funcionamento do site. Não podem ser desativados.</div></div>
+        <div><div class="cookie-toggle-label">${window.t('ck_essential')}</div><div class="cookie-toggle-desc">${window.t('ck_essential_desc')}</div></div>
         <label class="cookie-toggle"><input type="checkbox" checked disabled><span class="cookie-toggle-slider"></span></label>
       </div>
       <div class="cookie-toggle-row">
-        <div><div class="cookie-toggle-label">Desempenho & Estatísticas</div><div class="cookie-toggle-desc">Ajudam-nos a perceber como os visitantes utilizam o site.</div></div>
+        <div><div class="cookie-toggle-label">${window.t('ck_perf')}</div><div class="cookie-toggle-desc">${window.t('ck_perf_desc')}</div></div>
         <label class="cookie-toggle"><input type="checkbox" id="ck-perf" ${c.performance ? 'checked' : ''}><span class="cookie-toggle-slider"></span></label>
       </div>
       <div class="cookie-toggle-row">
-        <div><div class="cookie-toggle-label">Publicidade (Google AdSense)</div><div class="cookie-toggle-desc">Permitem apresentar anúncios personalizados. Geridos pelo Google.</div></div>
+        <div><div class="cookie-toggle-label">${window.t('ck_ads')}</div><div class="cookie-toggle-desc">${window.t('ck_ads_desc')}</div></div>
         <label class="cookie-toggle"><input type="checkbox" id="ck-ads" ${c.advertising ? 'checked' : ''}><span class="cookie-toggle-slider"></span></label>
       </div>
     </div>
-    <button class="popup-btn" id="btn-save-cookie-prefs" style="margin-top:20px">Guardar preferências</button>
-    <p class="popup-note"><a href="cookies.html" style="color:#9B2335">Política de Cookies</a></p>
+    <button class="popup-btn" id="btn-save-cookie-prefs" style="margin-top:20px">${window.t('ck_save')}</button>
+    <p class="popup-note"><a href="cookies.html" style="color:#9B2335">${window.t('ck_policy')}</a></p>
   `);
   document.getElementById('btn-save-cookie-prefs').addEventListener('click', () => {
     saveConsent({
@@ -2154,7 +2181,7 @@ function openCookieSettings() {
     });
     document.querySelector('.popup-overlay')?.remove();
     document.body.style.overflow = '';
-    showToast('Preferências de cookies guardadas.', 'success');
+    showToast(window.t('ck_toast'), 'success');
   });
 }
 
@@ -2167,13 +2194,13 @@ function initCookieBanner() {
   banner.innerHTML = `
     <div class="cookie-inner">
       <div class="cookie-text">
-        <strong>Este website utiliza cookies</strong>
-        <p>Utilizamos cookies próprios e de terceiros, incluindo o Google AdSense, para melhorar a experiência e apresentar publicidade relevante. <a href="cookies.html">Política de Cookies</a></p>
+        <strong>${window.t('ck_banner_title')}</strong>
+        <p>${window.t('ck_banner_text')} <a href="cookies.html">${window.t('ck_banner_policy')}</a></p>
       </div>
       <div class="cookie-btns">
-        <button class="btn-cookie-reject" id="btn-ck-reject">Rejeitar não essenciais</button>
-        <button class="btn-cookie-settings" id="btn-ck-settings">Personalizar</button>
-        <button class="btn-cookie-accept" id="btn-ck-accept">Aceitar todos</button>
+        <button class="btn-cookie-reject" id="btn-ck-reject">${window.t('ck_reject')}</button>
+        <button class="btn-cookie-settings" id="btn-ck-settings">${window.t('ck_customize')}</button>
+        <button class="btn-cookie-accept" id="btn-ck-accept">${window.t('ck_accept')}</button>
       </div>
     </div>
   `;
