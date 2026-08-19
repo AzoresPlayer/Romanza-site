@@ -399,7 +399,7 @@ window.LANG = localStorage.getItem('romanza-lang') || 'pt';
 window._I18N_L = {
   pt:{
     logo_sub:'Romances para devorar', nav_baixar:'Baixar App',
-    bp_back:'← Voltar ao catálogo', btn_amostra:'Ler Amostra Gratuita', bp_baixar:'Baixar App',
+    bp_back:'← Voltar ao catálogo', btn_amostra:'Ler Amostra', bp_baixar:'Baixar App',
     badge_novo:'NOVO', badge_adult:'+18',
     am_loading:'A carregar amostra…',
     am_wall_title:'Gostaste da amostra?',
@@ -411,7 +411,7 @@ window._I18N_L = {
   },
   en:{
     logo_sub:'Romances to devour', nav_baixar:'Download App',
-    bp_back:'← Back to catalogue', btn_amostra:'Read Free Sample', bp_baixar:'Download App',
+    bp_back:'← Back to catalogue', btn_amostra:'Read Sample', bp_baixar:'Download App',
     badge_novo:'NEW', badge_adult:'+18',
     am_loading:'Loading sample…',
     am_wall_title:'Did you enjoy the sample?',
@@ -1529,7 +1529,7 @@ function openAmostra(book) {
     const cpBody = isEn
       ? `This work is protected by copyright.<br>Reproduction, distribution, public communication or total or partial transformation of this work without prior written authorisation from the author is prohibited.<br><br>Reading on this platform is strictly personal and non-transferable.`
       : `Esta obra está protegida por direitos de autor.<br>É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>A leitura nesta plataforma é estritamente pessoal e intransmissível.`;
-    const cpBtn  = isEn ? 'I Understand — Read Free Sample' : 'Entendi — Ver Amostra Gratuita';
+    const cpBtn  = isEn ? 'I Understand — Read Sample' : 'Entendi — Ler Amostra';
     const cpNote = isEn ? 'All rights reserved' : 'Todos os direitos reservados';
     overlay.innerHTML = `
       <div class="cp-box">
@@ -1647,7 +1647,7 @@ function render() {
         <div class="bp-actions">
           <button class="btn-amostra" id="btn-amostra">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12S5 4 12 4s11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
-            ${isEn?'Read Free Sample':'Ler Amostra Gratuita'}
+            ${window.tL('btn_amostra')}
           </button>
           <div class="bp-actions-row">
             <a class="btn-ler-app" href="index.html#app" style="text-decoration:none">
