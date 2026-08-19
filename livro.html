@@ -1547,8 +1547,19 @@ function openAmostra(book) {
     });
   }
 
-  // Carrega os primeiros 5% do livro do ficheiro
+  // Carrega os primeiros 5% do livro
   async function _loadAmostra() {
+    const isEnA = window.LANG === 'en';
+
+    // In English mode, always use the inline English sample text
+    if (isEnA && book.amostra_en) {
+      document.getElementById('am-chapter').textContent = 'Chapter 1 — Beginning';
+      document.getElementById('am-text').innerHTML = book.amostra_en;
+      document.getElementById('am-wall').style.display = 'block';
+      return;
+    }
+
+    // In Portuguese mode, try to load from the book file first
     try {
       const resp = await fetch(`books/livro-${book.id}.html`);
       if (resp.ok) {
@@ -1560,16 +1571,12 @@ function openAmostra(book) {
         const limit = Math.min(60, Math.max(12, Math.floor(nodes.length * 0.05)));
         document.getElementById('am-text').innerHTML = nodes.slice(0, limit).join('');
       } else {
-        const isEnA = window.LANG === 'en';
-        const amostraText = isEnA && book.amostra_en ? book.amostra_en : book.amostra;
-        document.getElementById('am-chapter').textContent = isEnA ? 'Chapter 1 — Beginning' : 'Capítulo 1 — Início';
-        document.getElementById('am-text').innerHTML = amostraText || (isEnA ? '<p>Sample not available.</p>' : '<p>Amostra não disponível.</p>');
+        document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
+        document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
       }
     } catch {
-      const isEnA = window.LANG === 'en';
-      const amostraText = isEnA && book.amostra_en ? book.amostra_en : book.amostra;
-      document.getElementById('am-chapter').textContent = isEnA ? 'Chapter 1 — Beginning' : 'Capítulo 1 — Início';
-      document.getElementById('am-text').innerHTML = amostraText || (isEnA ? '<p>Sample not available.</p>' : '<p>Amostra não disponível.</p>');
+      document.getElementById('am-chapter').textContent = 'Capítulo 1 — Início';
+      document.getElementById('am-text').innerHTML = book.amostra || '<p>Amostra não disponível.</p>';
     }
     document.getElementById('am-wall').style.display = 'block';
   }
