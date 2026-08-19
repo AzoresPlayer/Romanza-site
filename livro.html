@@ -1525,18 +1525,20 @@ function openAmostra(book) {
     const year = new Date().getFullYear();
     const overlay = document.createElement('div');
     overlay.className = 'cp-overlay';
+    const cpBy   = isEn ? 'by' : 'por';
+    const cpBody = isEn
+      ? `This work is protected by copyright.<br>Reproduction, distribution, public communication or total or partial transformation of this work without prior written authorisation from the author is prohibited.<br><br>Reading on this platform is strictly personal and non-transferable.`
+      : `Esta obra está protegida por direitos de autor.<br>É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>A leitura nesta plataforma é estritamente pessoal e intransmissível.`;
+    const cpBtn  = isEn ? 'I Understand — Read Free Sample' : 'Entendi — Ver Amostra Gratuita';
+    const cpNote = isEn ? 'All rights reserved' : 'Todos os direitos reservados';
     overlay.innerHTML = `
       <div class="cp-box">
         <div class="cp-icon">©</div>
-        <div class="cp-title">${book.titulo}</div>
-        <div class="cp-author">por ${book.autor}</div>
-        <div class="cp-body">
-          Esta obra está protegida por direitos de autor.<br>
-          É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>
-          A leitura nesta plataforma é estritamente pessoal e intransmissível.
-        </div>
-        <button class="cp-btn" id="cp-am-btn">Entendi — Ver Amostra Gratuita</button>
-        <div class="cp-note">© ${year} ${book.autor} · Todos os direitos reservados</div>
+        <div class="cp-title">${tit}</div>
+        <div class="cp-author">${cpBy} ${book.autor}</div>
+        <div class="cp-body">${cpBody}</div>
+        <button class="cp-btn" id="cp-am-btn">${cpBtn}</button>
+        <div class="cp-note">© ${year} ${book.autor} · ${cpNote}</div>
       </div>`;
     document.body.appendChild(overlay);
     overlay.querySelector('#cp-am-btn').addEventListener('click', () => {
