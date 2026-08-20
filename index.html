@@ -555,11 +555,10 @@
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-right">
-      <button id="lang-btn" onclick="toggleLang()" title="Mudar idioma / Switch language" style="display:flex;align-items:center;gap:5px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:7px 13px;font-size:13px;font-weight:700;color:#1E0D12;cursor:pointer;font-family:'DM Sans',sans-serif;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='#9B2335'" onmouseout="this.style.borderColor='#EDE4E8'">
-        <span id="lang-cur-flag" style="font-size:17px;line-height:1">🇵🇹</span>
-        <span id="lang-cur-code" style="font-size:12px;letter-spacing:.3px">PT</span>
-        <span style="color:#BBA8B0;font-size:12px;font-weight:400">⇄</span>
-        <span id="lang-tgt-flag" style="font-size:13px;line-height:1;opacity:.5">🇬🇧</span>
+      <button id="lang-btn" onclick="toggleLang()" title="Mudar idioma / Switch language" style="display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:7px 12px;cursor:pointer;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='#9B2335'" onmouseout="this.style.borderColor='#EDE4E8'">
+        <span id="lang-cur-flag" style="font-size:20px;line-height:1">🇵🇹</span>
+        <span style="color:#BBA8B0;font-size:12px">⇄</span>
+        <span id="lang-tgt-flag" style="font-size:16px;line-height:1;opacity:.55">🇬🇧</span>
       </button>
       <div class="nav-user" id="nav-user"></div>
       <a href="#app" class="btn-primary">
@@ -1049,10 +1048,8 @@ window.applyLang = function() {
   const btn = document.getElementById('lang-btn');
   if (btn) {
     const curFlag = btn.querySelector('#lang-cur-flag');
-    const curCode = btn.querySelector('#lang-cur-code');
     const tgtFlag = btn.querySelector('#lang-tgt-flag');
     if (curFlag) curFlag.textContent = window.LANG === 'pt' ? '🇵🇹' : '🇬🇧';
-    if (curCode) curCode.textContent = window.LANG === 'pt' ? 'PT'   : 'EN';
     if (tgtFlag) tgtFlag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
   }
   document.querySelectorAll('[data-i18n]').forEach(el => {
