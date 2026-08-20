@@ -555,10 +555,10 @@
       <a href="#faq">FAQ</a>
     </div>
     <div class="nav-right">
-      <button id="lang-btn" onclick="toggleLang()" title="Mudar idioma / Switch language" style="display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:7px 12px;cursor:pointer;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='#9B2335'" onmouseout="this.style.borderColor='#EDE4E8'">
-        <span id="lang-cur-flag" style="font-size:20px;line-height:1">🇵🇹</span>
+      <button id="lang-btn" onclick="toggleLang()" title="Mudar idioma / Switch language" style="display:flex;align-items:center;gap:7px;background:white;border:1.5px solid #EDE4E8;border-radius:100px;padding:7px 13px;cursor:pointer;flex-shrink:0;transition:all .2s" onmouseover="this.style.borderColor='#9B2335'" onmouseout="this.style.borderColor='#EDE4E8'">
+        <span id="lang-cur-flag" style="border-radius:3px;overflow:hidden;display:flex;box-shadow:0 1px 4px rgba(0,0,0,.22)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" width="26" height="17"><rect width="60" height="40" fill="#FF0000"/><rect width="22" height="40" fill="#006600"/><circle cx="22" cy="20" r="9" fill="#FFCC00"/><circle cx="22" cy="20" r="6.5" fill="#002776"/><circle cx="22" cy="14" r="1.8" fill="white"/><circle cx="22" cy="26" r="1.8" fill="white"/><circle cx="15.5" cy="20" r="1.8" fill="white"/><circle cx="28.5" cy="20" r="1.8" fill="white"/><circle cx="22" cy="20" r="1.8" fill="white"/></svg></span>
         <span style="color:#BBA8B0;font-size:12px">⇄</span>
-        <span id="lang-tgt-flag" style="font-size:16px;line-height:1;opacity:.55">🇬🇧</span>
+        <span id="lang-tgt-flag" style="border-radius:3px;overflow:hidden;display:flex;box-shadow:0 1px 4px rgba(0,0,0,.14);opacity:.5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" width="26" height="17"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="white" stroke-width="11"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="6"/><rect x="24" y="0" width="12" height="40" fill="white"/><rect x="0" y="14" width="60" height="12" fill="white"/><rect x="27" y="0" width="6" height="40" fill="#C8102E"/><rect x="0" y="17" width="60" height="6" fill="#C8102E"/></svg></span>
       </button>
       <div class="nav-user" id="nav-user"></div>
       <a href="#app" class="btn-primary">
@@ -1047,10 +1047,12 @@ window.applyLang = function() {
   document.documentElement.lang = window.LANG;
   const btn = document.getElementById('lang-btn');
   if (btn) {
+    const _PT = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" width="26" height="17"><rect width="60" height="40" fill="#FF0000"/><rect width="22" height="40" fill="#006600"/><circle cx="22" cy="20" r="9" fill="#FFCC00"/><circle cx="22" cy="20" r="6.5" fill="#002776"/><circle cx="22" cy="14" r="1.8" fill="white"/><circle cx="22" cy="26" r="1.8" fill="white"/><circle cx="15.5" cy="20" r="1.8" fill="white"/><circle cx="28.5" cy="20" r="1.8" fill="white"/><circle cx="22" cy="20" r="1.8" fill="white"/></svg>`;
+    const _GB = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" width="26" height="17"><rect width="60" height="40" fill="#012169"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="white" stroke-width="11"/><path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="6"/><rect x="24" y="0" width="12" height="40" fill="white"/><rect x="0" y="14" width="60" height="12" fill="white"/><rect x="27" y="0" width="6" height="40" fill="#C8102E"/><rect x="0" y="17" width="60" height="6" fill="#C8102E"/></svg>`;
     const curFlag = btn.querySelector('#lang-cur-flag');
     const tgtFlag = btn.querySelector('#lang-tgt-flag');
-    if (curFlag) curFlag.textContent = window.LANG === 'pt' ? '🇵🇹' : '🇬🇧';
-    if (tgtFlag) tgtFlag.textContent = window.LANG === 'pt' ? '🇬🇧' : '🇵🇹';
+    if (curFlag) curFlag.innerHTML = window.LANG === 'pt' ? _PT : _GB;
+    if (tgtFlag) tgtFlag.innerHTML = window.LANG === 'pt' ? _GB : _PT;
   }
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const v = window.t(el.dataset.i18n);
