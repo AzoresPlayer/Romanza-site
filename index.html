@@ -1070,13 +1070,6 @@ window.applyLang = function() {
 
 const BOOKS = [
   {
-    id:1, titulo:'A Chave do Castelo Antigo', autor:'B.A. Dutra', genero:'suspense', rating:4.8, numReviews:0, novo:true,
-    cover:'covers/a-chave-do-castelo-antigo.jpg',
-    descricao:'Durante uma visita de estudo a Guimarães, Miguel encontra uma antiga chave medieval com a inscrição latina "Qui quaerit invenit" — Quem procura, encontra. Com os amigos Tomás, Flora e Patrícia, inicia uma investigação que combina análise histórica, trabalho de arquivo e observação científica, conduzindo-os a uma câmara oculta junto ao Castelo de Guimarães e a um legado preservado há mais de oito séculos.',
-    titulo_en:'The Key of the Ancient Castle',
-    descricao_en:'During a school trip to Guimarães, Miguel finds a medieval key inscribed with the Latin phrase "Qui quaerit invenit" — He who seeks, finds. With friends Tomás, Flora and Patrícia, he begins an investigation combining historical analysis, archival research and scientific observation, leading them to a hidden chamber near Guimarães Castle and a legacy preserved for over eight centuries.',
-  },
-  {
     id:2, titulo:'As Filhas do Nilo — A Sacerdotisa Proibida', autor:'B.A. Dutra', genero:'historico', rating:4.9, numReviews:0, novo:true,
     cover:'covers/as-filhas-do-nilo.jpg',
     descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino. Juntos descobrem o lendário Papiro das Filhas do Nilo — e um segredo que pode custar a vida de Nefertari.',
@@ -1103,13 +1096,6 @@ const BOOKS = [
     descricao:'Após o colapso de Marte, Lyra transporta os cristais biotecnológicos Soru\'than que preservam a memória do seu povo. Ao chegar ao Sistema Solar, começa a ter visões de Caio, um oceanógrafo terrestre que sonha com ela. Enquanto o Protocolo Prometeu ameaça os refugiados marcianos, os dois descobrem uma ligação psíquica que transcende o espaço e o tempo.',
     titulo_en:'Mars: The Last Exile',
     descricao_en:'After the collapse of Mars, Lyra carries the Soru\'than biotechnological crystals that preserve her people\'s memory. Upon reaching the Solar System, she begins having visions of Caio, a terrestrial oceanographer who dreams of her. While the Prometheus Protocol threatens the Martian refugees, the two discover a psychic connection transcending space and time.',
-  },
-  {
-    id:6, titulo:'O Livro das Sombras', autor:'B.A. Dutra', genero:'fantasy', rating:4.8, numReviews:0, novo:true,
-    cover:'covers/o-livro-das-sombras.jpg',
-    descricao:'Isabela, restauradora de manuscritos, recebe um misterioso códice medieval que parece estar vivo — reage ao toque e altera o seu conteúdo. O livro concede desejos autênticos, mas sempre a um preço equivalente. A sua ativação desperta Damian, um Guardião imortal de setecentos anos cuja regra inviolável é nunca apaixonar-se pela guardiã escolhida. Em Lisboa, entre páginas que mudam sozinhas e símbolos que emergem na pele de Isabela, ambos enfrentam o dilema entre preservar um equilíbrio secular ou desafiá-lo pelo amor.',
-    titulo_en:'The Book of Shadows',
-    descricao_en:'Isabela, a manuscript restorer, receives a mysterious medieval codex that seems alive — it reacts to touch and alters its content. The book grants authentic wishes, but always at an equivalent price. Its activation awakens Damian, a seven-hundred-year-old immortal Guardian whose inviolable rule is never to fall in love with the chosen guardian. In Lisbon, between pages that change on their own and symbols that emerge on Isabela\'s skin, both face the dilemma between preserving a centuries-old balance or defying it for love.',
   },
   {
     id:7, titulo:'O Tempo da Vontade', autor:'B.A. Dutra', genero:'scifi', rating:4.7, numReviews:0, novo:true,
@@ -1145,23 +1131,16 @@ const COVER_STYLES = {
 };
 
 const REVIEWS = [
-  { id:1, user:'Maria J.', initial:'M', rating:5, livro:'A Chave do Castelo Antigo', texto:'Uma aventura histórica incrível! A investigação dos jovens em Guimarães é cativante do início ao fim. Mal posso esperar pelo próximo livro da B.A. Dutra!', data:'22 Jun 2026', likes:34 },
-  { id:2, user:'Sofia R.', initial:'S', rating:5, livro:'As Filhas do Nilo', texto:'O Egito Antigo nunca pareceu tão vivo! A Nefertari é uma protagonista brilhante e o mistério da sacerdotisa manteve-me acordada a noite toda.', data:'20 Jun 2026', likes:28 },
   { id:3, user:'Catarina P.', initial:'C', rating:5, livro:'Kael: Senhor das Chamas Perpétuas', texto:'Não esperava gostar tanto! A relação entre Isabel e Kael é construída de forma tão cuidada — nada forçado. Fantasia sobrenatural no seu melhor.', data:'18 Jun 2026', likes:19 },
   { id:4, user:'Ana F.', initial:'A', rating:5, livro:'Marte: O Último Exílio', texto:'Ficção científica com um romance de partir o coração. A ligação psíquica entre Lyra e Caio é mágica. Que universo incrível a B.A. Dutra criou!', data:'15 Jun 2026', likes:41 },
 ];
 
 const THREADS = [
-  { id:1, titulo:'Favoritos de Junho — partilha os teus!', replies:47, likes:132, user:'LeituraViciante', tempo:'2h atrás', categoria:'Geral', catColor:'#FDE8EC', catTextColor:'#9B2335' },
-  { id:2, titulo:'Dark Romance vs. Romance Contemporâneo — qual preferem?', replies:89, likes:245, user:'Bookworm_PT', tempo:'5h atrás', categoria:'Debate', catColor:'#2D1520', catTextColor:'#E8C0C8' },
   { id:3, titulo:'[SPOILERS] A Herdeira do Dragão — o final deu-me a vida!', replies:63, likes:189, user:'DragonLover', tempo:'1d atrás', categoria:'Spoilers', catColor:'#EDE0F8', catTextColor:'#6B3A8A' },
   { id:4, titulo:'Sugestões para quando acabamos um livro bom 😭', replies:34, likes:98, user:'SofiaR', tempo:'2d atrás', categoria:'Recomendações', catColor:'#DCF0F4', catTextColor:'#1A5A6A' },
 ];
 
 const UPCOMING = [
-  { id:1, titulo:'Além do Código — O Despertar', titulo_en:'Beyond the Code — The Awakening', autor:'B.A. Dutra', genero:'scifi', baseVotes:0, cover:'covers/alem-do-codigo-o-despertar.jpg',
-    sinopse:'Numa era onde a tecnologia controla tudo, Lyra descobre que o código que corre o mundo esconde um segredo perigoso. Ao tentar desvendá-lo, apaixona-se pelo único homem que pode destruir tudo em que acredita. Entre linhas de código e promessas sussurradas, a fronteira entre dever e desejo dissolve-se.',
-    sinopse_en:'In an era where technology controls everything, Lyra discovers that the code running the world hides a dangerous secret. While trying to uncover it, she falls for the only man who could destroy everything she believes in. Between lines of code and whispered promises, the boundary between duty and desire dissolves.' },
   { id:2, titulo:'Beijos à Meia-Noite', titulo_en:'Midnight Kisses', autor:'B.A. Dutra', genero:'fantasy', baseVotes:0, cover:'covers/beijos-a-meia-noite.jpg',
     sinopse:'Quando o relógio marca a meia-noite, o feitiço que mantém Selene presa entre dois mundos quebra. O príncipe das sombras que a encontra não está disposto a deixá-la partir — nem que seja preciso redefinir o próprio tempo. Um amor impossível que desafia a fronteira entre o real e o mágico.',
     sinopse_en:'When the clock strikes midnight, the spell keeping Selene trapped between two worlds breaks. The prince of shadows who finds her is not willing to let her go — even if he must redefine time itself. An impossible love that defies the boundary between the real and the magical.' },
