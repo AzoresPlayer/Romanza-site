@@ -284,6 +284,13 @@
     .gate-sending-icon{font-size:52px;display:block;margin-bottom:16px}
     .gate-sending-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#1E0D12;margin-bottom:8px}
     .gate-sending-sub{font-size:14px;color:#9C8090;line-height:1.6}
+
+    /* Cover zoom lightbox */
+    .cvzoom-ov{position:fixed;inset:0;background:rgba(8,3,6,.82);z-index:9500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s ease;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+    .cvzoom-ov.cz-on{opacity:1;pointer-events:auto}
+    .cvzoom-img{max-height:90vh;max-width:min(380px,88vw);width:auto;height:auto;border-radius:16px;box-shadow:0 32px 90px rgba(0,0,0,.7);transform:scale(.93);transition:transform .22s ease;object-fit:contain;display:block}
+    .cvzoom-ov.cz-on .cvzoom-img{transform:scale(1)}
+    .bp-cover{cursor:zoom-in}
   </style>
 </head>
 <body>
@@ -1690,6 +1697,53 @@ if (isRegistered()) {
   applyLangL();
   updateNavUser();
 }
+
+// ── Cover zoom on hover ──
+(function() {
+  const ov = document.createElement('div');
+  ov.className = 'cvzoom-ov';
+  const img = document.createElement('img');
+  img.className = 'cvzoom-img';
+  img.alt = '';
+  img.draggable = false;
+  ov.appendChild(img);
+  document.body.appendChild(ov);
+
+  let showT = null, hideT = null, active = false;
+
+  function show(src) {
+    clearTimeout(hideT);
+    img.src = src;
+    ov.classList.add('cz-on');
+    active = true;
+  }
+  function hide() {
+    ov.classList.remove('cz-on');
+    active = false;
+  }
+
+  document.addEventListener('mouseover', e => {
+    const target = e.target.matches && e.target.matches('img') && e.target.closest('.bp-cover') ? e.target : null;
+    if (!target || !target.src || target.src.includes('data:')) return;
+    clearTimeout(hideT);
+    showT = setTimeout(() => show(target.src), 200);
+  });
+
+  document.addEventListener('mouseout', e => {
+    const to = e.relatedTarget;
+    if (ov.contains(to)) return;
+    const wasInCover = e.target.closest && e.target.closest('.bp-cover');
+    if (wasInCover || e.target === ov || ov.contains(e.target)) {
+      clearTimeout(showT);
+      hideT = setTimeout(hide, 120);
+    }
+  });
+
+  ov.addEventListener('mouseleave', () => { clearTimeout(showT); hideT = setTimeout(hide, 120); });
+  ov.addEventListener('mouseenter', () => { clearTimeout(hideT); });
+  ov.addEventListener('click', hide);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && active) hide(); });
+})();
 </script>
 </body>
 </html>
