@@ -571,6 +571,9 @@
     .lg-reader-text{font-size:17px;line-height:1.88;color:rgba(245,232,236,.86);user-select:none;-webkit-user-select:none;-moz-user-select:none}
     .lg-reader-text p{margin-bottom:1.5em}
     .lg-reader-text em{font-style:italic}
+    .lg-reader-text .chapter-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:#E8A050;text-align:center;margin:56px 0 6px;letter-spacing:1px}
+    .lg-reader-text .chapter-sub{font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(245,232,236,.45);text-align:center;margin-bottom:32px}
+    .lg-reader-text .quote{font-style:italic;border-left:2px solid rgba(232,160,80,.35);padding-left:18px;color:rgba(245,232,236,.7);margin:1.2em 0}
     .lg-reader-ft{border-top:1px solid rgba(255,255,255,.05);padding:14px 24px;text-align:center;flex-shrink:0;background:rgba(12,4,10,.95)}
     .lg-reader-wm{font-size:10.5px;color:rgba(245,232,236,.18);letter-spacing:.8px}
 
@@ -1165,14 +1168,15 @@ window.applyLang = function() {
 
 // ── Livro Grátis do Mês ──
 const LIVRO_GRATIS = {
-  titulo:'As Filhas do Nilo — A Sacerdotisa Proibida',
-  titulo_en:'Daughters of the Nile — The Forbidden Priestess',
+  titulo:'O Protocolo Cronos',
+  titulo_en:'The Cronos Protocol',
   autor:'B.A. Dutra',
-  genero:'historico',
-  cover:'covers/as-filhas-do-nilo.jpg',
+  genero:'scifi',
+  cover:'covers/o-protocolo-cronos.jpg',
+  cover_en:'covers/o-protocolo-cronos-en.jpg',
   rating:4.9,
-  descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino.',
-  descricao_en:'Ancient Egypt, Karnak temple. When a priestess is found murdered on the banks of the Sacred Lake, Nefertari, First Priestess of Isis, joins forces with General Kha\'em-uaset to unravel a conspiracy threatening the kingdom\'s spiritual balance.',
+  descricao:'Inês Marques Cabral, física de Coimbra, recebe uma carta sem remetente com uma única instrução: traga apenas o que puder perder. O que começa como um recrutamento secreto transforma-se numa missão através do tempo — à WWII Lausanne — e numa ligação inesperada com o Comandante Duarte Salvaterra, o único homem capaz de a ancorar a um presente que já não reconhece como seu.',
+  descricao_en:'Inês Marques Cabral, a physicist from Coimbra, receives a letter with no sender and one instruction: bring only what you can afford to lose. What begins as a secret recruitment becomes a mission through time — to WWII Lausanne — and an unexpected bond with Commander Duarte Salvaterra, the only man capable of anchoring her to a present she no longer recognises as her own.',
   content_file:'books/livro-gratis.html',
   content_file_en:'books/livro-gratis-en.html',
 };
@@ -1213,11 +1217,12 @@ function renderLivroGratis() {
       : `Disponível por mais ${days} ${dw} neste mês`;
   }
 
-  // Cover
+  // Cover — use language-specific version when available
   const coverBox = document.getElementById('lg-cover-box');
   if (coverBox) {
-    if (lg.cover) {
-      coverBox.innerHTML = `<img src="${lg.cover}" alt="${tit.replace(/"/g,'&quot;')}" onerror="this.parentNode.innerHTML='<div class=\\'lg-cover-letter\\'>${tit.charAt(0)}</div>'">`;
+    const coverSrc = (isEn && lg.cover_en) ? lg.cover_en : (lg.cover || '');
+    if (coverSrc) {
+      coverBox.innerHTML = `<img src="${coverSrc}" alt="${tit.replace(/"/g,'&quot;')}" onerror="this.parentNode.innerHTML='<div class=\\'lg-cover-letter\\'>${tit.charAt(0)}</div>'">`;
     } else {
       coverBox.innerHTML = `<div class="lg-cover-letter">${tit.charAt(0)}</div>`;
     }
