@@ -533,6 +533,69 @@
     .btn-newsletter.done{background:#4CAF50 !important;pointer-events:none}
     .contacto-email{display:inline-block;background:#FDE8EC;color:#9B2335;padding:12px 24px;border-radius:100px;font-size:16px;font-weight:600;border:1.5px solid rgba(155,35,53,.2);transition:background .2s}
     .contacto-email:hover{background:#F8C8D0}
+
+    /* ── Livro Grátis do Mês ── */
+    #livro-gratis{background:linear-gradient(135deg,#0D0308 0%,#1E0810 40%,#2A0C16 100%);padding:72px 32px;overflow:hidden;position:relative}
+    #livro-gratis::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 72% 50%,rgba(155,35,53,.2) 0%,transparent 68%);pointer-events:none}
+    .lg-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:64px;position:relative;z-index:1}
+    .lg-text{flex:1;min-width:0}
+    .lg-tag-row{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+    .lg-tag{font-size:10px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:#E8A050;background:rgba(232,160,80,.1);border:1px solid rgba(232,160,80,.28);padding:5px 13px;border-radius:100px}
+    .lg-free-pill{background:#9B2335;color:white;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 11px;border-radius:100px}
+    .lg-title{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#F5E8EC;line-height:1.22;letter-spacing:-.4px;margin-bottom:8px}
+    .lg-author{font-size:13.5px;color:rgba(245,232,236,.45);margin-bottom:14px}
+    .lg-stars{color:#E8A050;font-size:14px;letter-spacing:1px;margin-bottom:18px}
+    .lg-desc{font-size:15px;color:rgba(245,232,236,.68);line-height:1.68;margin-bottom:28px;max-width:490px}
+    .lg-timer-row{display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09);border-radius:100px;padding:8px 18px;margin-bottom:30px}
+    .lg-timer-dot{width:7px;height:7px;background:#E8736A;border-radius:50%;flex-shrink:0;animation:lg-pulse 1.6s ease-in-out infinite}
+    @keyframes lg-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.65)}}
+    .lg-timer-txt{font-size:13px;color:rgba(245,232,236,.78);white-space:nowrap}
+    .lg-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#9B2335,#C03050);color:white;border:none;padding:15px 32px;border-radius:100px;font-size:15.5px;font-weight:600;cursor:pointer;transition:all .25s;box-shadow:0 4px 24px rgba(155,35,53,.38)}
+    .lg-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(155,35,53,.52)}
+    .lg-cover-wrap{flex-shrink:0;position:relative;width:220px}
+    .lg-cover-glow{position:absolute;inset:-40px;background:radial-gradient(ellipse,rgba(155,35,53,.3) 0%,transparent 70%);pointer-events:none;z-index:0}
+    .lg-cover-box{width:220px;height:312px;border-radius:13px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,.65),0 0 0 1px rgba(255,255,255,.07);position:relative;z-index:1}
+    .lg-cover-box img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+    .lg-cover-letter{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:80px;color:rgba(245,232,236,.25)}
+    .lg-gratis-sticker{position:absolute;top:-14px;right:-14px;z-index:2;background:linear-gradient(135deg,#D4900A,#E8B030);color:white;font-size:10.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:7px 15px;border-radius:100px;box-shadow:0 4px 18px rgba(232,160,80,.38)}
+
+    /* Reader modal */
+    .lg-reader-ov{position:fixed;inset:0;background:#0A0308;z-index:10000;display:flex;flex-direction:column}
+    .lg-reader-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(12,4,10,.95);flex-shrink:0}
+    .lg-reader-hd-l .lg-reader-ht{font-family:'Playfair Display',serif;font-size:17px;color:#F5E8EC;font-weight:600}
+    .lg-reader-hd-l .lg-reader-hm{font-size:11.5px;color:rgba(245,232,236,.38);margin-top:3px}
+    .lg-reader-x{background:none;border:none;color:rgba(245,232,236,.55);font-size:30px;cursor:pointer;padding:0 4px;line-height:1;transition:color .2s}
+    .lg-reader-x:hover{color:#F5E8EC}
+    .lg-reader-bd{flex:1;overflow-y:auto;padding:52px 24px 80px;max-width:700px;margin:0 auto;width:100%;box-sizing:border-box}
+    .lg-reader-chapter{font-size:11px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:#E8A050;margin-bottom:36px;text-align:center}
+    .lg-reader-text{font-size:17px;line-height:1.88;color:rgba(245,232,236,.86);user-select:none;-webkit-user-select:none;-moz-user-select:none}
+    .lg-reader-text p{margin-bottom:1.5em}
+    .lg-reader-text em{font-style:italic}
+    .lg-reader-ft{border-top:1px solid rgba(255,255,255,.05);padding:14px 24px;text-align:center;flex-shrink:0;background:rgba(12,4,10,.95)}
+    .lg-reader-wm{font-size:10.5px;color:rgba(245,232,236,.18);letter-spacing:.8px}
+
+    /* Copyright modal */
+    .lg-cp-ov{position:fixed;inset:0;background:rgba(8,2,6,.93);z-index:10001;display:flex;align-items:center;justify-content:center;padding:24px}
+    .lg-cp-box{background:#180810;border:1px solid rgba(155,35,53,.28);border-radius:20px;max-width:460px;width:100%;padding:40px 32px;text-align:center;box-shadow:0 20px 64px rgba(0,0,0,.55)}
+    .lg-cp-icon{font-size:38px;font-weight:700;font-family:'Playfair Display',serif;color:#E8A050;margin-bottom:14px}
+    .lg-cp-tit{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#F5E8EC;margin-bottom:7px}
+    .lg-cp-auth{font-size:12.5px;color:rgba(245,232,236,.45);margin-bottom:22px}
+    .lg-cp-body{font-size:13px;color:rgba(245,232,236,.62);line-height:1.68;margin-bottom:26px}
+    .lg-cp-btn{background:linear-gradient(135deg,#9B2335,#C03050);color:white;border:none;padding:14px 28px;border-radius:100px;font-size:14px;font-weight:600;cursor:pointer;width:100%;transition:background .2s}
+    .lg-cp-btn:hover{background:linear-gradient(135deg,#B02840,#D03860)}
+    .lg-cp-note{font-size:11px;color:rgba(245,232,236,.22);margin-top:16px}
+    .lg-loading-txt{text-align:center;padding:60px 0;color:rgba(245,232,236,.38);font-size:15px}
+
+    @media(max-width:700px){
+      .lg-inner{flex-direction:column-reverse;gap:28px;text-align:center}
+      .lg-cover-wrap{width:165px}
+      .lg-cover-box{width:165px;height:234px}
+      .lg-title{font-size:27px}
+      .lg-btn{width:100%;justify-content:center}
+      .lg-timer-row{justify-content:center}
+      .lg-desc{max-width:100%}
+      .lg-tag-row{justify-content:center}
+    }
   </style>
 </head>
 <body>
@@ -622,11 +685,40 @@
   </div>
 </section>
 
+<!-- LIVRO GRÁTIS DO MÊS -->
+<section id="livro-gratis">
+  <div class="lg-inner">
+    <div class="lg-text">
+      <div class="lg-tag-row">
+        <div class="lg-tag" id="lg-tag-lbl"></div>
+        <div class="lg-free-pill" id="lg-free-pill"></div>
+      </div>
+      <h2 class="lg-title" id="lg-tit"></h2>
+      <div class="lg-author" id="lg-auth"></div>
+      <div class="lg-stars" id="lg-stars"></div>
+      <p class="lg-desc" id="lg-desc"></p>
+      <div class="lg-timer-row">
+        <span class="lg-timer-dot"></span>
+        <span class="lg-timer-txt" id="lg-timer-txt"></span>
+      </div>
+      <button class="lg-btn" id="lg-btn" onclick="openLivroGratis()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="flex-shrink:0"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span id="lg-btn-txt"></span>
+      </button>
+    </div>
+    <div class="lg-cover-wrap">
+      <div class="lg-cover-glow"></div>
+      <div class="lg-cover-box" id="lg-cover-box"></div>
+      <div class="lg-gratis-sticker" id="lg-gratis-sticker">GRÁTIS</div>
+    </div>
+  </div>
+</section>
+
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat">
-      <div class="stat-num">8</div>
+      <div class="stat-num" id="stat-books-num">6</div>
       <div class="stat-label" data-i18n="stat_books">Livros disponíveis</div>
     </div>
     <div class="stat">
@@ -1005,6 +1097,7 @@ window._I18N = {
     ck_perf:'Desempenho & Estatísticas', ck_perf_desc:'Ajudam-nos a perceber como os visitantes utilizam o site.',
     ck_ads:'Publicidade (Google AdSense)', ck_ads_desc:'Permitem apresentar anúncios personalizados. Geridos pelo Google.',
     ck_save:'Guardar preferências', ck_policy:'Política de Cookies', ck_toast:'Preferências de cookies guardadas.',
+    lg_tag:'LIVRO GRÁTIS DO MÊS', lg_free:'GRÁTIS',
   },
   en:{
     logo_sub:'Romances to devour',
@@ -1035,6 +1128,7 @@ window._I18N = {
     ck_perf:'Performance & Statistics', ck_perf_desc:'Help us understand how visitors use the site.',
     ck_ads:'Advertising (Google AdSense)', ck_ads_desc:'Allow displaying personalised ads. Managed by Google.',
     ck_save:'Save preferences', ck_policy:'Cookie Policy', ck_toast:'Cookie preferences saved.',
+    lg_tag:'FREE BOOK OF THE MONTH', lg_free:'FREE',
   }
 };
 window.t = k => (window._I18N[window.LANG]||window._I18N.pt)[k] || k;
@@ -1066,7 +1160,166 @@ window.applyLang = function() {
   if (typeof renderBooks === 'function') renderBooks();
   if (typeof renderFaq === 'function') renderFaq();
   if (typeof renderVotes === 'function') renderVotes();
+  if (typeof renderLivroGratis === 'function') renderLivroGratis();
 };
+
+// ── Livro Grátis do Mês ──
+const LIVRO_GRATIS = {
+  titulo:'As Filhas do Nilo — A Sacerdotisa Proibida',
+  titulo_en:'Daughters of the Nile — The Forbidden Priestess',
+  autor:'B.A. Dutra',
+  genero:'historico',
+  cover:'covers/as-filhas-do-nilo.jpg',
+  rating:4.9,
+  descricao:'Egito Antigo, templo de Karnak. Quando uma sacerdotisa é encontrada assassinada às margens do Lago Sagrado, Nefertari, Primeira Sacerdotisa de Ísis, une forças com o general Kha\'em-uaset para desvendar uma conspiração que ameaça o equilíbrio espiritual do reino.',
+  descricao_en:'Ancient Egypt, Karnak temple. When a priestess is found murdered on the banks of the Sacred Lake, Nefertari, First Priestess of Isis, joins forces with General Kha\'em-uaset to unravel a conspiracy threatening the kingdom\'s spiritual balance.',
+  content_file:'books/livro-gratis.html',
+  content_file_en:'books/livro-gratis-en.html',
+};
+
+function renderLivroGratis() {
+  const isEn = window.LANG === 'en';
+  const lg = LIVRO_GRATIS;
+  const tit  = isEn && lg.titulo_en   ? lg.titulo_en   : lg.titulo;
+  const desc = isEn && lg.descricao_en ? lg.descricao_en : lg.descricao;
+
+  const tagEl = document.getElementById('lg-tag-lbl');
+  const pillEl = document.getElementById('lg-free-pill');
+  const stickerEl = document.getElementById('lg-gratis-sticker');
+  if (tagEl)     tagEl.textContent = window.t('lg_tag');
+  if (pillEl)    pillEl.textContent = window.t('lg_free');
+  if (stickerEl) stickerEl.textContent = window.t('lg_free');
+
+  const titEl  = document.getElementById('lg-tit');
+  const authEl = document.getElementById('lg-auth');
+  const starsEl = document.getElementById('lg-stars');
+  const descEl = document.getElementById('lg-desc');
+  const timerEl = document.getElementById('lg-timer-txt');
+  const btnEl  = document.getElementById('lg-btn-txt');
+  if (titEl)   titEl.textContent  = tit;
+  if (authEl)  authEl.textContent = (isEn ? 'by ' : 'por ') + lg.autor;
+  if (starsEl) { const r = Math.round(lg.rating); starsEl.textContent = '★'.repeat(r) + '☆'.repeat(5-r) + '  ' + lg.rating.toFixed(1); }
+  if (descEl)  descEl.textContent = desc;
+  if (btnEl)   btnEl.textContent  = isEn ? 'Read Now — Free' : 'Ler Agora — Grátis';
+
+  // Countdown: days remaining in current month
+  if (timerEl) {
+    const now = new Date();
+    const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+    const days = Math.max(1, Math.ceil((end - now) / 86400000));
+    const dw = isEn ? (days === 1 ? 'day' : 'days') : (days === 1 ? 'dia' : 'dias');
+    timerEl.textContent = isEn
+      ? `Available for ${days} more ${dw} this month`
+      : `Disponível por mais ${days} ${dw} neste mês`;
+  }
+
+  // Cover
+  const coverBox = document.getElementById('lg-cover-box');
+  if (coverBox) {
+    if (lg.cover) {
+      coverBox.innerHTML = `<img src="${lg.cover}" alt="${tit.replace(/"/g,'&quot;')}" onerror="this.parentNode.innerHTML='<div class=\\'lg-cover-letter\\'>${tit.charAt(0)}</div>'">`;
+    } else {
+      coverBox.innerHTML = `<div class="lg-cover-letter">${tit.charAt(0)}</div>`;
+    }
+  }
+
+  // Update stat counter
+  const statNum = document.getElementById('stat-books-num');
+  if (statNum) statNum.textContent = BOOKS.length;
+}
+
+function openLivroGratis() {
+  const isEn = window.LANG === 'en';
+  const lg   = LIVRO_GRATIS;
+  const tit  = isEn && lg.titulo_en ? lg.titulo_en : lg.titulo;
+  const year = new Date().getFullYear();
+  const cpBy   = isEn ? 'by' : 'por';
+  const cpBody = isEn
+    ? `This work is protected by copyright.<br>Reproduction, distribution, public communication or total or partial transformation of this work without prior written authorisation from the author is prohibited.<br><br>Reading on this platform is strictly personal and non-transferable.`
+    : `Esta obra está protegida por direitos de autor.<br>É proibida a reprodução, distribuição, comunicação pública ou transformação total ou parcial desta obra sem autorização prévia e escrita do autor.<br><br>A leitura nesta plataforma é estritamente pessoal e intransmissível.`;
+  const cpBtn  = isEn ? 'I Understand — Read Full Book' : 'Entendi — Ler Livro Completo';
+  const cpNote = isEn ? 'All rights reserved' : 'Todos os direitos reservados';
+
+  const cpOv = document.createElement('div');
+  cpOv.className = 'lg-cp-ov';
+  cpOv.innerHTML = `
+    <div class="lg-cp-box">
+      <div class="lg-cp-icon">©</div>
+      <div class="lg-cp-tit">${tit}</div>
+      <div class="lg-cp-auth">${cpBy} ${lg.autor}</div>
+      <div class="lg-cp-body">${cpBody}</div>
+      <button class="lg-cp-btn" id="lg-cp-ok">${cpBtn}</button>
+      <div class="lg-cp-note">© ${year} ${lg.autor} · ${cpNote}</div>
+    </div>`;
+  document.body.appendChild(cpOv);
+  document.body.style.overflow = 'hidden';
+  cpOv.querySelector('#lg-cp-ok').addEventListener('click', () => {
+    cpOv.remove();
+    _openLGReader(tit, isEn);
+  });
+}
+
+async function _openLGReader(tit, isEn) {
+  const lg   = LIVRO_GRATIS;
+  const year = new Date().getFullYear();
+  const wm   = isEn
+    ? `Romanza · © ${year} ${lg.autor} · Personal reading only · Unauthorised copying prohibited`
+    : `Romanza · © ${year} ${lg.autor} · Leitura pessoal · Reprodução não autorizada proibida`;
+  const chapLbl  = isEn ? 'Chapter 1 — Beginning'       : 'Capítulo 1 — Início';
+  const loadLbl  = isEn ? 'Loading book…'               : 'A carregar o livro…';
+  const monthLbl = isEn ? 'Free this month'             : 'Grátis este mês';
+
+  const ov = document.createElement('div');
+  ov.className = 'lg-reader-ov';
+  ov.innerHTML = `
+    <div class="lg-reader-hd">
+      <div class="lg-reader-hd-l">
+        <div class="lg-reader-ht">${tit}</div>
+        <div class="lg-reader-hm">${lg.autor} · ${monthLbl}</div>
+      </div>
+      <button class="lg-reader-x" id="lg-rx">×</button>
+    </div>
+    <div class="lg-reader-bd" id="lg-reader-bd">
+      <div class="lg-reader-chapter" id="lg-chapter-lbl">${chapLbl}</div>
+      <div class="lg-reader-text" id="lg-reader-text"><div class="lg-loading-txt">${loadLbl}</div></div>
+    </div>
+    <div class="lg-reader-ft"><div class="lg-reader-wm">${wm}</div></div>`;
+  document.body.appendChild(ov);
+
+  // Load content from file, fallback to inline sample
+  const file = isEn ? (lg.content_file_en || lg.content_file) : lg.content_file;
+  try {
+    const resp = await fetch(file);
+    if (!resp.ok) throw new Error();
+    const html = await resp.text();
+    const chapM = html.match(/<h2[^>]*>([\s\S]*?)<\/h2>/i);
+    const chapEl = document.getElementById('lg-chapter-lbl');
+    if (chapM && chapEl) chapEl.textContent = chapM[1].replace(/<[^>]+>/g,'').trim();
+    document.getElementById('lg-reader-text').innerHTML = html;
+  } catch {
+    document.getElementById('lg-reader-text').innerHTML =
+      isEn ? '<p>The full book content will be available soon. Thank you for your patience.</p>'
+           : '<p>O conteúdo completo do livro estará disponível em breve. Obrigado pela paciência.</p>';
+  }
+
+  // Copy/print protections
+  const bd = document.getElementById('lg-reader-bd');
+  bd.addEventListener('copy',        e => e.preventDefault());
+  bd.addEventListener('cut',         e => e.preventDefault());
+  bd.addEventListener('contextmenu', e => e.preventDefault());
+  bd.addEventListener('dragstart',   e => e.preventDefault());
+  bd.addEventListener('keydown', e => {
+    const ctrl = e.ctrlKey || e.metaKey;
+    if (ctrl && ['c','a','p','s','u'].includes(e.key.toLowerCase())) e.preventDefault();
+    if (e.key === 'PrintScreen') e.preventDefault();
+  });
+
+  const close = () => { ov.remove(); document.body.style.overflow = ''; };
+  document.getElementById('lg-rx').addEventListener('click', close);
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
+}
 
 const BOOKS = [
   {
